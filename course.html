@@ -137,10 +137,175 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="url.js"></script> 
 
+<script>
     AOS.init();
 
-    // 1. **محتوى course-slider.js المُدمج:**
-    // قم بلصق جميع الدوال والقوالب (instructorTemplate, testimonialTemplate, parseList, setupSlider, initializeSlider, startSliders) هنا بالصيغة التي اتفقنا عليها.
+    // ====================================================================
+    //                 *** الكود المدمج من course-slider.js ***
+    // ====================================================================
+
+    // قالب المدرب (تم التعديل لاستخدام .title و .img)
+    const instructorTemplate = (inst) => `
+        <div class="instructor-card">
+            <img src="${inst.img || 'https://via.placeholder.com/150'}" alt="${inst.name}" onerror="this.onerror=null;this.src='https://via.placeholder.com/150/0d3b14/ffffff?text=لا+يوجد+صورة';">
+            <h4>${inst.name}</h4>
+            <p>${inst.title || inst.role}</p> </div>
+    `;
+    // قالب آراء المتدربين
+    const testimonialTemplate = (t) => `
+        <p class="testimonial-text">"${t.text}"</p>
+        <p><strong>${t.name}</strong></p>
+    `;
+    
+    /**
+     * @function parseList
+     * @description (مُعدَّلة) تتعامل مع المصفوفات (Array) بدلاً من النص المفصول بـ |.
+     */
+    window.parseList = function (elementId, data, iconClass) {
+        const listElement = document.getElementById(elementId);
+        
+        if (!data || !Array.isArray(data) || data.length === 0) {
+            const parent = listElement.closest('.container').querySelector(`h2:has(ul#${elementId})`);
+            if (parent) parent.style.display = 'none'; 
+            listElement.style.display = 'none';
+            return;
+        }
+        
+        listElement.innerHTML = '';
+        
+        data.forEach(text => {
+            const li = document.createElement('li');
+            li.innerHTML = `<i class="${iconClass}" style="margin-left: 10px;"></i> ${text.trim()}`;
+            listElement.appendChild(li);
+        });
+    };
+
+    /**
+     * @function setupSlider
+     * @description يقوم بتهيئة عناصر السلايدر.
+     */
+    window.setupSlider = function (sliderIdContainer, dotClass, dataKey) {
+        const sliderContainer = document.getElementById(sliderIdContainer);
+        if (!sliderContainer || !window.course) return;
+
+        const sliderDiv = sliderContainer.querySelector(`#${dataKey}-slider`);
+        const dotsContainer = sliderContainer.querySelector(`.${dotClass}`);
+        
+        if (!window.course[dataKey] || window.course[dataKey].length === 0) {
+            sliderContainer.parentElement.style.display = 'none';
+            return;
+        }
+        
+        let items = [];
+        let template;
+        
+        if (dataKey === 'instructors') {
+            template = instructorTemplate;
+        } else if (dataKey === 'testimonials') {
+            template = testimonialTemplate;
+        } else {
+            return;
+        }
+
+        try {
+            // التعامل مع البيانات سواء جاءت كنص JSON أو كمصفوفة جاهزة
+            const rawData = typeof window.course[dataKey] === 'string' ? JSON.parse(window.course[dataKey]) : window.course[dataKey];
+            
+            if (Array.isArray(rawData)) {
+                 items = rawData;
+            } else {
+                 sliderContainer.parentElement.style.display = 'none';
+                 return;
+            }
+
+        } catch (e) {
+             sliderContainer.parentElement.style.display = 'none';
+             return;
+        }
+        
+        sliderDiv.innerHTML = '';
+        dotsContainer.innerHTML = '';
+
+        items.forEach((item, i) => {
+            const slide = document.createElement('div');
+            const slideClassName = dataKey.slice(0, -1) + '-slide'; 
+            slide.className = slideClassName; 
+            slide.innerHTML = template(item);
+            sliderDiv.appendChild(slide);
+
+            const dot = document.createElement('span');
+            dot.className = 'dot';
+            dot.dataset.slideIndex = i;
+            dotsContainer.appendChild(dot);
+        });
+    };
+    
+    /**
+     * @function initializeSlider
+     * @description الدالة الأساسية لتشغيل أي سلايدر.
+     */
+    function initializeSlider(containerId, slideClassName) {
+        const slidesContainer = document.getElementById(containerId);
+        if (!slidesContainer) return;
+
+        const slides = slidesContainer.getElementsByClassName(slideClassName);
+        const dots = slidesContainer.parentElement.querySelector('.slider-dots') ? slidesContainer.parentElement.querySelector('.slider-dots').getElementsByClassName('dot') : [];
+        let slideIndex = 0;
+        let autoSlideInterval;
+
+        if (slides.length === 0) return;
+
+        function showSlides(n) {
+            if (n >= slides.length) { slideIndex = 0; }
+            if (n < 0) { slideIndex = slides.length - 1; }
+
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            
+            slides[slideIndex].style.display = "flex"; 
+            if (dots[slideIndex]) {
+                dots[slideIndex].className += " active";
+            }
+        }
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+        
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function startAutoSlide() {
+            if (autoSlideInterval) clearInterval(autoSlideInterval); 
+            autoSlideInterval = setInterval(() => {
+                plusSlides(1);
+            }, 5000); 
+        }
+        
+        Array.from(dots).forEach(dot => {
+            dot.addEventListener('click', (event) => {
+                const index = parseInt(event.target.dataset.slideIndex);
+                currentSlide(index);
+            });
+        });
+
+        showSlides(slideIndex);
+        startAutoSlide();
+    }
+
+    /**
+     * @function startSliders
+     * @description دالة عامة لتشغيل جميع السلايدرات.
+     */
+    window.startSliders = function() {
+        initializeSlider('instructors-slider', 'instructor-slide');
+        initializeSlider('testimonials-slider', 'testimonial-slide');
+    };
 
     // ====================================================================
     //                 *** الكود الأساسي لتشغيل الصفحة ***
@@ -150,81 +315,143 @@
     const urlParams = new URLSearchParams(window.location.search);
     const courseId = urlParams.get('id'); 
 
-    function setupFaq(faqsData) { /* ... دالة setupFaq بالصيغة المُعدَّلة ... */ }
+    // ✅ دالة معالجة الـ FAQ المُعدَّلة لاستقبال مصفوفة مباشرة 
+    function setupFaq(faqsData) {
+        const faqContainer = document.getElementById('faq-container');
+        faqContainer.innerHTML = '';
+        
+        if (!faqsData || !Array.isArray(faqsData) || faqsData.length === 0) {
+            faqContainer.parentElement.style.display = 'none';
+            return;
+        }
 
+        faqsData.forEach(f => {
+            const div = document.createElement('div');
+            div.className = 'faq-item';
+            div.innerHTML = `
+                <div class="faq-question"><span>${f.question}</span><i class="fa fa-chevron-down"></i></div>
+                <div class="faq-answer-content" style="display: none;">${f.answer}</div>`;
+            faqContainer.appendChild(div);
+        });
+        
+        // منطق فتح/إغلاق الـ FAQ 
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                const ans = q.nextElementSibling;
+                const icon = q.querySelector('i');
+                
+                // إغلاق جميع الإجابات الأخرى
+                document.querySelectorAll('.faq-question').forEach(otherQ => {
+                   if (otherQ !== q && otherQ.classList.contains('active')) {
+                        otherQ.classList.remove('active');
+                        otherQ.nextElementSibling.style.display = 'none';
+                        otherQ.querySelector('i').style.transform = 'rotate(0deg)';
+                   }
+                });
 
-    // ✅ دالة loadCourseData: تم تبسيطها لحصر الخطأ
+                // فتح أو إغلاق الإجابة الحالية
+                q.classList.toggle('active');
+                if (q.classList.contains('active')) {
+                    ans.style.display = 'block';
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    ans.style.display = 'none';
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+    }
+
+    // ✅ دالة loadCourseData: مع حماية إضافية للعرض
     async function loadCourseData() {
         statusIndicator.innerHTML = '🟡';
         
         if (!courseId) {
             statusIndicator.innerHTML = '🔴';
             document.getElementById('hero-title').innerText = "⚠️ يرجى تحديد الدورة";
+            document.getElementById('hero-description').innerText = "تم الوصول إلى الصفحة بدون معرف الدورة.";
+            document.querySelector('.marquee').style.display = 'none';
             return;
         }
 
         try {
 const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbz8a_AvFDj2M6JgcmqmpU2ZKY4-J-E4kCDm9qSwo5HsG9D9EcxMh-fGQkKtfuRKnNRI/exec';
+            // 1. جلب البيانات
             const apiUrl = `${API_BASE_URL}?action=courses`; 
             const response = await fetch(apiUrl);
             const allCourses = await response.json();
             
+            // 2. البحث عن الدورة
             const course = allCourses.find(c => c.id == courseId); 
             window.course = course;
 
             if (!window.course || !window.course.title) {
                 statusIndicator.innerHTML = '🔴';
                 document.getElementById('hero-title').innerText = "⚠️ لم يتم العثور على الدورة المطلوبة";
+                document.getElementById('hero-description').innerText = "يرجى التأكد من الرابط أو العودة إلى صفحة الدورات واختيار دورة صحيحة.";
+                document.querySelector('.marquee').style.display = 'none';
                 return;
             }
 
-            // -----------------  تحديث الجزء الآمن فقط -----------------
+            // 3. تحديث الجزء الآمن (العنوان، النبذة، الشريط المتحرك)
             document.getElementById('hero-title').innerText = window.course.title || "دورة تدريبية متخصصة";
             document.getElementById('hero-description').innerText = window.course.heroDescription || "";
             document.getElementById('marquee-text').innerText = window.course.marqueeText || "سجل الآن وابدأ رحلتك!";
             document.getElementById('course-about').innerText = window.course.courseAbout || "لا توجد نبذة متوفرة حالياً.";
 
-            // -----------------  ✅ تم التوقف هنا!  -----------------
-            
-            // 💡 إذا ظهرت هذه الرسالة الآن ولم تظهر رسالة الخطأ الكبيرة، فهذا يؤكد أن الخطأ كان في الأجزاء التي تم تعليقها.
-            statusIndicator.innerHTML = '🟢'; 
+            // 4. تحديث رابط الفيديو
+            const videoEmbed = document.getElementById('video-embed');
+            if (window.course.videoUrl && window.course.videoUrl.includes('youtube.com')) {
+                const embedUrl = window.course.videoUrl.replace('watch?v=', 'embed/').split('&')[0];
+                videoEmbed.innerHTML = `<iframe width="100%" height="250" src="${embedUrl}" frameborder="0" allowfullscreen style="border-radius:8px;"></iframe>`;
+            } else {
+                 videoEmbed.style.display = 'none';
+            }
 
-            // -----------------  بدء إضافة الأقسام تدريجياً  -----------------
+            // --------------------------------------------------------
+            // 5. 🛑 كتلة الحماية: لعزل أي خطأ في العرض عن عملية الجلب
+            try {
+                // استدعاء الدوال المساعدة (parseList تستقبل المصفوفات الآن)
+                window.parseList('objectives-list', window.course.objectives, 'fa fa-check-circle');
+                window.parseList('axes-list', window.course.axes, 'fa fa-arrow-alt-circle-left');
+                window.parseList('achievements-list', window.course.achievementsText, 'fa fa-star');
+                
+                // استدعاء السلايدرات (الآن يستخدم instructorTemplate المُعدَّل)
+                window.setupSlider('instructors-slider-container', 'instructor-dots', 'instructors');
+                window.setupSlider('testimonials-slider-container', 'testimonial-dots', 'testimonials');
+                setupFaq(window.course.faqs);
 
-            /*
-            // 1. أزل التعليق عن هذا الجزء إذا نجحت الخطوة الأولى
-            window.parseList('objectives-list', window.course.objectives, 'fa fa-check-circle');
-            window.parseList('axes-list', window.course.axes, 'fa fa-arrow-alt-circle-left');
-            window.parseList('achievements-list', window.course.achievementsText, 'fa fa-star');
-            */
+                // تحديث رابط التسجيل
+                document.getElementById('register-link').href = `form.html?course=${encodeURIComponent(window.course.title)}`;
 
-            /*
-            // 2. أزل التعليق عن هذا الجزء إذا نجحت الخطوة 1
-            window.setupSlider('instructors-slider-container', 'instructor-dots', 'instructors');
-            window.setupSlider('testimonials-slider-container', 'testimonial-dots', 'testimonials');
-            setupFaq(window.course.faqs);
-            window.startSliders(); 
-            */
-
+                // تشغيل السلايدرات
+                window.startSliders(); 
+                
+                AOS.refresh();
+                
+                statusIndicator.innerHTML = '🟢';
+                
+            } catch (renderingError) {
+                 // إذا فشل أي جزء من العرض، نعرض رسالة خطأ بسيطة في المؤشر
+                 console.error('Internal content rendering error:', renderingError);
+                 statusIndicator.innerHTML = '⚠️';
+            }
+            // --------------------------------------------------------
 
         } catch (err) {
+            // يتم تنفيذ هذا الجزء فقط إذا فشل الجلب (fetch) نفسه
             console.error('Fatal fetch error:', err);
             statusIndicator.innerHTML = '🔴';
             document.getElementById('hero-title').innerText = "⚠️ فشل الاتصال بخادم البيانات";
-            document.getElementById('hero-description').innerHTML = "حدث خطأ غير متوقع. يرجى التأكد من أن جميع الدوال المدمجة مُعرَّفة بشكل سليم.";
+            document.getElementById('hero-description').innerHTML = "الرجاء التأكد من أن رابط الـ API (Apps Script) يعمل بشكل صحيح أو إعادة المحاولة.";
         }
     }
 
     document.addEventListener('DOMContentLoaded', loadCourseData);
-
-
-
-
     
+</script>
 <script src="marketer_tracker.js"></script> 
 <script src="Dark_Mode.js"></script>
 <script src="/tracker.js"></script>
 </body>
 </html>
-
-
