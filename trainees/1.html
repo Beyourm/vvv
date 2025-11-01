@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام إدارة المتدربين الاحترافي</title>
+<link rel="stylesheet" href="assets/fonts/tajawal.css"> 
+<style>
+    :root {
+        --primary-color: #007bff; /* أزرق */
+        --secondary-color: #28a745; /* أخضر */
+        --dark-text: #343a40;
+        --light-bg: #f8f9fa;
+        --card-bg: #ffffff;
+    }
+    body { 
+        font-family: 'Tajawal', sans-serif; 
+        background-color: var(--light-bg); 
+        margin:0; 
+        padding:20px; 
+        color: var(--dark-text);
+    }
+    h1 { 
+        text-align:center; 
+        color: var(--primary-color); 
+        margin-bottom: 20px;
+    }
+    /* الأزرار والإدخالات والقائمة المنسدلة */
+    input[type="text"], input[type="number"], input[type="email"], input[type="date"], button, select {
+        padding: 10px 15px;
+        margin: 5px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-family: inherit;
+    }
+    button { 
+        background-color: var(--secondary-color); 
+        color: white; 
+        border: none;
+        cursor: pointer; 
+        transition: background-color 0.3s;
+        font-weight: bold;
+    }
+    button:hover:not(:disabled) {
+        background-color: #1e7e34;
+    }
+    button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    /* نماذج الإضافة */
+    .add-form, .edit-content { 
+        margin-bottom: 25px; 
+        background: var(--card-bg); 
+        padding: 25px; 
+        border-radius: 8px; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+    }
+    #addTraineeForm {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    #addTraineeForm input, #addTraineeForm select {
+        flex: 1 1 200px; 
+    }
+    #addTraineeForm button {
+        flex: 1 1 100%;
+        margin-top: 10px;
+        padding: 12px;
+    }
+
+    /* شريط الأدوات العلوي والبحث */
+    .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 15px;
+    }
+    #searchInput {
+        flex-grow: 1;
+        max-width: 400px;
+    }
+    .refresh-btn {
+        background-color: var(--primary-color);
+        padding: 10px 15px;
+    }
+    .refresh-btn:hover {
+        background-color: #0056b3;
+    }
+
+    /* الجدول */
+    table { 
+        width: 100%; 
+        border-collapse: separate; 
+        border-spacing: 0;
+        margin-top: 20px; 
+        background: var(--card-bg); 
+        border-radius: 8px;
+        overflow: hidden; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    th, td { 
+        border: 1px solid #e9ecef; 
+        padding: 12px; 
+        text-align: center;
+    }
+    th { 
+        background: var(--primary-color); 
+        color: white; 
+        font-weight: 700;
+        border-color: var(--primary-color);
+    }
+    tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    tbody tr:hover {
+        background-color: #e9ecef;
+        transition: background-color 0.3s;
+    }
+    td button { 
+        padding: 7px 12px; 
+        margin: 3px; 
+        font-size: 0.9em;
+    }
+    .edit-btn { background-color: #ffc107; color: var(--dark-text); }
+    .edit-btn:hover:not(:disabled) { background-color: #e0a800; }
+    .delete-btn { background-color: #dc3545; }
+    .delete-btn:hover:not(:disabled) { background-color: #c82333; }
+
+    /* النافذة المنبثقة (Modal) - تعديلات بسيطة */
+    .edit-modal { 
+        display:none; 
+        position:fixed; 
+        z-index: 1000;
+        top:0; 
+        left:0; 
+        width:100%; 
+        height:100%; 
+        background: rgba(0,0,0,0.6); 
+        display: flex; 
+        justify-content:center; 
+        align-items:center; 
+    }
+    #editTraineeForm input, #editTraineeForm select {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    #saveEditBtn {
+        width: 100%;
+        margin-top: 15px;
+        padding: 12px;
+    }
+
+    /* رسالة التحميل ومؤشر الدوران */
+    #loadingMessage {
+        text-align: center;
+        margin-top: 50px;
+        font-size: 1.2em;
+        color: var(--primary-color);
+    }
+    .spinner {
+        border: 4px solid rgba(0, 123, 255, 0.1);
+        border-top: 4px solid var(--primary-color);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 10px;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+</head>
+<body>
+
+<h1>👨‍🎓 نظام إدارة المتدربين والبيانات 📝</h1>
+
+<div class="add-form">
+    <h2>➕ إضافة متدرب جديد</h2>
+    <form id="addTraineeForm">
+        <input type="text" name="اسم الدورة" placeholder="اسم الدورة" required>
+        <input type="text" name="الاسم" placeholder="اسم المتدرب" required>
+        <select name="الجنس" id="newGender" required> 
+            <option value="" disabled selected>الجنس *</option>
+            <option value="ذكر">ذكر</option>
+            <option value="أنثى">أنثى</option>
+        </select>
+        <input type="number" name="العمر" placeholder="العمر" required>
+        
+        <select name="البلد" id="addCountrySelect" required>
+            <option value="" disabled selected>اختر البلد</option>
+        </select>
+        
+        <input type="text" name="رقم الواتساب" placeholder="رقم الواتساب" required>
+        <input type="email" name="البريد الإلكتروني" placeholder="البريد الإلكتروني" required>
+        <input type="text" name="تيليجرام" placeholder="تيليجرام">
+        <input type="date" name="تاريخ التسجيل" placeholder="تاريخ التسجيل (Gregorian)" required>
+        
+        <button type="submit" id="addTraineeBtn">إضافة المتدرب</button>
+    </form>
+</div>
+
+---
+
+<div class="toolbar">
+    <input type="text" id="searchInput" placeholder="🔍 ابحث بالاسم، الدورة، البلد..." onkeyup="filterTable()">
+    <button class="refresh-btn" onclick="fetchTrainees()">🔄 تحديث البيانات</button>
+</div>
+
+<div id="loadingMessage">
+    <div class="spinner"></div>
+    <p>جاري تحميل البيانات...</p>
+</div>
+<table id="traineesTable" style="display: none;">
+    <thead>
+        <tr id="tableHeader"></tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<div class="edit-modal" id="editModal">
+    <div class="edit-content">
+        <span class="close" id="closeEdit">&times;</span>
+        <h2>✍️ تعديل بيانات المتدرب</h2>
+        <form id="editTraineeForm">
+            </form>
+        <button id="saveEditBtn">حفظ التعديل</button>
+    </div>
+</div>
+
+---
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbySD9frGLPd6OahZ5kQcx2lwGN1Pql9iYgUYp2Arnzs6Tq-6yNHmRrSB0NVzxBpWvqa/exec"; // ضع هنا رابط Apps Script النهائي
+
+// قائمة الدول العربية
+const arabCountries = [
+    "فلسطين", "الأردن", "سوريا", "العراق", "لبنان", "مصر", "السودان", "ليبيا", 
+    "تونس", "الجزائر", "المغرب", "موريتانيا", "الصومال", "جيبوتي", "جزر القمر",
+    "السعودية", "اليمن", "الإمارات", "الكويت", "البحرين", "قطر", "سلطنة عمان"
+];
+
+let trainees = [];
+let headers = [];
+
+const loadingMessage = document.getElementById("loadingMessage");
+const traineesTable = document.getElementById("traineesTable");
+const addTraineeBtn = document.getElementById("addTraineeBtn");
+
+// دالة لملء قائمة البلدان المنسدلة
+function populateCountrySelect(selectElement, selectedValue = '') {
+    while (selectElement.children.length > 1) {
+        selectElement.removeChild(selectElement.lastChild);
+    }
+    
+    arabCountries.forEach(country => {
+        const option = document.createElement("option");
+        option.value = country;
+        option.textContent = country;
+        if (country === selectedValue) {
+            option.selected = true;
+        }
+        selectElement.appendChild(option);
+    });
+}
+
+// دالة لإنشاء قائمة منسدلة للجنس
+function createGenderSelect(currentValue = '') {
+    const select = document.createElement("select");
+    select.name = "الجنس";
+    select.required = true;
+    
+    const options = [
+        { value: "ذكر", text: "ذكر" },
+        { value: "أنثى", text: "أنثى" }
+    ];
+
+    options.forEach(opt => {
+        const option = document.createElement("option");
+        option.value = opt.value;
+        option.textContent = opt.text;
+        if (opt.value === currentValue) {
+            option.selected = true;
+        }
+        select.appendChild(option);
+    });
+    return select;
+}
+
+
+// جلب المتدربين من الجدول (باستخدام GET)
+async function fetchTrainees() {
+    loadingMessage.style.display = 'block';
+    traineesTable.style.display = 'none';
+    
+    // إخفاء نتائج البحث عند التحديث
+    document.getElementById("searchInput").value = ""; 
+
+    try {
+        const res = await fetch(SCRIPT_URL);
+        const data = await res.json();
+        if(data.success && data.data.trainees.length > 0){
+            trainees = data.data.trainees;
+            headers = Object.keys(trainees[0] || {}).filter(h => h !== "__row"); 
+            renderTable();
+            traineesTable.style.display = 'table';
+        } else {
+             document.querySelector("#traineesTable tbody").innerHTML = '<tr><td colspan="' + (headers.length + 1) + '">لا توجد بيانات لعرضها</td></tr>';
+             traineesTable.style.display = 'table';
+             trainees = []; // التأكد من تفريغ المصفوفة
+        }
+    } catch(err) {
+        alert("حدث خطأ أثناء جلب البيانات: " + err.message);
+    } finally {
+        loadingMessage.style.display = 'none';
+    }
+}
+
+// عرض الجدول
+function renderTable() {
+    const thead = document.getElementById("tableHeader");
+    const tbody = document.querySelector("#traineesTable tbody");
+    thead.innerHTML = "";
+    tbody.innerHTML = "";
+
+    // إنشاء رؤوس الجدول
+    headers.forEach(h => {
+        const th = document.createElement("th");
+        th.textContent = h;
+        thead.appendChild(th);
+    });
+    const thAction = document.createElement("th");
+    thAction.textContent = "خيارات";
+    thead.appendChild(thAction);
+
+    // ملء صفوف الجدول بالبيانات
+    trainees.forEach(t => {
+        const tr = document.createElement("tr");
+        headers.forEach(h => {
+            const td = document.createElement("td");
+            td.textContent = t[h] || "";
+            tr.appendChild(td);
+        });
+
+        // أزرار الخيارات (تعديل وحذف)
+        const tdAction = document.createElement("td");
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "تعديل";
+        editBtn.className = "edit-btn";
+        editBtn.onclick = () => openEditModal(t);
+        
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "حذف";
+        delBtn.className = "delete-btn";
+        delBtn.onclick = () => deleteTrainee(t.__row);
+        
+        tdAction.appendChild(editBtn);
+        tdAction.appendChild(delBtn);
+        tr.appendChild(tdAction);
+
+        tbody.appendChild(tr);
+    });
+}
+
+// *دالة البحث والفلترة*
+function filterTable() {
+    const filter = document.getElementById('searchInput').value.toUpperCase();
+    const tr = document.querySelector("#traineesTable tbody").getElementsByTagName('tr');
+    
+    for (let i = 0; i < tr.length; i++) {
+        let rowMatch = false;
+        // نمر على كل الخلايا في الصف
+        for (let j = 0; j < tr[i].cells.length - 1; j++) { // نستثني عمود الخيارات الأخير
+            const td = tr[i].cells[j];
+            if (td) {
+                const txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    rowMatch = true;
+                    break;
+                }
+            }
+        }
+        tr[i].style.display = rowMatch ? "" : "none";
+    }
+}
+
+
+// إضافة متدرب
+document.getElementById("addTraineeForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+    addTraineeBtn.disabled = true; // تعطيل الزر
+    const formData = Object.fromEntries(new FormData(this).entries());
+    
+    await postData({action:"add", data: formData});
+    
+    addTraineeBtn.disabled = false; // تفعيل الزر
+    this.reset();
+    document.getElementById("newGender").value = "";
+    populateCountrySelect(document.getElementById("addCountrySelect"));
+    fetchTrainees();
+});
+
+// فتح نافذة التعديل
+function openEditModal(trainee){
+    const form = document.getElementById("editTraineeForm");
+    const saveBtn = document.getElementById("saveEditBtn");
+    form.innerHTML = "";
+    
+    headers.forEach(h => {
+        if (h === "البلد") {
+            const select = document.createElement("select");
+            select.name = h;
+            select.required = true;
+            populateCountrySelect(select, trainee[h]); 
+            form.appendChild(select);
+        } else if (h === "الجنس") {
+            const select = createGenderSelect(trainee[h]);
+            form.appendChild(select);
+        } else {
+            const input = document.createElement("input");
+            input.name = h;
+            input.value = trainee[h] || "";
+            input.placeholder = h;
+            
+            // تحديد نوع الإدخال بشكل ديناميكي
+            if(h.includes("تاريخ")) { 
+                input.type = "date"; 
+            }
+            else if(h.includes("العمر")) { input.type = "number"; }
+            else if(h.includes("البريد")) { input.type = "email"; }
+            else { input.type = "text"; }
+
+            form.appendChild(input);
+        }
+    });
+    
+    saveBtn.onclick = async function(){
+        // *تأكيد الحفظ + حماية النقر المزدوج*
+        if(!confirm("هل أنت متأكد من حفظ التعديلات على بيانات هذا المتدرب؟")) return;
+        
+        saveBtn.disabled = true; 
+        const data = Object.fromEntries(new FormData(form).entries());
+        
+        await postData({action:"update", rowIndex: trainee.__row, data});
+        
+        saveBtn.disabled = false; 
+        closeEditModal();
+        fetchTrainees();
+    };
+    document.getElementById("editModal").style.display = "flex";
+}
+
+document.getElementById("closeEdit").onclick = closeEditModal;
+function closeEditModal(){ document.getElementById("editModal").style.display="none"; }
+
+// حذف متدرب
+async function deleteTrainee(rowIndex){
+    if(confirm("هل أنت متأكد من حذف بيانات هذا المتدرب بشكل نهائي؟")){
+        await postData({action:"delete", rowIndex});
+        fetchTrainees();
+    }
+}
+
+// دالة POST مركزية
+async function postData(payload){
+    try{
+        const res = await fetch(SCRIPT_URL, {
+            method:"POST",
+            body: JSON.stringify(payload),
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await res.json();
+        alert(data.message);
+        return data;
+    }catch(err){
+        alert("حدث خطأ في الاتصال بالخادم: " + err.message);
+        return { success: false, message: "فشل الاتصال." };
+    }
+}
+
+// *تحميل البيانات وتعبئة قائمة البلدان عند فتح الصفحة*
+populateCountrySelect(document.getElementById("addCountrySelect"));
+fetchTrainees();
+</script>
+
+</body>
+</html>

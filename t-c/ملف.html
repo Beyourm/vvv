@@ -1,0 +1,154 @@
+<!doctype html>
+
+<html lang="ar" dir="rtl">  
+<head>  
+    <meta charset="utf-8" />  
+    <meta name="viewport" content="width=device-width,initial-scale=1" />  
+    <title>لوحة تحكم المسوِّق</title>   
+    <meta property="og:title" content="لوحة تحكم المسوِّق" />   
+    <meta property="og:description" content="راجع إحصائيات إحالتك عبر الرابط الخاص بك." />   
+    <meta property="og:image" content="https://skillia.netlify.app/images/photo.jpg" />  
+    <meta property="og:url" content="https://sklilia.netlify.app/Trainees_Records" />  
+    <meta property="og:type" content="website" />  
+    <meta property="og:locale" content="ar_AR" />  
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">  
+    <link rel="stylesheet" href="../assets/fonts/tajawal.css">  
+
+    <link rel="stylesheet" href="table-styles.css">   
+    <link rel="stylesheet" href="style.css">   
+    
+    <style>
+        /* 1. إخفاء زر القائمة بالكامل */
+        #menu-toggle, .menu-toggle {
+            display: none !important; 
+        }
+        
+        /* 2. تغيير لون أيقونة القائمة إلى الأبيض (كإجراء احتياطي إذا ظهرت) */
+        .menu-toggle i {
+            color: white !important;
+        }
+
+        /* 3. تنسيق الدايلوج الأساسي (يُفضل وضعه في style.css، لكن تركته هنا للتأكد من عمله) */
+        #courses-dialog {
+            border: none;
+            border-radius: 10px;
+            padding: 0;
+            max-width: 90%;
+            height: 90vh;
+            overflow: hidden;
+        }
+        #courses-dialog::backdrop {
+            background: rgba(0, 0, 0, 0.7);
+        }
+    </style>
+</head>  
+<body>  
+    <div class="dashboard-container">  
+        <header>  
+            <h1>لوحة تحكم المسوِّق</h1>  
+            <p id="marketer-id-display">الرجاء إدخال المعرّف في الرابط</p>  
+              <div class="menu-toggle" id="menu-toggle">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  
+    <nav>
+        <a href="../contact.html">تواصل معنا</a>
+        <a href="w-c.html"> سحب العمولات</a>
+        
+        <button id="show-courses-btn">عرض الدورات المتاحة</button>
+    </nav>
+      
+            
+    
+      
+            
+        </header>  
+        <div class="content">  
+            <div id="statusMessage" class="loading" style="text-align:center; color:#555;">  
+                <span class="spinner"></span> جارٍ جلب البيانات...  
+            </div>  
+
+            <div id="dashboardContent" style="display:none;">
+
+                <div class="stats-grid">  
+                    <div class="stats-card">  
+                    	
+                        <h2><i class="fas fa-users card-title-icon"></i> إجمالي عدد المسجّلين عبر الرابط الخاص بك</h2>  
+                        <span class="stats-count" id="referrals-count">0</span>  
+                    </div>  
+                    <div class="stats-card active-card">  
+                        <h2><i class="fas fa-check-circle card-title-icon"></i> المسجّلون النشطون (الحالة Y)</h2>  
+                        <span class="stats-count" id="active-referrals-count">0</span>  
+                    </div>  
+                </div>  
+                
+                <div class="card-wrapper" style="margin-bottom: 25px;">
+                    <iframe id="competition-card-iframe" src="Balance.html" 
+                            style="width: 100%; max-width: 420px; height: 580px; border: none; overflow: hidden; border-radius: 25px; margin: 0 auto; display: block;">
+                    </iframe>
+                </div>
+                
+                <div class="stats-card" style="margin-bottom: 20px;">  
+                    <h2 style="margin-top: 0;"><i class="fas fa-link card-title-icon"></i> رابط الإحالة الخاص بك</h2>  
+                    <div class="referral-link-box" id="referral-link-box" title="اضغط لنسخ الرابط">  
+                        <span id="referral-link-text">...</span>  
+                        <button class="copy-btn" id="copy-btn"><i class="fas fa-copy"></i> نسخ</button>  
+                    </div>  
+                    <p style="font-size: 12px; color: #555; margin-top: 10px;">انقر على الرابط أو الزر لنسخه ومشاركته.</p>  
+                </div>  
+
+                <h2 style="color: var(--primary-color); border-bottom: 2px solid var(--secondary-color); padding-bottom: 5px; margin-bottom: 20px;"><i class="fas fa-address-card card-title-icon"></i> البيانات الشخصية</h2>  
+                <div class="details-card" id="personal-details">  
+                </div>  
+
+                <div class="referrals-section">  
+                    <div class="referrals-header">  
+                        <div class="top-row">  
+                            <h2 style="margin: 0; color: var(--primary-color); font-size: 18px; font-weight: 700;">قائمة المسجّلين عبر الرابط</h2>  
+                            <button class="download-btn" id="download-btn" style="display:none;">  
+                                <i class="fas fa-download" style="margin-left: 5px; color: var(--primary-color);"></i>  
+                                تنزيل كملف CSV  
+                            </button>  
+                        </div>  
+                        <input type="text" id="searchInput" placeholder="🔍 ابحث بالاسم، الهاتف، البريد الإلكتروني..." oninput="filterReferrals()">  
+                    </div>  
+
+                    <div class="cards-container" id="referrals-table-container">  
+                    </div>  
+                </div>  
+          
+                <p style="text-align:center; font-size:12px; color:#888; margin-top: 30px;">البيانات محدثة تلقائيًا من نظام التسجيل الرسمي لمؤسسة كن أنت.</p>  
+
+            </div>  
+        </div>
+    </div>  
+    <div id="toastNotification" class="toast-notification">  
+        <i class="fas fa-check-circle"></i> تم نسخ الرابط إلى الحافظة!  
+    </div>  
+    
+    <dialog id="courses-dialog">
+        <iframe src="dialog.html" style="width: 100%; height: 100%; border: none;"></iframe>
+        <form method="dialog" style="text-align: center; padding: 15px;">
+            <button class="close-btn">إغلاق</button>
+        </form>
+    </dialog>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const showCoursesBtn = document.getElementById('show-courses-btn');
+            const coursesDialog = document.getElementById('courses-dialog');
+
+            if (showCoursesBtn && coursesDialog) {
+                showCoursesBtn.addEventListener('click', function() {
+                    coursesDialog.showModal();
+                });
+            }
+        });
+    </script>
+    
+    <script src="marketer_tracker.js"></script>   
+    <script src="home-logic.js"></script>   
+</body>  
+</html>

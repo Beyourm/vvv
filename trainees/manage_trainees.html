@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إدارة وتعديل المتدربين</title>
+<style>
+    body { font-family: Tahoma, sans-serif; background: #f4f4f4; margin:0; padding:20px; }
+    h1 { text-align:center; color:#333; }
+    table { width: 100%; border-collapse: collapse; margin-top:20px; background:#fff; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    th { background: #333; color: #fff; }
+    button { padding:5px 10px; margin:2px; cursor:pointer; border: none; border-radius: 3px; }
+    .add-form, .edit-form { margin-top:20px; background:#fff; padding:20px; border-radius:5px; }
+    .edit-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
+                  background: rgba(0,0,0,0.5); justify-content:center; align-items:center; }
+    .edit-content { background:#fff; padding:20px; border-radius:5px; width:400px; }
+    .close { float:right; cursor:pointer; font-weight:bold; }
+    .add-form input, .edit-content input { width: 100%; padding: 8px; margin-bottom: 10px; box-sizing: border-box; }
+</style>
+</head>
+<body>
+
+<h1>إدارة وتعديل المتدربين</h1>
+
+<div class="add-form">
+    <h2>إضافة متدرب جديد</h2>
+    <form id="addTraineeForm">
+        <input type="text" name="اسم الدورة" placeholder="اسم الدورة" required>
+        <input type="text" name="الاسم" placeholder="اسم المتدرب" required>
+        <input type="text" name="الجنس" placeholder="الجنس" required>
+        <input type="number" name="العمر" placeholder="العمر" required>
+        <input type="text" name="البلد" placeholder="البلد" required>
+        <input type="text" name="رقم الواتساب" placeholder="رقم الواتساب" required>
+        <input type="email" name="البريد الإلكتروني" placeholder="البريد الإلكتروني" required>
+        <input type="text" name="تيليجرام" placeholder="تيليجرام">
+        <input type="date" name="تاريخ التسجيل" placeholder="تاريخ التسجيل">
+        <button type="submit" style="background: #28a745; color: white;">إضافة متدرب</button>
+    </form>
+</div>
+
+<table id="traineesTable">
+    <thead>
+        <tr id="tableHeader"></tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<div class="edit-modal" id="editModal">
+    <div class="edit-content">
+        <span class="close" id="closeEdit">&times;</span>
+        <h2>تعديل بيانات المتدرب</h2>
+        <form id="editTraineeForm">
+        </form>
+        <button id="saveEditBtn" style="background: #007bff; color: white; margin-top: 15px;">حفظ التعديل</button>
+    </div>
+</div>
+
+<script>
+// ==============================================================================
+//           **** روابط الـ API المنفصلة ****
+// ==============================================================================
+// رابط الجلب والقراءة (GET API)
+const API_URL_READ = 'https://script.google.com/macros/s/AKfycbzwL6NXW8w1Wkl5lBoWnjcI1_rkKagGrNYxXYY3RW0VHovQG7qL-sO0GHbR5_myJYlI/exec'; 
+
+// رابط الإرسال والكتابة (POST API)
+const API_URL_WRITE = 'https://script.google.com/macros/s/AKfycbySD9frGLPd6OahZ5kQcx2lwGN1Pql9iYgUYp2Arnzs6Tq-6yNHmRrSB0NVzxBpWvqa/exec';
+// ==============================================================================
+
+let trainees = [];
+let headers = [];
+
+// جلب المتدربين من الجدول (باستخدام GET) - يستخدم API_URL_READ
+async function fetchTrainees() {
+    try {
+        const res = await fetch(API_URL_READ); // *** استخدام رابط القراءة ***
+        const data = await res.json();
+        if(data.success && data.data.trainees){
+            trainees = data.data.trainees;
+            headers = Object.keys(trainees[0] || {}).filter(h => h !== "__row");
+            renderTable();
+        } else {
+             // عرض رسالة إذا لم تتوفر بيانات للعرض
+             alert("لا توجد بيانات متدربين. يمكنك إضافة متدرب جديد.");
+             headers = ['اسم الدورة', 'الاسم', 'الجنس', 'العمر', 'البلد', 'رقم الواتساب', 'البريد الإلكتروني', 'تيليجرام', 'تاريخ التسجيل'];
+             renderTable();
+        }
+    } catch(err) {
+        alert("حدث خطأ أثناء جلب البيانات: " + err.message);
+    }
+}
+
+// عرض الجدول (لم يتغير)
+function renderTable() {
+    const thead = document.getElementById("tableHeader");
+    const tbody = document.querySelector("#traineesTable tbody");
+    thead.innerHTML = "";
+    tbody.innerHTML = "";
+
+    headers.forEach(h => {
+        const th = document.createElement("th");
+        th.textContent = h;
+        thead.appendChild(th);
+    });
+    const thAction = document.createElement("th");
+    thAction.textContent = "خيارات";
+    thead.appendChild(thAction);
+
+    trainees.forEach(t => {
+        const tr = document.createElement("tr");
+        headers.forEach(h => {
+            const td = document.createElement("td");
+            td.textContent = t[h] || "";
+            tr.appendChild(td);
+        });
+
+        const tdAction = document.createElement("td");
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "تعديل";
+        editBtn.onclick = () => openEditModal(t);
+        editBtn.style.cssText = "background: #007bff; color: white;";
+        
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "حذف";
+        delBtn.onclick = () => deleteTrainee(t.__row);
+        delBtn.style.cssText = "background: #dc3545; color: white;";
+        
+        tdAction.appendChild(editBtn);
+        tdAction.appendChild(delBtn);
+        tr.appendChild(tdAction);
+
+        tbody.appendChild(tr);
+    });
+}
+
+// دالة POST (للإضافة، التعديل، الحذف) - تستخدم API_URL_WRITE
+async function postData(payload){
+    try{
+        const res = await fetch(API_URL_WRITE, { // *** استخدام رابط الكتابة ***
+            method:"POST",
+            body: JSON.stringify(payload),
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await res.json();
+        alert(data.message);
+        return data.success;
+    }catch(err){
+        alert("حدث خطأ في الإرسال: " + err.message);
+        return false;
+    }
+}
+
+// إضافة متدرب (تعتمد على postData)
+document.getElementById("addTraineeForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+    const formData = Object.fromEntries(new FormData(this).entries());
+    const success = await postData({action:"add", data: formData});
+    if(success) this.reset();
+    fetchTrainees(); 
+});
+
+// فتح نافذة التعديل (لم يتغير)
+function openEditModal(trainee){
+    const form = document.getElementById("editTraineeForm");
+    form.innerHTML = "";
+    headers.forEach(h => {
+        const input = document.createElement("input");
+        input.name = h;
+        input.value = trainee[h] || "";
+        input.placeholder = h;
+        form.appendChild(input);
+    });
+    document.getElementById("saveEditBtn").onclick = async function(){
+        const data = Object.fromEntries(new FormData(form).entries());
+        await postData({action:"update", rowIndex: trainee.__row, data});
+        closeEditModal();
+        fetchTrainees(); 
+    };
+    document.getElementById("editModal").style.display = "flex";
+}
+
+document.getElementById("closeEdit").onclick = closeEditModal;
+function closeEditModal(){ document.getElementById("editModal").style.display="none"; }
+
+// حذف متدرب (تعتمد على postData)
+async function deleteTrainee(rowIndex){
+    if(confirm("هل تريد حذف هذا المتدرب؟")){
+        await postData({action:"delete", rowIndex});
+        fetchTrainees(); 
+    }
+}
+
+// تحميل البيانات عند فتح الصفحة
+fetchTrainees();
+</script>
+
+</body>
+</html>

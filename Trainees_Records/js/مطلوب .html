@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سلايدر الصور النهائي</title>
+<style>
+  body {
+    font-family: "Cairo", sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .slider {
+    position: relative;
+    width: 90%;
+    max-width: 900px;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    background-color: #fff;
+  }
+
+  .slides-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+  }
+
+  .slide.active {
+    opacity: 1;
+    z-index: 1;
+  }
+
+  .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0,0,0,0.5);
+    color: #fff;
+    font-size: 24px;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    z-index: 10;
+  }
+
+  .prev { left: 10px; }
+  .next { right: 10px; }
+
+  .dots {
+    text-align: center;
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    z-index: 10;
+  }
+
+  .dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .dot.active {
+    background-color: #0c4366;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="slider">
+  <div class="slides-container">
+    <div class="slide active">
+      <img src="https://via.placeholder.com/900x500?text=الصورة+1" alt="صورة 1">
+    </div>
+    <div class="slide">
+      <img src="https://via.placeholder.com/900x500?text=الصورة+2" alt="صورة 2">
+    </div>
+    <div class="slide">
+      <img src="https://via.placeholder.com/900x500?text=الصورة+3" alt="صورة 3">
+    </div>
+    <div class="slide">
+      <img src="https://via.placeholder.com/900x500?text=الصورة+4" alt="صورة 4">
+    </div>
+  </div>
+
+  <button class="prev">&#10094;</button>
+  <button class="next">&#10095;</button>
+
+  <div class="dots">
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+</div>
+
+<script>
+let currentIndex = 0;
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+
+function showSlide(index) {
+  if (index >= slides.length) currentIndex = 0;
+  if (index < 0) currentIndex = slides.length - 1;
+
+  slides.forEach((slide, i) => {
+    slide.classList.toggle('active', i === currentIndex);
+  });
+
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === currentIndex);
+  });
+}
+
+// الانتقال التلقائي كل 5 ثواني
+let slideInterval = setInterval(() => {
+  currentIndex++;
+  showSlide(currentIndex);
+}, 5000);
+
+// أزرار التنقل
+document.querySelector('.prev').addEventListener('click', () => {
+  currentIndex--;
+  showSlide(currentIndex);
+  resetInterval();
+});
+
+document.querySelector('.next').addEventListener('click', () => {
+  currentIndex++;
+  showSlide(currentIndex);
+  resetInterval();
+});
+
+// النقاط
+dots.forEach((dot, i) => {
+  dot.addEventListener('click', () => {
+    currentIndex = i;
+    showSlide(currentIndex);
+    resetInterval();
+  });
+});
+
+// إعادة ضبط المؤقت عند التنقل يدوياً
+function resetInterval() {
+  clearInterval(slideInterval);
+  slideInterval = setInterval(() => {
+    currentIndex++;
+    showSlide(currentIndex);
+  }, 5000);
+}
+
+// العرض الأول
+showSlide(currentIndex);
+</script>
+
+</body>
+</html>

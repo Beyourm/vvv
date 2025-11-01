@@ -1,0 +1,286 @@
+/* ---------------------------------------------------------------------- */
+/* **ملف CSS مُنظَّم ومُركَّز على التجاوبية** */
+/* ---------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------- */
+/* 1. المتغيرات والأساس (Variables & Base Setup) */
+/* ---------------------------------------------------------------------- */
+:root {
+  --primary-color: #0d3b14;
+  --secondary-color: #e5a72d;
+  --accent-color: #f7f3e9;
+  --text-color-dark: #2d3748;
+  --muted-color: #4a5568;
+  --white-color: #ffffff;
+  --border-radius-lg: 20px;
+}
+
+/* توحيد Box-Sizing للجميع لتجنب تجاوز العرض */
+*, *::before, *::after {
+    box-sizing: border-box;
+    font-family: "Tajawal", sans-serif; /* تطبيق الخط الأساسي */
+}
+
+body {
+  background: linear-gradient(135deg, #f0f4f9 0%, #e8eef5 100%); 
+  margin: 0; 
+  padding: 20px; /* تقليل البادنج قليلاً */
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  min-height: 100vh; 
+  color: var(--text-color-dark);
+}
+
+/* ضبط الحاوية الرئيسية */
+.container {
+  max-width: 900px; /* الحد الأقصى للشاشات الكبيرة */
+  width: 95%; /* يملأ معظم الشاشة على الشاشات الصغيرة */
+  margin: auto;
+}
+
+.card {
+  background: var(--white-color);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+header {
+  background: var(--primary-color);
+  color: #fff;
+  padding: 30px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.content {
+  padding: 30px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* 2. الصفوف والأعمدة (Layout) */
+/* ---------------------------------------------------------------------- */
+
+.row {
+  display: flex;
+  flex-wrap: wrap; /* لضمان نزول الأعمدة عند صغر الشاشة */
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.col {
+  /* توزيع مرن: الانكماش (1) ، التوسع (1) ، الأساس (250px) */
+  flex: 1 1 250px; 
+  min-width: 100px; 
+  position: relative;
+}
+
+/* ---------------------------------------------------------------------- */
+/* 3. الحقول والأيقونات (Inputs & Decorators) */
+/* ---------------------------------------------------------------------- */
+label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted-color);
+  margin-bottom: 6px;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px 15px; /* البادنج الأساسي الموحد */
+  border-radius: 12px;
+  border: 1px solid #e6eef8;
+  background: #fff;
+  font-size: 15px;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+input:focus, select:focus {
+  border-color: var(--primary-color);
+  background-color: var(--accent-color);
+  outline: none;
+  box-shadow: none;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+/* ضبط المساحة للأيقونات (40px من اليمين للحقول العادية) */
+input[type="email"], 
+input[type="text"], 
+input[type="tel"], 
+select {
+    padding-right: 40px; 
+}
+
+/* ضبط المساحة لكلمة المرور (40px يمين و 40px يسار) */
+input[type="password"] {
+    padding-right: 40px; 
+    padding-left: 40px; 
+}
+
+.decorator-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px; /* موقع ثابت لجميع الأيقونات اليمنى */
+  transform: translateY(-50%);
+  color: var(--muted-color);
+  font-size: 16px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.toggle-password {
+  position: absolute;
+  left: 12px; /* موقع أيقونة العين على اليسار */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--muted-color);
+  z-index: 10;
+  transition: color 0.2s;
+}
+
+/* ---------------------------------------------------------------------- */
+/* 4. الأزرار (Buttons) */
+/* ---------------------------------------------------------------------- */
+button {
+  cursor: pointer;
+  border: 0;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  padding: 12px 20px;
+  border-radius: 12px; /* موحدة */
+  width: auto;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.btn-accept {
+  background: linear-gradient(135deg, #1a5c24, #0d3b14);
+  color: var(--white-color);
+  box-shadow: 0 4px 12px rgba(13, 59, 20, 0.3);
+}
+
+.btn-decline {
+  background: var(--accent-color);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+/* ---------------------------------------------------------------------- */
+/* 5. التجاوبية (Media Queries) - التنفيذ الصارم للتوحيد */
+/* ---------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  /* التجاوبية الأساسية: تحويل الصفوف إلى أعمدة */
+  
+  .content { padding: 20px; }
+
+  .row { 
+    flex-direction: column; /* تحويل الأعمدة إلى صفوف فردية */
+    gap: 20px;
+  }
+  
+  .col { 
+    flex: 1 1 100%; /* ضمان أن العمود يأخذ العرض كاملاً */
+    min-width: 100%;
+  }
+
+  input, select, button { 
+    font-size: 16px; 
+  }
+
+  #actionSelector {
+    flex-direction: column; /* تحويل أزرار التبديل إلى أعمدة */
+    gap: 10px;
+  }
+  
+  /* جعل الأزرار تأخذ عرض كامل في الشاشات الصغيرة */
+  .btn-accept, 
+  .btn-decline {
+      width: 100%;
+      max-width: none;
+      padding: 14px 25px; /* زيادة حجم البادنج للأزرار */
+  }
+
+  /* رابط الإحالة */
+  .copy-link-container input { font-size: 14px; }
+  .copy-link-container button { width: 100%; margin-top: 8px; }
+}
+
+@media (max-width: 480px) {
+  /* التجاوبية لشاشات الجوال الصغيرة جداً */
+  
+  header h1 { font-size: 20px; }
+  
+  /* تقليل البادنج حول الحقول قليلاً */
+  input, select {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  
+  /* الحقول العادية */
+  input[type="email"], 
+  input[type="text"], 
+  input[type="tel"], 
+  select {
+      padding-right: 35px; /* مسافة أقل للأيقونة */
+  }
+  
+  /* كلمات المرور */
+  input[type="password"] {
+      padding-right: 35px; 
+      padding-left: 35px; 
+  }
+
+  /* الأيقونات تكون أقرب للحافة */
+  .decorator-icon { right: 8px; }
+  .toggle-password { left: 8px; }
+
+}
+
+/* ---------------------------------------------------------------------- */
+/* **الأنماط الأخرى (Animation, Terms, Messages, etc.) - لم يتم تغييرها جذرياً** */
+/* ---------------------------------------------------------------------- */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideRight { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes slideLeft { from { transform: translateX(-50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes progress { 0% { width: 0; } 100% { width: 100%; } } 
+@keyframes fa-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+.fa-spin { display: inline-block; animation: fa-spin 1s infinite linear; margin-left: 5px; }
+
+/* Tabs */
+#actionSelector { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+.action-btn { background: none; color: var(--primary-color); border: 2px solid var(--primary-color); padding: 10px 20px; border-radius: 12px; font-weight: 700; opacity: 0.7; cursor:pointer; transition: all 0.3s ease; }
+.action-btn.active { background: var(--primary-color); color: var(--white-color); opacity: 1; }
+
+/* Terms */
+.terms{max-height:420px; overflow:auto; padding:20px; border-radius:15px; background:var(--accent-color); border:1px solid rgba(13, 59, 20, 0.1);}
+.terms h3{color:var(--primary-color); margin-top:0;}
+#termsSection.compact .terms { max-height: 50px; padding: 10px; border: 1px dashed #ccc; background: transparent; }
+#acceptCheckbox { display: none; }
+.approval-label::before { content: "☐"; display: inline-block; margin-left: 8px; color: var(--primary-color); font-size: 1.2em; line-height: 1; transition: transform 0.2s; }
+#acceptCheckbox:checked + .approval-label::before { content: "☑"; color: #1a5c24; transform: scale(1.2); }
+
+/* Buttons Disabled & Loading */
+.btn-accept:disabled, 
+.btn-decline:disabled { background-color: #ccc !important; cursor: not-allowed !important; box-shadow: none; transform: none; }
+.btn-accept:disabled.loading, #verifyOtpBtn:disabled.loading { opacity: 0.8; cursor: wait; background-color: var(--primary-color); }
+
+/* Messages */
+.success, .error { display: none; padding:18px; border-radius:10px; margin-top:15px; font-weight:bold; line-height:1.5; opacity:0; transition: all 0.5s ease; transform: translateY(-20px); align-items: center; gap: 10px;}
+.success { background:#d4edda; color:#155724; border: 1px solid #c3e6cb; }
+.error { background: #fce4e4; color: #b71c1c; border: 1px solid #f8c1c1; font-weight:500; }
+.success.show, .error.show { opacity:1; display:flex; transform: translateY(0); }

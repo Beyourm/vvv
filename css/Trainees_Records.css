@@ -1,0 +1,632 @@
+/*
+|--------------------------------------------------------------------------
+| Trainees_Records.css - تصميم النموذج الذكي (Clean Neumorphism Style)
+|--------------------------------------------------------------------------
+*/
+
+/* تعريف الألوان الجديدة (الأساسي أخضر/فيروزي والثانوي برتقالي) */
+        :root {
+            --primary-color: #01886E; /* أخضر داكن/زبرجدي (لون العلامة التجارية) */
+            --secondary-color: #e56235; /* برتقالي حيوي (Accent - لنقاط الإرسال والتميز) */
+            --background-color: #f7f9fc; /* خلفية الصفحة فاتحة */
+            --card-background: #ffffff; /* خلفية النموذج بيضاء ناصعة */
+            --text-color: #444;
+            --border-color: #e0e0e0;
+            --light-primary: #48C9B0; /* الأخضر الفاتح */
+            --error-color: #e74c3c;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--background-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* تنسيق الرأس (Header) */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        /* تنسيق المحتوى الرئيسي */
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+        }
+
+        /* ----- تصميم الأقسام والخطوات ----- */
+        .form-section {
+            background-color: var(--card-background);
+            padding: 30px;
+            border-radius: 15px;
+            /* 💡 تحسين: ظل ناعم لخلق عمق */
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05); 
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+            transition: all 0.5s ease;
+        }
+        
+        /* عناوين أيقونية متقدمة */
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        h2 .response-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            color: white;
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+
+        /* ----- شريط التقدم (Progress Bar) ----- */
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            background-color: var(--card-background);
+            padding: 10px 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        /* 🌟 تحسين UX: تفعيل النقر على الخطوات المكتملة */
+        .step.completed, .step.active {
+            cursor: pointer;
+        }
+
+        .step {
+            flex-grow: 1;
+            text-align: center;
+            position: relative;
+            color: #aaa;
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .step-icon {
+            display: block;
+            width: 26px;
+            height: 26px;
+            line-height: 26px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            color: white;
+            margin: 0 auto 6px;
+            z-index: 10;
+            position: relative;
+            border: 2px solid #ccc;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .step.active .step-icon {
+            background-color: var(--primary-color); 
+            border-color: var(--primary-color);
+        }
+        
+        .step.active {
+            color: var(--primary-color);
+        }
+
+        .step.completed .step-icon {
+            background-color: var(--secondary-color); 
+            border-color: var(--secondary-color);
+        }
+        
+        /* الخط الواصل بين الأيقونات */
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 17px;
+            right: 50%; 
+            width: 100%;
+            height: 2px;
+            background-color: #e0e0e0;
+            z-index: 1;
+            transform: translateX(50%);
+        }
+
+        .step.completed:not(:last-child)::after {
+            background-color: var(--secondary-color); 
+            transition: background-color 0.3s ease;
+        }
+        
+        /* ----- أزرار الحركة والتنقل (Ghost Buttons) ----- */
+        .btn-action {
+            width: 100%;
+            padding: 12px 20px;
+            background: transparent; 
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .btn-action.prev-btn {
+            font-weight: 500; 
+        }
+        
+        /* تأثيرات التحويم (Hover) */
+        .btn-action:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(1, 136, 110, 0.2);
+        }
+        
+        /* زر الإرسال النهائي (الأكثر بروزًا) */
+        .btn-submit {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 8px; 
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 15px;
+        }
+
+        .btn-submit:hover {
+            background-color: #cc542e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 98, 53, 0.3);
+        }
+        
+        /* ----- منطقة سحب وإفلات الملفات (Drag and Drop Area) ----- */
+        .drag-and-drop-area {
+            border: 2px dashed var(--secondary-color); 
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #fffaf7; 
+        }
+        
+        .drag-and-drop-area:hover,
+        .drag-and-drop-area.drag-over {
+            border-color: var(--primary-color); 
+            background-color: #f0f8f7; 
+        }
+
+        /* 💡 الإضافة: تنسيق الخطأ لمنطقة الإفلات */
+        .drag-and-drop-area.error {
+            border: 2px dashed var(--error-color) !important;
+            background-color: #fffafa; 
+        }
+        
+        .drag-and-drop-area i {
+            font-size: 40px;
+            color: var(--secondary-color); 
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* 🌟 تصميم حاوية معاينة الملفات */
+        #filePreviewContainer {
+            margin-top: 15px;
+            text-align: right;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 10px;
+        }
+        
+        #filePreviewContainer img, #filePreviewContainer .file-icon-placeholder {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            object-fit: cover;
+            margin-top: 10px;
+            display: block;
+        }
+        
+        #filePreviewContainer .file-icon-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            font-size: 30px;
+            color: var(--primary-color);
+            background-color: #e0f2f1;
+        }
+
+        /* ----- تنسيقات الحقول العامة ----- */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="tel"],
+        input[type="email"],
+        input[type="url"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            /* 🌟 تحسين UX: إضافة انتقال سلس للحدود */
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 16px;
+            font-weight: 400; /* 🌟 تقليل السماكة */
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        /* 🌟 تنسيق التركيز المُحسّن */
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--light-primary);
+            outline: none;
+            /* 🌟 إعطاء عمق عند التركيز */
+            box-shadow: 0 0 0 2px var(--light-primary), inset 0 1px 3px rgba(0, 0, 0, 0.05); 
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .file-input {
+            display: none; 
+        }
+        
+        .file-info {
+            font-size: 12px;
+            color: #777;
+            margin: 0;
+            padding: 2px 0;
+        }
+
+        /* رسائل الاستجابة والتحميل */
+        .loading-indicator {
+            display: none;
+            text-align: center;
+            padding: 15px;
+            background-color: #e0f7fa;
+            color: #00bcd4;
+            border-radius: 8px;
+            font-weight: 700;
+            margin-top: 20px;
+            border: 1px solid #b2ebf2;
+        }
+
+        .loading-indicator.active {
+            display: block;
+        }
+        
+        /* 🌟 رسائل Success/Error */
+        .success-message, .error-message {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            display: block;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            margin-top: 20px;
+            text-align: right;
+            line-height: 1.6;
+            pointer-events: none; 
+        }
+        
+        .success-message.show, .error-message.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        
+        .success-message {
+            background-color: #e8f5e9;
+            color: #388e3c;
+            border: 1px solid #c8e6c9;
+        }
+
+        .error-message {
+            background-color: #ffebee;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+        }
+        
+        .response-icon {
+            margin-left: 10px;
+            font-size: 1.2em;
+        }
+        
+        .expectation-message {
+            background-color: #f0f7f7;
+            padding: 15px;
+            border-radius: 8px;
+            color: var(--primary-color);
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid #d4eaea;
+            margin-top: 25px;
+            text-align: center;
+        }
+        
+        /* تنسيق الـ Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .footer-social a {
+            color: white;
+            font-size: 20px;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        .footer-social a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer-copyright {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #bbb;
+        }
+        
+        .welcome {
+            line-height: 1.8;
+            font-size: 15px;
+            color: #555;
+            margin-bottom: 25px;
+        }
+        
+        .logo {
+            display: block;
+            width: 150px; 
+            height: auto;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            margin-right: 15px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        header a:hover {
+            color: var(--secondary-color);
+        }
+        
+        /* انتقال الخطوات */
+        .form-step {
+            display: none;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .form-step.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        /* إخفاء رسالة التحقق التلقائية للمتصفح */
+        input:invalid, select:invalid, textarea:invalid {
+            box-shadow: none;
+        }
+
+
+/* --- تنسيقات حالات التحقق المباشر (Live Validation) --- */
+
+/* حالة الحقل الصالح (الخضراء) */
+input.valid, 
+select.valid, 
+textarea.valid {
+    /* لون أخضر للحدود ليدل على النجاح */
+    border: 2px solid #388e3c !important; 
+    box-shadow: 0 0 5px rgba(56, 142, 60, 0.2);
+}
+
+/* حالة الحقل غير الصالح (الحمراء) */
+input.error, 
+select.error, 
+textarea.error {
+    border: 2px solid var(--error-color) !important; 
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.4);
+}
+
+/* تنسيق الحدود الأساسية */
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+input[type="email"],
+input[type="url"],
+select, textarea {
+    border: 1px solid var(--border-color); 
+}
+
+
+/* تفعيل تأثير الانتقال عند ظهور/اختفاء الحقول الشرطية */
+.conditional-age-fields, 
+.conditional-course-fields {
+    transition: all 0.3s ease-in-out;
+    opacity: 1; /* القيمة الافتراضية عند الظهور */
+}
+
+/* عند الإخفاء (يتم التحكم بها عبر JS، لكن هذا يضمن تنسيق الإخفاء السريع) */
+.conditional-age-fields[style*="none"],
+.conditional-course-fields[style*="none"] {
+    opacity: 0;
+    max-height: 0; /* لضمان عدم حجز مساحة عند الإخفاء */
+    overflow: hidden;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+
+/* ------------------------------------------------------------------
+   تنسيقات نافذة النجاح المتحركة (Success Dialog/Modal)
+   ------------------------------------------------------------------ */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    /* 🚨 الإضافة الحاسمة: ضمان الظهور فوق جميع العناصر */
+    z-index: 99999; 
+}
+.overlay.show {
+    display: flex;
+}
+
+.dialog {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 24px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    transform: scale(.9);
+    opacity: 0;
+    transition: .5s ease;
+    max-width: 340px;
+    width: 90%;
+}
+.overlay.show .dialog {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* --------------------------------------------------
+   تنسيقات نافذة النجاح المتحركة - SVG Animation (كما أرسلتها)
+   -------------------------------------------------- */
+.check-wrap {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+}
+
+/* التنسيقات الأساسية للـ SVG */
+.check-wrap svg {
+    width: 100%;
+    height: 100%;
+    /* لضمان مظهر احترافي ومستدير للخطوط */
+    stroke-linecap: round; 
+    stroke-linejoin: round;
+}
+
+/* تنسيقات الدائرة */
+.circle {
+    fill: none;
+    stroke: url(#grad); /* يستخدم التدرج اللوني المحدد في الـ HTML */
+    stroke-width: 8;
+    /* إعدادات الرسم المتحرك: طول المسار الأصلي (314) وإزاحته لإخفائه */
+    stroke-dasharray: 314; 
+    stroke-dashoffset: 314; 
+}
+
+/* تنسيقات علامة الصح */
+.tick {
+    fill: none;
+    stroke: #fff; /* لون أبيض ليبرز على خلفية الدائرة الخضراء */
+    stroke-width: 8;
+    /* إعدادات الرسم المتحرك: طول المسار الأصلي (85) وإزاحته لإخفائه */
+    stroke-dasharray: 85; 
+    stroke-dashoffset: 85; 
+}
+
+
+/* --------------------------------------------------
+   تعريف الرسوم المتحركة التسلسلية
+   -------------------------------------------------- */
+
+/* 1. حركة رسم الدائرة */
+@keyframes draw-circle {
+    to {
+        stroke-dashoffset: 0; /* الوصول إلى نقطة الصفر لإظهار الدائرة كاملة */
+    }
+}
+/* الفصل الذي يتم إضافته بالجافاسكربت لتشغيل الرسم */
+.circle.draw {
+    animation: draw-circle 1.2s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+/* 2. حركة رسم علامة الصح */
+@keyframes draw-tick {
+    to {
+        stroke-dashoffset: 0; /* الوصول إلى نقطة الصفر لإظهار علامة الصح كاملة */
+    }
+}
+/* الفصل الذي يتم إضافته بالجافاسكربت لتشغيل الرسم */
+.tick.draw {
+    /* تستغرق 0.8 ثانية للرسم */
+    animation: draw-tick 0.8s ease-out forwards;
+    /* تبدأ بعد 1.2 ثانية (وهي مدة رسم الدائرة) لضمان التسلسل */
+    animation-delay: 1.2s; 
+}

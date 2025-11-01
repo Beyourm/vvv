@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نجاح العملية</title>
+<style>
+  /* خلفية عامة */
+  body {
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: radial-gradient(circle at top left, #e0f7f1, #c6f1e7, #a8e6cf);
+    font-family:"Cairo",sans-serif;
+  }
+
+  /* طبقة التعتيم */
+  .overlay {
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    backdrop-filter:blur(6px);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    z-index:10;
+  }
+  .overlay.show { display:flex; }
+
+  /* الصندوق */
+  .dialog {
+    background:linear-gradient(145deg,#ffffff,#f1fdf9);
+    border-radius:24px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 10px 40px rgba(0,0,0,0.2);
+    transform:scale(0.9);
+    opacity:0;
+    transition:transform .5s ease,opacity .5s ease;
+    max-width:340px;
+    width:90%;
+  }
+  .overlay.show .dialog {
+    transform:scale(1);
+    opacity:1;
+  }
+
+  /* الدائرة + الصح */
+  .check-wrap {
+    width:120px;
+    height:120px;
+    margin:0 auto 20px;
+  }
+  svg {
+    width:100%;
+    height:100%;
+    filter:drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+  }
+
+  .circle {
+    fill:none;
+    stroke:url(#grad);
+    stroke-width:8;
+    stroke-linecap:round;
+    stroke-dasharray: 283; /* محيط الدائرة (2 * π * r) مع r=45 */
+    stroke-dashoffset:283;
+    animation: draw-circle 1s ease forwards;
+  }
+
+  .tick {
+    fill:none;
+    stroke:#10b981;
+    stroke-width:8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:60;
+    stroke-dashoffset:60;
+    opacity:0;
+    animation: draw-tick 0.6s ease forwards 1s; /* تبدأ بعد انتهاء الدائرة */
+  }
+
+  @keyframes draw-circle {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes draw-tick {
+    0% { stroke-dashoffset:60; opacity:0; }
+    100% { stroke-dashoffset:0; opacity:1; }
+  }
+
+  /* النصوص */
+  h2 {
+    margin:10px 0;
+    font-size:20px;
+    color:#064e3b;
+    opacity:0;
+    transform:translateY(10px);
+    animation:fadeInUp .6s ease forwards 1.6s;
+  }
+  p {
+    margin:0;
+    font-size:14px;
+    color:#444;
+    opacity:0;
+    transform:translateY(10px);
+    animation:fadeInUp .6s ease forwards 1.8s;
+  }
+  @keyframes fadeInUp {
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  /* الزر */
+  .btn {
+    margin-top:18px;
+    padding:10px 18px;
+    border:none;
+    border-radius:12px;
+    font-weight:600;
+    cursor:pointer;
+    background:linear-gradient(135deg,#0f9d7a,#14b8a6);
+    color:#fff;
+    transition:all .2s ease;
+  }
+  .btn:hover { filter:brightness(1.1); }
+  .btn:active { transform:scale(0.96); }
+
+  /* للجوال */
+  @media(max-width:480px){
+    .dialog{padding:24px;border-radius:20px;}
+    h2{font-size:18px;}
+    p{font-size:13px;}
+    .check-wrap{width:90px;height:90px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay">
+  <div class="dialog">
+    <div class="check-wrap">
+      <svg viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#10b981"/>
+            <stop offset="100%" stop-color="#34d399"/>
+          </linearGradient>
+        </defs>
+        <!-- تم تصغير نصف القطر إلى 45 لتفادي القطع -->
+        <circle class="circle" cx="50" cy="50" r="45"/>
+        <path class="tick" d="M30 52 L44 66 L70 38"/>
+      </svg>
+    </div>
+    <h2>🎉 تهانينا! اكتمل التسجيل بنجاح</h2>
+    <p>تم استلام بياناتك وإيصال الدفع بنجاح. سنقوم بمراجعة طلبك وإرسال تفاصيل انضمامك للدورة قريباً عبر البريد الإلكتروني أو واتساب.</p>
+    <button class="btn" onclick="closeDialog()">موافق</button>
+  </div>
+</div>
+
+<script>
+  const overlay = document.getElementById("overlay");
+
+  // تشغيل بعد تحميل الصفحة
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      overlay.classList.add("show");
+      // يمكن هنا تشغيل صوت النجاح (اختياري)
+      // const sound = new Audio("success.mp3");
+      // sound.play();
+    }, 200);
+  });
+
+  // حركة الإغلاق
+  function closeDialog(){
+    const dialog = document.querySelector(".dialog");
+    dialog.style.transform = "scale(0.8)";
+    dialog.style.opacity = "0";
+    setTimeout(() => window.location.href = "index.html", 400);
+  }
+
+  // الإغلاق بالنقر على الخلفية
+  overlay.addEventListener("click", e => {
+    if(e.target === overlay) closeDialog();
+  });
+</script>
+
+</body>
+</html>

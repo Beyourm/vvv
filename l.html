@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>صناعة العباقرة | مؤسسة كن أنت للتدريب والتأهيل</title>
+
+  <meta property="og:title" content="صناعة العباقرة - مؤسسة كن أنت: الثورة الذهنية!" />
+  <meta property="og:description" content="🚀 لا تتدرب... بل انطلق إلى العبقرية. تحسين 95% في الذاكرة وضمان حفظ القرآن!" />
+  <meta property="og:image" content="https://skillia.netlify.app/images/photo.jpg" />
+  <meta property="og:url" content="https://sklilia.netlify.app/Trainees_Records" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ar_AR" />
+  <meta name="twitter:card" content="summary_large_image">
+
+  <meta name="description" content="برنامج صناعة العباقرة - رحلة فريدة لتفعيل قدرات العقل الخارقة، الحفظ السريع، والتركيز العميق. من مؤسسة كن أنت للتدريب والتأهيل.">
+  <meta name="keywords" content="صناعة العباقرة، تطوير الذات، تنمية العقل، الحفظ السريع، الذاكرة الحديدية، مؤسسة كن أنت، تحويل العقل">
+
+  <link rel="stylesheet" href="assets/fonts/tajawal.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --primary-color: #0d3b14; /* أخضر داكن */
+      --secondary-color: #e5a72d; /* ذهبي */
+      --accent-color: #f7f3e9; /* بيج فاتح */
+      --text-color: #f4f4f4; /* أبيض */
+      --border-radius-lg: 20px;
+      --white-color: #ffffff;
+    }
+
+    /* 9. Smooth Scroll */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Tajawal", sans-serif;
+      background-color: var(--accent-color);
+      color: var(--primary-color);
+      overflow-x: hidden;
+    }
+
+    /* 1. تعديل جذري لارتفاع الهيدر (Header) */
+    header {
+      position: relative;
+      overflow: hidden;
+      background-attachment: fixed; /* تأثير Parallax */
+      background: linear-gradient(rgba(13,59,20,0.8), rgba(13,59,20,0.8)),
+                  url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1200&q=80") center/cover;
+      color: var(--text-color);
+      text-align: center;
+      padding: 40px 20px; /* تقليل البادينج الداخلي */
+      min-height: 25vh; /* تقليل الارتفاع الأدنى ليصبح حوالي 30% من السابق */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(229,167,45,0.15), transparent 70%);
+      animation: pulse 6s infinite ease-in-out;
+      z-index: 1; 
+    }
+    
+    header * {
+        position: relative;
+        z-index: 2;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    header h1 {
+      font-size: 2.5rem; /* تصغير حجم الخط ليتناسب مع المساحة الجديدة */
+      margin-bottom: 10px;
+      color: var(--secondary-color);
+    }
+
+    header p {
+      font-size: 1rem; /* تصغير حجم خط الفقرات */
+      max-width: 600px;
+      margin: 0 auto 15px; /* تقليل الهوامش */
+      line-height: 1.6;
+    }
+    
+    header p strong {
+        color: var(--secondary-color);
+        font-size: 1.2rem;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    /* 1. زر CTA المتحرك النابض */
+    .cta-btn {
+      background-color: var(--secondary-color);
+      color: var(--primary-color);
+      padding: 12px 30px; /* تصغير حجم الزر */
+      border-radius: var(--border-radius-lg);
+      font-weight: bold;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: 0.3s;
+      animation: pulseGlow 2s infinite;
+      display: inline-block;
+      margin: 8px; /* تقليل الهوامش بين الأزرار */
+    }
+
+    .cta-btn:hover {
+      background-color: #c99223;
+      transform: scale(1.05);
+      animation: none;
+    }
+    
+    @keyframes pulseGlow {
+      0%,100% { box-shadow: 0 0 0 0 rgba(229,167,45,0.4); }
+      50% { box-shadow: 0 0 25px 10px rgba(229,167,45,0.2); }
+    }
+    
+    /* 1. زر CTA ثاني متحرك */
+    #secondary-cta {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInSlide 1s forwards 3s; 
+    }
+    
+    @keyframes fadeInSlide {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 7. تنسيق زر استعراض الدورات المتحرك */
+    .courses-btn {
+        margin: 8px;
+        background-color:#fff; 
+        color:#0d3b14; 
+        border:2px solid var(--secondary-color); 
+        box-shadow:0 0 10px rgba(0,0,0,0.15); 
+        transition:0.4s;
+        animation: none; 
+    }
+    
+    .courses-btn:hover {
+        background-color: #e5a72d !important;
+        color: #fff !important;
+        transform: scale(1.08);
+        box-shadow: 0 0 15px rgba(229,167,45,0.6);
+    }
+    
+    .courses-btn:hover i {
+        transform: rotate(360deg);
+        transition: transform 0.5s ease-in-out;
+    }
+
+    /* تنسيق العناوين مع الأيقونات */
+    h2 i, h3 i {
+        color: var(--secondary-color);
+        margin-left: 10px;
+    }
+    
+    /* 2. الأيقونات المتحركة بالـ Hover */
+    .feature i {
+        transition: transform 0.3s ease-in-out;
+    }
+    .feature:hover i {
+        transform: rotate(10deg) scale(1.1);
+    }
+    
+    /* قسم لمن صمم البرنامج */
+    .who {
+        padding: 50px 20px;
+        text-align: center;
+        background-color: var(--white-color);
+    }
+
+    /* قسم الرؤية */
+    .vision {
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    /* قسم المزايا */
+    .features {
+      background-color: var(--primary-color);
+      color: var(--text-color);
+      padding: 70px 20px;
+      text-align: center;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .feature {
+      background-color: rgba(255,255,255,0.1);
+      border-radius: var(--border-radius-lg);
+      padding: 30px 20px;
+      transition: 0.3s;
+    }
+
+    .feature:hover {
+      transform: translateY(-8px);
+    }
+
+    .feature i {
+      font-size: 2.5rem;
+      color: var(--secondary-color);
+      margin-bottom: 15px;
+    }
+    
+    /* 3. تحسين خلفية قسم المدربين وتأثير Hover */
+    .trainers {
+        padding: 50px 20px;
+        text-align: center;
+        background: linear-gradient(135deg, #fff8e5, #f7f3e9); 
+    }
+
+    .trainers h2 {
+        font-size: 1.8rem;
+        color: var(--primary-color);
+        margin-bottom: 30px;
+    }
+    
+    .trainer-info {
+        max-width: 700px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 2px solid var(--secondary-color);
+        border-radius: var(--border-radius-lg);
+        background-color: var(--white-color);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        line-height: 1.8;
+        transition: all 0.5s ease;
+    }
+    
+    .trainer-info:hover {
+        background-color: var(--secondary-color);
+        color: var(--primary-color);
+        transform: translateY(-5px);
+    }
+
+    /* 4. قسم الإحصائيات (النتائج بالأرقام) - مع Counter Animation */
+    .stats {
+        background-color: var(--accent-color); 
+        text-align:center; 
+        padding:50px 20px;
+    }
+    
+    .stats h2 {
+        font-size: 1.9rem;
+        color: var(--primary-color);
+        margin-bottom: 25px;
+    }
+    
+    .stats-grid {
+        display:flex; 
+        flex-wrap:wrap; 
+        justify-content:center; 
+        gap:40px; 
+        margin-top:30px;
+    }
+    
+    .stats-item {
+        flex: 1 1 200px; 
+        max-width: 250px;
+    }
+
+    .stats-item h3 {
+        color:var(--secondary-color); 
+        font-size:3rem; 
+        margin-bottom: 5px;
+    }
+    
+    .stats-item p {
+        font-size: 1.1rem;
+        color: var(--primary-color);
+    }
+
+    /* 5. قصص النجاح */
+    .success {
+      padding: 70px 20px;
+      text-align: center;
+    }
+
+    .testimonial {
+      position: relative;
+      background-color: var(--white-color);
+      border-radius: var(--border-radius-lg);
+      padding: 25px;
+      margin: 15px auto;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      max-width: 700px;
+      line-height: 1.9;
+    }
+    
+    .testimonial::before {
+        content: '\f10d'; /* أيقونة اقتباس */
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        top: -10px;
+        right: 20px;
+        font-size: 2rem;
+        color: var(--secondary-color);
+        opacity: 0.2;
+    }
+    
+    .testimonial strong {
+        color: var(--secondary-color);
+    }
+
+    .cta-section {
+      background-color: var(--secondary-color);
+      color: var(--primary-color);
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .cta-section h2 {
+      font-size: 2rem;
+      margin-bottom: 25px;
+    }
+    
+    /* 6. شريط الإشعار العائم */
+    #floating-bar {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: var(--primary-color);
+        color: var(--text-color);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px;
+        font-size: 1rem;
+        z-index: 999;
+        box-shadow: 0 -4px 15px rgba(0,0,0,0.4);
+        transition: background 0.5s ease;
+    }
+    
+    #floating-bar:hover {
+        background: linear-gradient(90deg, #0d3b14, #1a7e2b);
+    }
+    
+    #floating-bar .cta-btn {
+        padding:10px 25px;
+        font-size: 1rem;
+        animation: pulseGlow 1.5s infinite; 
+    }
+    
+    /* 10. شهادة الثقة العائمة */
+    #trust-badge {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background-color: var(--secondary-color);
+        color: var(--primary-color);
+        padding: 10px 15px;
+        border-radius: 10px;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        z-index: 999;
+        font-size: 0.9rem;
+        animation: fadeIn 1s ease-out;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    footer {
+      background-color: var(--primary-color);
+      color: var(--text-color);
+      text-align: center;
+      padding: 15px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+  
+  <div id="trust-badge">
+    <i class="fa-solid fa-medal"></i> ضمان جودة 100%
+  </div>
+
+  <div id="floating-bar">
+    <span>🎯 **الفرصة الذهبية:** أماكن محدودة - العرض مستمر حتى <strong>30 أكتوبر</strong>!</span>
+    <a href="form.html?course=صناعة%20العباقرة" class="cta-btn">سجّل الآن بخصم خاص</a>
+  </div>
+
+  <header data-aos="fade-up">
+    <h1>صناعة العباقرة</h1>
+    <p>
+        <strong>هنا لا نُدرِّب العقول... نحن نُعيد صناعتها!</strong>
+        ---
+        هل ستظل أسير النسيان؟ أم ستصبح عبقريًا؟
+    </p>
+    <a href="form.html?course=صناعة%20العباقرة" class="cta-btn">سجّل الآن وابدأ رحلتك!</a>
+    <a href="#vision" id="secondary-cta" class="cta-btn courses-btn">
+       <i class="fa-solid fa-graduation-cap" style="margin-left:8px;"></i> 💡 اكتشف قدراتك الآن
+    </a>
+  </header>
+
+  <section class="who" data-aos="fade-up">
+    <h2><i class="fa-solid fa-fire-flame-curved"></i> لمن صُمِّم برنامج "صناعة العباقرة"؟</h2>
+    <p>لكل من شعر أنه يملك طاقة عظيمة لم تُكتشف بعد.  
+    للطالب الذي ينسى، وللحافظ الذي يتعثّر، وللعامل الذي يريد أن يتفوّق.  
+    ---
+    **هذا ليس برنامجًا للجميع... بل لمن قرر أن يكون مختلفًا.**</p>
+  </section>
+
+  <section class="vision" id="vision" data-aos="fade-up">
+    <h2><i class="fa-solid fa-star"></i> فلسفة الثورة الذهنية</h2>
+    <p>
+        ليست مُجرَّدَ دورة... بل ثورةٌ في بناءِ الذات!
+        ---
+        نحن نفتح لك بوابة نحو طاقة ذهنية غير محدودة. هذا هو المنهج الذي سيحوِّلُكَ من شخصٍ عاديٍّ إلى قوَّةٍ عقليةٍ خارقة؛ حافظٌ لا يُنسى، ومُفكِّرٌ لا يُحدُّ، وقائدٌ لا يُقارَن.
+    </p>
+  </section>
+
+  <section class="features" data-aos="fade-up">
+    <h2><i class="fa-solid fa-wand-magic-sparkles"></i> ماذا ستجني من هذه الرحلة الاستثنائية؟</h2>
+    <div class="features-grid">
+      <div class="feature">
+        <i class="fa-solid fa-brain"></i>
+        <h3>الذاكرة الحديدية</h3>
+        <p>تعلَّم تقنياتٍ سريَّة لتحويل النصوص والمفاهيم والأرقام إلى صورٍ ذهنيةٍ خالدة، تجعلُ النسيانَ ذكرى من الماضي.</p>
+      </div>
+      <div class="feature">
+        <i class="fa-solid fa-book-quran"></i>
+        <h3>عبقرية القرآن</h3>
+        <p>منهجٌ فريدٌ ومُجَرَّب يربطُ الحفظَ بالخيالِ والإحساس، ليتمكَّنَ عقلُكَ من استيعابِ وحفظِ كتابِ الله بطريقةٍ مُتسارِعةٍ تُذهِلُ العقول.</p>
+      </div>
+      <div class="feature">
+        <i class="fa-solid fa-bullseye"></i>
+        <h3>التركيزُ الفائق</h3>
+        <p>طوِّر قدرةً على الانغماسِ الذهنيِّ تُمكِّنُكَ من إنجازِ عملِ شهرٍ في يومين، لِتَتحوَّل من مُشتَّتٍ إلى مُنْجِزٍ استثنائي.</p>
+      </div>
+    </div>
+     <p style="font-weight:bold; color:var(--secondary-color); margin-top:25px;">
+        ✨ لأن العقول العادية تُقلّد... والعباقرة يصنعون طريقهم بأنفسهم.
+    </p>
+  </section>
+  
+  <section class="trainers" data-aos="fade-up">
+    <h2><i class="fa-solid fa-users-viewfinder"></i> القائدان اللذان سيشعلان فتيل عبقريتك</h2>
+    <div class="trainer-info">
+      <p>بقيادةِ **الأستاذ بشير السفياني** (خبير تقنيات الدماغ والذاكرة) و**الأستاذة جليلة بشير** (المتخصصة في الذاكرة التصويرية والإبداعية).
+      ---
+      <span style="font-weight: bold; color: var(--secondary-color);">اقتباس محفز:</span> "لا حدود للقوة الذهنية البشرية، بل حدود للإيمان بها."
+      ---
+      سيتمُّ نزعُ كُلِّ القيودِ التي كبَّلتْ عقلَك، وستنطلقُ بأقصى سرعةٍ نحو القمَّة.</p>
+    </div>
+  </section>
+  
+  <section class="stats" data-aos="fade-up">
+    <h2><i class="fa-solid fa-chart-line"></i> نتائج تتحدث عن نفسها (بالأرقام النابضة)</h2>
+    <div class="stats-grid">
+      <div class="stats-item">
+          <h3 class="counter" data-target="1000">+0</h3>
+          <p><i class="fa-solid fa-earth-africa"></i> متدرّب حول العالم</p>
+      </div>
+      <div class="stats-item">
+          <h3 class="counter" data-target="1">0</h3>
+          <p><i class="fa-solid fa-clock-rotate-left"></i> شهر لحفظ القرآن كاملاً</p>
+      </div>
+      <div class="stats-item">
+          <h3 class="counter" data-target="95">0%</h3>
+          <p><i class="fa-solid fa-percent"></i> نسبة تحسّن في الذاكرة</p>
+      </div>
+    </div>
+    <p style="font-size:0.9rem; margin-top:15px; color:var(--primary-color);">*الأرقام تعكس الحد الأقصى للإنجازات التي حققها متدربون سابقون.</p>
+  </section>
+
+  <section class="success" data-aos="fade-up">
+    <h2><i class="fa-solid fa-quote-right"></i> ماذا قال العباقرة عن البرنامج؟</h2>
+    <div class="testimonial">
+      <p><strong>علي، طبيب أسنان</strong> — "كنتُ أدرسُ ساعاتٍ طويلة دونَ فائدة، وبعدَ البرنامجِ أصبحَت المذاكرةُ ساعةً واحدةً بمفعولِ عشرِ ساعات. **هذهِ ليست دورة، بل اختصارٌ للزمن!**"</p>
+    </div>
+    <div class="testimonial">
+      <p><strong>سارة، طالبة جامعية</strong> — "**عبقريةٌ نائمة!** هذا ما اكتشفته. من مُجرَّدِ طالبةٍ خائفةٍ من الاختبارات إلى طالبةٍ تُبهرُ مُدرِّسيها... البرنامجُ علَّمني أنني أستطيع السيطرة على عقلي."</p>
+    </div>
+    <div class="testimonial">
+      <p><strong>أبو خليل، تاجر</strong> — "في الستينيات، ظننتُ أن قطارَ التعلُّمِ فاتني. اليوم، بفضلِ 'صناعة العباقرة'، أستعدُّ لحفظِ القرآن، وأصبحتُ أُبرم الصفقات **بذاكرة لا تخطئ**."</p>
+    </div>
+  </section>
+
+  <section class="cta-section" data-aos="zoom-in" id="cta">
+    <h2>أنتَ الخطوة التالية في سلسلة العباقرة!</h2>
+    <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto 30px; line-height: 1.8;">
+        أنتَ لا تُضيِّعُ مالًا، بل تُضيِّعُ عمرًا ذهبيًّا. كُن شُجاعًا، وحرِّرْ عقلَك. الآن، وللمرَّةِ الأخيرة، اسألْ نفسَك: **هَل ستظلُّ أسيرًا للنسيانِ أمْ سَتَكونُ العبقريَّ الذي طالما تمنَّيتَ أن تكون؟**
+    </p>
+    <a href="form.html?course=صناعة%20العباقرة" class="cta-btn">سجِّل الآن وابدأ التحول!</a>
+  </section>
+
+  <footer>
+    &copy; 2025 مؤسسة كن أنت للتدريب والتأهيل. جميع الحقوق محفوظة. **صناعةُ القوَّةِ... تبدأُ هُنا.**
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+    
+    // سكريبت بسيط لتأثير عداد الأرقام عند الوصول للقسم
+    const counters = document.querySelectorAll('.counter');
+    const statsSection = document.querySelector('.stats');
+    let hasCounted = false;
+
+    const countUp = (el) => {
+        const target = parseInt(el.getAttribute('data-target'));
+        const isPercent = el.innerText.includes('%');
+        const isPlus = el.innerText.includes('+');
+        const endSuffix = isPercent ? '%' : (isPlus ? '+' : '');
+        let count = 0;
+        const speed = 200; // سرعة العداد
+
+        const updateCount = () => {
+            const increment = target / speed;
+            if (count < target) {
+                count += increment;
+                el.innerText = Math.ceil(count) + endSuffix;
+                setTimeout(updateCount, 1);
+            } else {
+                el.innerText = target + endSuffix;
+            }
+        };
+        updateCount();
+    };
+
+    const handleScroll = () => {
+        const statsPosition = statsSection.getBoundingClientRect().top;
+        const screenPosition = window.innerHeight;
+
+        if (statsPosition < screenPosition && !hasCounted) {
+            counters.forEach(countUp);
+            hasCounted = true;
+        }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // تشغيل عند التحميل إذا كان القسم مرئيا
+  </script>
+<script src="marketer_tracker.js"></script> 
+<script src="/tracker.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+  :root {
+    --theme-primary: #011f4b;
+    --text-main: #333;
+    --bg-card: #fff;
+    --border-radius: 15px;
+    --shadow-strong: rgba(0,0,0,0.2);
+  }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #f0f0f0;
+  }
+
+  /* الحاوية الأساسية */
+  .slider-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .slider {
+    width: 90%;
+    max-width: 800px;
+    height: 400px;
+    position: relative;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+  }
+
+  .slides-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .slide {
+    width: 80%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    padding: 20px;
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 30px var(--shadow-strong);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+    opacity: 0.5;
+    z-index: 1;
+  }
+
+  .slide.active {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+    z-index: 5;
+  }
+
+  .slide.prev, .slide.next {
+    transform: translateX(-50%) scale(0.9);
+    opacity: 0.6;
+    z-index: 3;
+  }
+
+  .slide img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    margin-bottom: 20px;
+  }
+
+  .slide h2 {
+    font-size: clamp(20px, 4vw, 28px);
+    color: var(--theme-primary);
+    margin-bottom: 10px;
+  }
+
+  .slide p {
+    font-size: clamp(14px, 2.5vw, 18px);
+    color: var(--text-main);
+    line-height: 1.6;
+  }
+
+  .prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--theme-primary);
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 18px;
+    opacity: 0.8;
+    z-index: 10;
+    transition: opacity 0.3s;
+  }
+  .prev:hover, .next:hover { opacity: 1; }
+  .prev { left: 10px; }
+  .next { right: 10px; }
+
+  /* نقاط المؤشر خارج السلايدر داخل الحاوية الأساسية */
+  .dots {
+    margin-top: 15px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .dot.active {
+    background: var(--theme-primary);
+  }
+  

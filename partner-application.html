@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>انضم إلينا كشريك - نموذج طلب شراكة</title>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="assets/fonts/tajawal.css">
+<style>
+/* ======================= 1. الألوان والمتغيرات ======================= */
+:root {
+  --bg-light: #ecfdf5; 
+  --bg-white: #ffffff;
+  --bg-form: #f9fffb;
+  --primary-dark: #03624b; 
+  --accent-color: #10b981; 
+  --text-color: #374151;
+  --border-color: #a7f3d0; 
+  --focus-ring: #6ee7b7;
+  --error-color: #ef4444;
+}
+
+/* ======================= 2. الأنماط الأساسية والإصلاحات الحرجة ======================= */
+/* **التعديل هنا:** تغيير font-family إلى 'Tajawal' */
+html, body { margin:0; padding:0; overflow-x:hidden; font-family:'Tajawal', sans-serif; background: linear-gradient(180deg, var(--bg-light), var(--bg-white) 85%); color:var(--text-color); }
+*, *::before, *::after { box-sizing:border-box; }
+
+/* ======= الحاوية الرئيسية ======= */
+.container { 
+    max-width:640px; 
+    width:95%; 
+    margin:50px auto; 
+    padding:30px; 
+    border-radius:12px; 
+    background:linear-gradient(180deg, var(--bg-white), var(--bg-form)); 
+    box-shadow:0 10px 25px rgba(0,0,0,0.1); 
+}
+
+/* ======= العناوين ======= */
+h1 { text-align:center; font-weight:800; color:var(--primary-dark); margin-bottom:10px; }
+p.subtitle { text-align:center; margin-bottom:30px; padding-bottom:15px; border-bottom:2px solid; border-image: linear-gradient(to right, transparent 5%, var(--accent-color), var(--primary-dark), transparent 95%) 1; }
+h2 { 
+    font-size:1.2em; 
+    color:var(--primary-dark); 
+    border-right:4px solid var(--accent-color); 
+    padding:10px 30px; 
+    margin-bottom:20px; 
+    position:sticky; 
+    top:0; 
+    z-index:9; 
+    background:var(--bg-white); 
+    box-shadow:0 2px 5px rgba(0,0,0,0.05); 
+    margin-left:-30px;
+    margin-right:-30px;
+    width: calc(100% + 60px); 
+    box-sizing: border-box; 
+    transition: background 0.3s;
+}
+
+/* **إصلاح مشكلة Dialog** */
+.dialog h2 {
+    width: auto !important; 
+    margin: 10px 0; 
+    padding: 0; 
+    border-right: none; 
+    background: transparent; 
+    box-shadow: none; 
+    position: static; 
+    text-align: center; 
+    font-size: 1.25em; 
+    color: var(--primary-dark);
+}
+.dialog p {
+    text-align: center;
+    font-size: 0.9em;
+}
+
+/* ======= حقول الإدخال والتحقق ======= */
+.form-group { margin-bottom:15px; }
+.form-group label { display:block; font-weight:700; margin-bottom:8px; color:var(--primary-dark); }
+input, textarea, select {
+    width:100%; padding:12px 15px; border:1px solid var(--border-color); border-radius:8px; font-size:1em; background:var(--bg-form); color:var(--text-color); transition: all 0.3s ease; 
+    /* **التعديل هنا:** تغيير font-family إلى 'Tajawal' */
+    font-family:'Tajawal', sans-serif;
+}
+textarea { min-height:110px; resize: vertical; }
+input:focus, textarea:focus, select:focus { border-color:var(--accent-color); box-shadow:0 0 0 3px var(--focus-ring); outline:none; }
+input:not(:focus):invalid:required, textarea:not(:focus):focus:invalid:required { border-color:var(--error-color); }
+
+/* ======= زر الإرسال والرسائل ======= */
+.submit-btn { 
+    display:block; width:100%; padding:15px; border:none; border-radius:8px; font-size:1.1em; font-weight:800; color:#fff; cursor:pointer; margin-top:30px; 
+    background:linear-gradient(135deg, var(--primary-dark), var(--accent-color)); 
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    transition:all 0.3s ease; 
+}
+.submit-btn:hover { 
+    background:linear-gradient(135deg, var(--accent-color), var(--primary-dark)); 
+    transform:translateY(-1px); 
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+}
+
+/* تعديل #loading ليحتوي على شريط التحميل */
+#loading { text-align: center; padding: 15px; background: #fffbe6; border-radius: 8px; font-weight: 700; margin-top: 15px; display: none;}
+#loading p { color: #f59e0b; margin: 0 0 10px 0;} 
+#error-message { text-align: center; padding: 15px; background: #fee2e2; color: var(--error-color); border-radius: 8px; font-weight: 700; margin-top: 15px; display: none;}
+
+/* ======= أنماط الـ Dialog و الـ SVG (لتأثيرات الحركة) ======= */
+.overlay { position:fixed; inset:0; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); display:none; justify-content:center; align-items:center; z-index:1000; }
+.overlay.show { display:flex; }
+.dialog { background:linear-gradient(145deg,var(--bg-white),#f1fdf9); border-radius:24px; padding:30px; text-align:center; max-width:340px; width:90%; transform:scale(0.9); opacity:0; transition:transform .5s ease,opacity .5s ease; box-shadow:0 10px 40px rgba(0,0,0,0.2); }
+.overlay.show .dialog { transform:scale(1); opacity:1; }
+.check-wrap { width:120px; height:120px; margin:0 auto 20px; }
+.dialog svg { width:100%; height:100%; }
+.dialog .circle { fill:none; stroke:url(#grad); stroke-width:8; stroke-linecap:round; stroke-dasharray:283; stroke-dashoffset:283; animation: draw-circle 1s ease forwards; }
+.dialog .tick { fill:none; stroke:var(--accent-color); stroke-width:8; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:60; stroke-dashoffset:60; opacity:0; animation: draw-tick 0.6s ease forwards 1s; }
+@keyframes draw-circle { to { stroke-dashoffset:0; } }
+@keyframes draw-tick { 0% { stroke-dashoffset:60; opacity:0; } 100% { stroke-dashoffset:0; opacity:1; } }
+@keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.dialog h2, .dialog p { opacity:0; transform:translateY(10px); }
+.dialog h2 { animation:fadeInUp .6s ease forwards 1.6s; }
+.dialog p { animation:fadeInUp .6s ease forwards 1.8s; }
+
+/* ======================= 3. أنماط شريط التحميل (Progress Bar) ======================= */
+.progress-wrapper {
+  width: 90%;
+  max-width: 400px; 
+  position: relative;
+  margin: 10px auto; 
+}
+
+.progress-container {
+  width: 100%;
+  height: 20px; 
+  background: var(--border-color);
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-color), var(--primary-dark));
+  border-radius: 25px;
+  transition: width 0.3s cubic-bezier(0.25, 0.1, 0.25, 1); 
+}
+
+.progress-text {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 20px; 
+  font-weight: bold;
+  color: var(--primary-dark);
+  font-size: 0.8em;
+  transition: color 0.3s;
+}
+
+/* ======================= 4. ملائمة الشاشات الصغيرة (@media) ======================= */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+        margin: 30px auto;
+        width: 100%; 
+        box-shadow: none; 
+    }
+    h2 {
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-left: -20px;
+        margin-right: -20px;
+        width: calc(100% + 40px);
+    }
+    .dialog { padding: 20px; }
+    .check-wrap { width: 90px; height: 90px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div style="text-align: right; margin-bottom: 20px;">
+        <a href="index.html" style="color:var(--primary-dark); text-decoration: none; font-weight: 700;">
+            ← العودة للصفحة الرئيسية
+        </a>
+    </div>
+
+    <h1>انضم إلينا كشريك</h1>
+    <p class="subtitle">🌍 نحن نبحث عن شركاء يشاركوننا الرؤية في نشر المعرفة وبناء المبادرات المجتمعية.</p>
+    
+
+    <div id="error-message" style="display: none;"></div>
+
+    <form id="partner-form" onsubmit="return false;">
+        <input type="hidden" name="action" value="recordPartnership">
+
+        <h2>بيانات التواصل الأساسية</h2>
+        <div class="form-group">
+            <label for="full-name">الاسم الكامل / اسم الشركة</label>
+            <input type="text" id="full-name" name="الاسم الكامل" required>
+        </div>
+        <div class="form-group">
+            <label for="email">البريد الإلكتروني</label>
+            <input type="email" id="email" name="البريد الإلكتروني" required inputmode="email">
+        </div>
+        <div class="form-group">
+            <label for="phone">رقم الهاتف (مع رمز الدولة)</label>
+            <input type="tel" id="phone" name="رقم الهاتف" required inputmode="tel" pattern="[0-9+\s-]{8,15}">
+        </div>
+
+        <h2>تفاصيل الشراكة المقترحة</h2>
+        <div class="form-group">
+            <label for="type">نوع الشراكة المهتم بها</label>
+            <select id="type" name="نوع الشراكة" required>
+                <option value="" disabled selected>اختر نوع الشراكة...</option>
+                <option value="شريك إحالة">شريك إحالة (Referral Partner)</option>
+                <option value="شريك تقني">شريك تقني (Technology Integration)</option>
+                <option value="شريك محتوى">شريك محتوى أو تسويق</option>
+                <option value="شريك تدريب">شريك تدريب / أكاديمي</option>
+                <option value="أخرى">أخرى (يرجى التوضيح في الأسفل)</option>
+            </select>
+        </div>
+        <div class="form-group" id="other-type-group">
+            <label for="other-type">توضيح نوع الشراكة الأخرى</label>
+            <input type="text" id="other-type" name="توضيح الشراكة" placeholder="مثلاً: شريك استثماري، شريك تمويل...">
+        </div>
+        <div class="form-group">
+            <label for="company-website">موقع الشركة/الكيان (إن وجد)</label>
+            <input type="text" id="company-website" name="موقع الشركة" placeholder="http://">
+        </div>
+        <div class="form-group">
+            <label for="details">كيف ترى أن شراكتنا ستكون ناجحة؟ (صف نبذة عن نشاطك)</label>
+            <textarea id="details" name="تفاصيل الشراكة" required></textarea>
+        </div>
+        
+            <div id="loading" style="display: none;">
+        <p>⏳ جاري إرسال الطلب</p>
+        <div class="progress-wrapper">
+          <div class="progress-container">
+            <div class="progress-bar" id="bar1"></div>
+            <div class="progress-text" id="text1">0%</div>
+          </div>
+        </div>
+    </div>
+        
+        
+        <button type="submit" class="submit-btn" id="submit-button">إرسال طلب الشراكة</button>
+    </form>
+</div>
+
+
+<div class="overlay" id="success-overlay">
+  <div class="dialog">
+    <div class="check-wrap">
+      <svg viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#10b981"/>
+            <stop offset="100%" stop-color="#34d399"/>
+          </linearGradient>
+        </defs>
+        <circle class="circle" cx="50" cy="50" r="45"/>
+        <path class="tick" d="M30 52 L44 66 L70 38"/>
+      </svg>
+    </div>
+    <h2>🎉 تهانينا! اكتمل الطلب بنجاح</h2>
+    <p>تم استلام طلب الشراكة بنجاح. سنقوم بمراجعته وإرسال تفاصيل التواصل معك قريباً عبر البريد الإلكتروني.</p>
+    <button class="btn" onclick="closeDialog()">موافق</button>
+  </div>
+</div>
+
+<script>
+// =================================== 1. الإعدادات ===================================
+const APPS_SCRIPT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyjBOhJZWf_meTQ9gYtXTcNTvRmc9kWtAYRUrYUzRmimIMiN6kALmh2lz5Pug1ta90/exec";
+
+// =================================== 2. المتغيرات العامة ===================================
+let form, submitButton, successOverlay, otherTypeGroup, otherTypeInput, loading, errorMessage, typeSelect;
+let bar, text, interval; // متغيرات شريط التحميل
+let timeoutID;
+window.submitted = false;
+const SIMULATION_DURATION_MS = 2000; 
+
+// =================================== 3. الدوال المساعدة (تم تحديثها بالكامل لشريط التحميل) ===================================
+
+/** تبدأ حالة التحميل و تعطل زر الإرسال */
+const startLoading = () => {
+    // إعداد حالة الشريط الأولية
+    if(interval) clearInterval(interval);
+    if (bar && text) { // التحقق من وجود العناصر
+        bar.style.width = '0%';
+        text.innerText = '0%';
+    }
+
+    loading.style.display = 'block';
+    submitButton.style.display = 'none'; 
+    
+    // بدء محاكاة شريط التحميل
+    let width = 0;
+    const targetWidth = 90;
+    
+    const updateInterval = 50; 
+    const totalSteps = SIMULATION_DURATION_MS / updateInterval;
+    const increment = targetWidth / totalSteps;
+
+    interval = setInterval(() => {
+        if (width >= targetWidth) {
+            clearInterval(interval);
+        } else {
+            width += increment;
+            if (width > targetWidth) width = targetWidth;
+            if (bar && text) { // التحقق من وجود العناصر
+                bar.style.width = Math.round(width) + '%';
+                text.innerText = Math.round(width) + '%';
+            }
+        }
+    }, updateInterval);
+};
+
+/** توقف حالة التحميل و تكمل الشريط إلى 100% ثم تخفيه */
+const stopLoading = () => {
+    if (interval) clearInterval(interval);
+    
+    // استكمال شريط التحميل إلى 100%
+    if (bar && text) { // التحقق من وجود العناصر
+        bar.style.width = '100%';
+        text.innerText = '100%';
+    }
+    
+    // إخفاء عناصر التحميل بعد فترة قصيرة للسماح للمستخدم برؤية 100%
+    setTimeout(() => {
+        loading.style.display = 'none';
+        submitButton.style.display = 'block';
+        submitButton.disabled = false;
+        window.submitted = false;
+        // إعادة تعيين الشريط للإرسال التالي
+        if (bar && text) { // التحقق من وجود العناصر
+            bar.style.width = '0%';
+            text.innerText = '0%';
+        }
+    }, 300); 
+};
+
+/** معالج النجاح: إظهار رسالة النجاح وإعادة ضبط النموذج */
+const formSuccessHandler = () => {
+    clearTimeout(timeoutID);
+    stopLoading(); 
+    form.reset();
+    otherTypeGroup.style.display = 'none';
+    
+    // تأخير إظهار نافذة النجاح ليتطابق مع إخفاء شريط التحميل
+    setTimeout(() => {
+        successOverlay.classList.add('show');
+    }, 300);
+};
+
+/** معالج الخطأ: عرض رسالة الخطأ */
+const formErrorHandler = (msg) => {
+    clearTimeout(timeoutID);
+    stopLoading(); 
+    errorMessage.textContent = msg;
+    
+    // تأخير إظهار رسالة الخطأ ليتطابق مع إخفاء شريط التحميل
+    setTimeout(() => {
+        errorMessage.style.display = 'block';
+    }, 300);
+
+    setTimeout(() => {
+        errorMessage.style.display = 'none';
+    }, 7000);
+};
+
+/** إغلاق نافذة النجاح والانتقال إلى الصفحة الرئيسية */
+const closeDialog = () => {
+    const dialog = document.querySelector("#success-overlay .dialog");
+    dialog.style.transform = "scale(0.8)";
+    dialog.style.opacity = "0";
+    
+    setTimeout(() => {
+        window.location.href = "index.html"; 
+    }, 400); 
+};
+
+
+// =================================== 4. وظيفة التهيئة وربط الأحداث (Init) ===================================
+const init = () => {
+    // ربط عناصر DOM الأساسية
+    form = document.getElementById('partner-form');
+    submitButton = document.getElementById('submit-button');
+    successOverlay = document.getElementById('success-overlay');
+    otherTypeGroup = document.getElementById('other-type-group');
+    otherTypeInput = document.getElementById('other-type');
+    loading = document.getElementById('loading');
+    errorMessage = document.getElementById('error-message');
+    typeSelect = document.getElementById('type');
+    
+    // **ربط عناصر شريط التحميل**
+    bar = document.getElementById('bar1');
+    text = document.getElementById('text1');
+
+
+    // إعداد حالة مجموعة "أخرى" الأولية
+    otherTypeGroup.style.display = 'none';
+    otherTypeInput.required = false;
+
+    // --- ربط حدث الإرسال ---
+    form.addEventListener('submit', function(e){
+        e.preventDefault(); 
+        errorMessage.style.display = 'none';
+        if(!form.checkValidity()) return false;
+
+        window.submitted = true;
+        
+        // 1. نبدأ التحميل (تحديث فوري لواجهة المستخدم)
+        startLoading(); 
+
+        // 2. تأجيل عملية الاتصال الشبكي لضمان ظهور الشريط أولاً
+        setTimeout(() => {
+            const formData = new FormData(form);
+
+            fetch(APPS_SCRIPT_WEB_APP_URL, { method:'POST', body:formData })
+                .then(response => {
+                    if (response.ok) {
+                        formSuccessHandler();
+                    } else {
+                        formErrorHandler('⚠️ فشل اتصال الخادم. حاول مجدداً.');
+                    }
+                })
+                .catch(err => {
+                    console.error('Fetch Error:', err);
+                    formErrorHandler('⚠️ خطأ في الشبكة أو الاتصال. يرجى التحقق من اتصالك.');
+                });
+
+            // مؤقت زمني لمعالجة حالات التأخير
+            timeoutID = setTimeout(() => {
+                if(window.submitted){
+                    formErrorHandler('⚠️ تأخر الرد من الخادم (Apps Script). يرجى مراجعة إعدادات النشر.');
+                }
+            }, 15000);
+        }, 0); 
+    });
+
+    // --- ربط حدث تغيير نوع الشراكة (إظهار/إخفاء حقل "أخرى") ---
+    typeSelect.addEventListener('change', function(){
+        if(this.value === 'أخرى'){
+            otherTypeGroup.style.display = 'block';
+            otherTypeInput.required = true;
+        } else {
+            otherTypeGroup.style.display = 'none';
+            otherTypeInput.required = false;
+        }
+    });
+
+    // --- ربط حدث النقر خارج الـ Dialog ---
+    successOverlay.addEventListener('click', e=>{
+        if(e.target === successOverlay) closeDialog();
+    });
+
+    // إضافة الدالة closeDialog للنطاق العالمي
+    window.closeDialog = closeDialog;
+};
+
+// تشغيل التهيئة عند تحميل الصفحة
+window.addEventListener('load', init);
+</script>
+<script src="marketer_tracker.js"></script> 
+<script src="/tracker.js"></script>
+</body>
+</html>

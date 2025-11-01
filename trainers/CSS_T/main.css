@@ -1,0 +1,579 @@
+/*
+============بداية قسم CSS الرئيسي (المتغيرات الأساسية) =========
+*/
+/* إنشاء المتغيرات الأساسية (CSS Variables) */
+:root {
+    --primary-color: #2980b9; 
+    --accent-color: #f39c12; 
+    --background-light: #f4f6f9;
+    --text-color: #34495e;
+    --success-color: #2ecc71;
+    --flip-duration: 0.6s;
+    --secondary-color: #34495e;
+}
+
+body {
+    font-family: 'Tajawal', sans-serif;
+    margin: 0;
+    background-color: var(--background-light);
+    color: var(--text-color);
+    line-height: 1.7;
+    text-align: right;
+    overflow-x: hidden;
+}
+.container {
+    max-width: 1200px; 
+    margin: 0 auto;
+    padding: 20px;
+}
+/*
+©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©
+*/
+
+/*
+============بداية قسم CSS (تأثير الظهور) =========
+*/
+/* 0. تأثير الظهور التدريجي (Scroll Animation) */
+.animated-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    will-change: opacity, transform;
+}
+.animated-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+/*
+©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©
+*/
+
+/*
+============بداية قسم CSS (القسم الافتتاحي) =========
+*/
+/* 1. القسم الافتتاحي الإلهامي */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color), #2c3e50);
+    color: #fff;
+    padding: 60px 20px; 
+    margin-bottom: 40px;
+    border-radius: 0 0 15px 15px;
+    text-align: center;
+}
+.hero-section h1 {
+    font-size: 3.5rem; 
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+.hero-section p {
+    font-size: 1.5rem; 
+    opacity: 0.9;
+}
+/*
+©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©
+*/
+
+/*
+============بداية قسم CSS (شريط الشعارات) =========
+*/
+/* 1.1 شريط شعارات العملاء المتحرك */
+/* -------------------- شريط شعارات العملاء المتحرك (الحل النهائي) -------------------- */
+        /* 1.1 شريط شعارات العملاء المتحرك - (تحسين 1) */
+        .logos-slider {
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 15px 0;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .logos-slide {
+            display: inline-block;
+            animation: slide-rtl 20s linear infinite reverse; /* تم تعديل الاتجاه في الكود الأصلي */
+            padding-right: 20px;
+        }
+        
+        
+
+        .logos-slide img {
+            height: 40px;
+            margin: 0 30px;
+            filter: grayscale(100%) brightness(150%);
+            opacity: 0.7;
+            transition: transform 0.3s, opacity 0.3s; /* إضافة Transition */
+            border-radius: 50%; /* جعل الصورة دائرية */
+            object-fit: cover; /* يحافظ على الشكل داخل الدائرة */
+        }
+        .logos-slide img:hover {
+            opacity: 1;
+            transform: scale(1.1); /* تأثير التضخيم */
+        }
+        @keyframes slide-rtl {
+            from { transform: translateX(0%); }
+            to { transform: translateX(100%); } 
+        }
+/*
+©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©
+*/
+
+/*
+============بداية قسم CSS (فلترة الخبراء) =========
+*/
+/* 2. فلترة الخبراء (Interactive Filter) */
+.filter-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+.filter-section input, .filter-section select {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1rem;
+    flex-grow: 1;
+    max-width: 300px;
+    min-width: 150px;
+}
+/* إخفاء زر التصفية لأنها أصبحت فورية عبر JS */
+.filter-section button {
+    display: none; 
+}
+/*
+©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©
+*/
+
+/*
+============بداية قسم CSS (بطاقات المدربين والسلايدر) =========
+*/
+/* 3. شبكة بطاقات المدربين (Grid) */
+.trainers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+}
+
+/* 3.1 تنسيق الحاوية الرئيسية لشريط التمرير */
+#trainers-container {
+    width: 100%;
+    /* تم إزالة height: 450px; لحل مشكلة الفراغ */
+    padding-bottom: 50px;
+    margin: 40px 0;
+}
+
+
+/* ============================ */
+/* تنسيق الـ Slider الخاص بالمدربين */
+/* ============================ */
+
+/* الحاوية الرئيسية للـ Slider */
+#trainers-slider {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    overflow: hidden;
+    direction: rtl;
+    box-sizing: border-box; 
+    padding: 0 10px;
+    min-height: 400px; 
+    transition: height 0.3s ease-out; 
+}
+
+/* كل شريحة مدرب */
+.trainer-slide {
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.8s cubic-bezier(.77,0,.18,1); 
+    will-change: opacity, transform;
+    pointer-events: none; 
+    display: none; 
+}
+
+/* الشريحة الظاهرة حالياً */
+.trainer-slide.active {
+    opacity: 1;
+    z-index: 2;
+    pointer-events: auto;
+    animation: slideInRight 0.8s;
+    display: block;
+    position: relative; 
+}
+
+/* انميشن دخول الشريحة */
+@keyframes slideInRight {
+    0% { transform: translateX(100px); opacity: 0; }
+    60% { transform: translateX(-10px); opacity: 1; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+/* ============================ */
+/* تصميم بطاقات المدربين وتأثير القلب (Flip Card) */
+/* ============================ */
+
+/* 1. الحاوية الخارجية (تحدد المنظور والارتفاع) */
+.trainer-card {
+    background-color: transparent;
+    height: 400px; /* الارتفاع مهم جداً لعمل 3D Flip */
+    perspective: 1000px; 
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 18px;
+    margin: 20px auto;
+    max-width: 100%;
+    padding: 0; 
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.trainer-card:hover {
+     box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+     transform: translateY(-5px); 
+}
+
+
+        /* (تحسين 2): قلب البطاقة مع تضخيم خفيف */
+        .trainer-card:hover .trainer-inner,
+        .trainer-card.flipped .trainer-inner {
+            transform: rotateY(180deg) scale(1.03);
+        }
+
+        .trainer-front, .trainer-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden; 
+            backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+
+
+
+
+/* 2. الحاوية الداخلية (يتم تدويرها) */
+.trainer-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform var(--flip-duration);
+    transform-style: preserve-3d;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-radius: 18px;
+}
+
+/* 3. حالة التدوير (تصحيح المشكلة: تم إزالة scale(1.03)) */
+.trainer-card.is-flipped .trainer-inner {
+    transform: rotateY(180deg); 
+}
+
+/* 4. الجهتان الأمامية والخلفية */
+.trainer-front, .trainer-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; 
+    backface-visibility: hidden;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* الوجه الأمامي */
+.trainer-front {
+    background-color: #fff;
+    border-top: 5px solid var(--accent-color);
+    transform: rotateY(0deg); 
+}
+.trainer-front img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 5px solid var(--background-light);
+}
+.trainer-front h3 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin: 0;
+}
+.trainer-front p {
+    font-size: 1.1rem;
+    color: var(--accent-color);
+    margin-top: 5px;
+    font-weight: 700;
+}
+
+/* الوجه الخلفي */
+.trainer-back {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color, #2c3e50));
+    color: #fff;
+    transform: rotateY(180deg);
+    border-top: 5px solid var(--success-color);
+    text-align: right;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.3); 
+    justify-content: space-around; 
+    align-items: flex-end;
+    gap: 10px;
+}
+.trainer-back .quote {
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    position: relative;
+    padding: 0 5px;
+}
+.trainer-back .progress-bar-container {
+    width: 90%;
+    margin: 15px auto;
+    text-align: right;
+}
+/* تصميم عداد الخبرة */
+.trainer-back .progress-bar-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #fff;
+}
+.progress-bar-value {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--success-color);
+}
+.progress-bar {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    height: 10px;
+}
+.progress-fill {
+    height: 100%;
+    background-color: var(--success-color);
+    transition: width 0.7s ease-out;
+    width: 0%; 
+}
+.trainer-back .tags span {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 5px 5px 5px 0;
+    font-size: 0.8rem;
+}
+/* زر الملف الشخصي بتأثير Gradient */
+.trainer-back .profile-button {
+    background-color: var(--accent-color);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    margin-top: 15px;
+    display: inline-block;
+    transition: all 0.3s;
+}
+.trainer-back .profile-button:hover {
+    background-image: linear-gradient(to right, #e67e22, #f39c12);
+    transform: scale(1.05);
+}
+
+/* أزرار التنقل (اختياري) */
+.trainer-slider-controls {
+    text-align: center;
+    margin-top: 14px;
+}
+.trainer-slider-controls button {
+    border: none;
+    background: #eee;
+    color: #333;
+    font-size: 24px;
+    margin: 0 8px;
+    border-radius: 50%;
+    width: 40px; height: 40px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.trainer-slider-controls button:hover {
+    background: #ddd;
+}
+/*
+©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©
+*/
+
+/*
+============بداية قسم CSS (آراء الزملاء والتجاوب) =========
+*/
+
+.peer-review-section {
+    padding: 40px 0;
+    text-align: center;
+}
+.peer-review-section h2 {
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 30px;
+}
+
+/* ======================= حاوية البطاقات ======================= */
+.peer-review-cards {
+    display: flex;
+    gap: 20px;
+    overflow-x: scroll; /* تمكين التمرير اليدوي */
+    scroll-behavior: smooth;
+    padding-bottom: 20px; /* لترك مساحة لشريط التمرير */
+    -ms-overflow-style: none; /* إخفاء شريط التمرير في IE/Edge */
+    scrollbar-width: none; /* إخفاء شريط التمرير في Firefox */
+}
+/* إخفاء شريط التمرير في Chrome/Safari/Opera */
+.peer-review-cards::-webkit-scrollbar {
+    display: none;
+}
+
+/* ======================= البطاقات - تم تعديلها ======================= */
+.review-card {
+    /* التعديلات الأساسية لمرونة العرض ونزول النص */
+    min-width: 320px;       /* عرض البطاقة الأدنى */
+    width: calc(33.333% - 13.333px); /* يعرض ثلاث بطاقات على الشاشات الكبيرة */
+    flex: 0 0 auto;         /* منع التقلص أو التوسع */
+    
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    padding: 25px;
+    text-align: right;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    /* ضمان نزول النص لسطر ثاني */
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.review-card p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.review-card .author {
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-top: 10px;
+    display: block;
+}
+
+/* تنسيق رسالة التحميل والخطأ */
+.review-message {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 1.2rem;
+    color: #888;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-top: 20px;
+}
+.review-message.error {
+    color: #e74c3c;
+    background-color: #fff5f5;
+    border: 1px solid #e74c3c;
+}
+.review-message .spinner {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--primary-color);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-left: 10px;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ======================= استعلامات الوسائط لقسم آراء الزملاء (مُعدلة ومدمجة) ======================= */
+@media (max-width: 1024px) {
+    .peer-review-cards {
+        gap: 15px; 
+    }
+    .review-card {
+        width: calc(50% - 10px); /* عرض بطاقتين مع هامش */
+        min-width: 300px; 
+        padding: 20px; 
+    }
+}
+
+@media (max-width: 768px) {
+    .peer-review-section h2 {
+        font-size: 2rem; 
+    }
+    .review-card {
+        width: 90%; /* لعرض بطاقة واحدة تقريباً */
+        min-width: 250px;
+        padding: 18px; 
+    }
+}
+
+/* ============================ */
+/* استعلامات الوسائط للتجاوب العام (لا يوجد بها تكرار) */
+/* ============================ */
+
+@media (max-width: 768px) { 
+    .hero-section h1 { font-size: 2.5rem; }
+    .hero-section p { font-size: 1.2rem; }
+    .trainers-grid {
+        grid-template-columns: 1fr; 
+    }
+    .trainer-card {
+        height: 380px;
+    }
+    .filter-section {
+        flex-direction: column; 
+    }
+    .filter-section input, .filter-section select {
+        max-width: 100%;
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .trainer-card {
+        margin: 10px auto;
+        min-height: 280px;
+    }
+    .trainer-slider-controls button {
+        width: 32px;
+        height: 32px;
+        font-size: 20px;
+        margin: 0 5px;
+    }
+}
+/*
+©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©©
+*/

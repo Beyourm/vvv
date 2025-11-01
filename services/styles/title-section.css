@@ -1,0 +1,183 @@
+/*
+|--------------------------------------------------------------------------
+| TITLE SECTION STYLES (styles/title-section.css)
+|--------------------------------------------------------------------------
+| يضم تنسيقات الـ Hero Section (القسم الرئيسي/الافتتاحي) والـ Typewriter 
+| (تأثير الآلة الكاتبة) وزر الدعوة للإجراء (CTA - Call To Action).
+*/
+/* |-------------------
+| 1. العنوان الرئيسي (Hero Title)
+|-------------------
+*/
+.hero-title {
+    /* **الحل الجذري:** تأكد من إزاحة العنصر للاعلى بقوة */
+    margin-top: 0 !important;
+    transform: translateY(0) !important; /* هذا يجبر العنصر على الصعود */
+    /* ... بقية التنسيقات ... */
+}
+
+
+/* |-------------------
+| 1. العنوان الرئيسي (Hero Title)
+|-------------------
+*/
+.hero-title {
+    /* **الحل النهائي للمسافة الفارغة:** تصفير الهامش العلوي */
+    margin-top: 0 !important;
+    /* توسيط النص */
+    text-align: center;
+    /* مسافة سفلية */
+    margin-bottom: 5px;
+    /* حجم الخط الرئيسي */
+    font-size: 34px;
+    /* درجة كثافة الخط (سميك جداً) */
+    font-weight: 900;
+    /* لتمكين استخدام absolute position للعناصر الداخلية (غير مستخدم هنا لكنها قاعدة جيدة) */
+    position: relative;
+    /* تباعد الحروف */
+    letter-spacing: 2px;
+    
+    /* تطبيق تدرج لوني على النص */
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background-size: 200% 100%;
+    /* قص الخلفية لتظهر داخل النص فقط (للتصفح عبر الويب كيت) */
+    -webkit-background-clip: text;
+    /* جعل لون النص شفافاً لإظهار الخلفية المقتطعة */
+    -webkit-text-fill-color: transparent;
+    /* تطبيق حركة تدرج اللون اللانهائية */
+    animation: gradientShift 3s infinite alternate; 
+    
+    /* ظل خفيف للنص لزيادة العمق */
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.2); 
+    /* إخفاء العنصر مبدئياً للظهور التدريجي (Scroll Reveal) */
+    opacity: 0;
+    /* إزاحة العنصر للأسفل استعداداً لحركة الظهور */
+    transform: translateY(20px);
+    /* انتقال سلس للحركات البسيطة */
+    transition: transform 0.1s ease-out; 
+}
+
+/* |-------------------
+| 2. تأثير الآلة الكاتبة (Typewriter Effect)
+|-------------------
+*/
+#dynamic-text {
+    /* لون النص */
+    color: var(--primary-color);
+    /* إضافة المؤشر العمودي الذي يظهر ويختفي */
+    border-right: 3px solid var(--secondary-color); 
+    /* منع التفاف النص لأسطر متعددة */
+    white-space: nowrap; 
+    /* إخفاء النص الزائد حتى يتم "كتابته" بواسطة الجافاسكريبت */
+    overflow: hidden; 
+    /* يبدأ بعرض صفر (يتم التحكم فيه لاحقاً عبر JS) */
+    width: 0; 
+    /* توسيط العنصر */
+    margin: 0 auto;
+    /* حجم الخط */
+    font-size: 22px;
+    /* لعرضه في نفس السطر مع إمكانية التحكم بالعرض */
+    display: inline-block;
+    transition: transform 0.1s ease-out; 
+}
+
+/* |-------------------
+| 3. العناوين الثانوية (Subtitle & Micro-Text)
+|-------------------
+*/
+.subtitle, .micro-text {
+    /* انتقال سلس لجميع الخصائص */
+    transition: all 0.4s ease, transform 0.1s ease-out; 
+    /* توسيط النص */
+    text-align: center;
+    /* إخفاء العنصر مبدئياً للظهور التدريجي */
+    opacity: 0;
+    /* إزاحة العنصر للأسفل استعداداً لحركة الظهور */
+    transform: translateY(20px);
+}
+.subtitle {
+    /* لون الخط */
+    color: var(--primary-color);
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 15px; 
+}
+.micro-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin-bottom: 30px;
+}
+
+/* |-------------------
+| 4. زر الدعوة للإجراء (Call To Action - CTA)
+|-------------------
+*/
+.cta-container {
+    /* توسيط محتوى الحاوية */
+    text-align: center;
+    /* مسافة علوية */
+    margin-top: 50px;
+}
+.cta-button {
+    /* إزالة تزيين النص (مثل الخط تحت الرابط) */
+    text-decoration: none;
+    /* الخلفية الرئيسية للزر */
+    background: var(--primary-color);
+    /* لون النص */
+    color: var(--text-light);
+    /* مسافة داخلية (للتكبير) */
+    padding: 18px 25px; 
+    /* حواف دائرية */
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 24px; 
+    /* يتيح تطبيق البادينج والمقاسات ويعرضه ككتلة في نفس السطر */
+    display: inline-block;
+    /* انتقال سلس للتأثيرات */
+    transition: all 0.3s ease, transform 0.1s ease-out; 
+    /* لتفعيل تأثيرات 3D أثناء التحويم */
+    transform-style: preserve-3d;
+    /* تطبيق حركة النبض والوهج (Pulse Glow) */
+    animation: pulseGlow 2.5s infinite; 
+    /* إخفاء العنصر مبدئياً للظهور التدريجي */
+    opacity: 0;
+    transform: translateY(20px);
+    /* لتمكين العناصر المطلقة داخله (مثل الأيقونة) */
+    position: relative;
+    /* إخفاء أي تجاوز للحواف (لتحسين شكل الزر) */
+    overflow: hidden;
+}
+
+/* أيقونة السهم داخل الزر */
+.cta-button .arrow-icon {
+    /* مسافة بينها وبين النص */
+    margin-right: 10px;
+    transition: transform 0.3s ease-out;
+    display: inline-block;
+    /* إزاحة السهم لليمين مبدئياً */
+    transform: translateX(20px); 
+    /* إخفاء السهم مبدئياً */
+    opacity: 0;
+    font-weight: 900;
+}
+
+/* حالة التحويم (Hover) على الزر */
+.cta-button:hover {
+    /* تغيير الخلفية إلى تدرج آخر */
+    background: linear-gradient(45deg, var(--primary-color), #092e0f);
+    /* رفع الزر للأعلى وتكبيره قليلاً */
+    transform: translateY(-5px) scale(1.1); 
+    /* ظل قوي ولامع */
+    box-shadow: 0 0 60px var(--secondary-color), 0 15px 50px rgba(0,0,0,0.5); 
+    /* إيقاف حركة النبض */
+    animation: none;
+    /* ضغط البادينج على اليمين لفسح المجال للسهم */
+    padding-right: 25px; 
+}
+
+/* إظهار السهم وإعادته لوضعه الطبيعي عند التحويم */
+.cta-button:hover .arrow-icon {
+    transform: translateX(0); 
+    opacity: 1;
+}

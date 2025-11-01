@@ -1,0 +1,183 @@
+<!DOCTYPE html>  
+<html lang="ar" dir="rtl">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>عروض مؤسسة كن أنت</title>  
+<link rel="stylesheet" href="../assets/fonts/tajawal.css">
+<style>  
+  body {  
+      font-family: 'Tajawal', sans-serif;  
+      background: #f9f9f9;  
+      margin: 0;  
+      padding: 0;  
+      color: #222;  
+  }  
+  header {  
+      text-align: center;  
+      background: linear-gradient(90deg, #007bff, #28a745);  
+      color: white;  
+      padding: 40px 10px;  
+      font-size: 1.8em;  
+      font-weight: bold;  
+  }  
+  .section {  
+      margin: 40px auto;  
+      max-width: 1100px;  
+      padding: 0 20px;  
+  }  
+  .section h2 {  
+      border-right: 6px solid #007bff;  
+      padding-right: 10px;  
+      font-size: 1.5em;  
+      color: #333;  
+      margin-bottom: 20px;  
+  }  
+  .offers-grid {  
+      display: grid;  
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));  
+      gap: 20px;  
+  }  
+  .offer-card {  
+      background: #fff;  
+      border-radius: 14px;  
+      overflow: hidden;  
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);  
+      transition: transform 0.3s ease;  
+  }  
+  .offer-card:hover {  
+      transform: translateY(-6px);  
+  }  
+  .offer-card img {  
+      width: 100%;  
+      height: 180px;  
+      object-fit: cover;  
+  }  
+  .offer-content {  
+      padding: 15px;  
+  }  
+  .offer-title {  
+      font-size: 1.2em;  
+      color: #007bff;  
+      font-weight: 600;  
+  }  
+  .offer-desc {  
+      font-size: 0.95em;  
+      margin-top: 8px;  
+      color: #555;  
+      line-height: 1.5em;  
+  }  
+  .offer-link {  
+      display: inline-block;  
+      margin-top: 12px;  
+      padding: 8px 14px;  
+      background-color: #28a745;  
+      color: white;  
+      text-decoration: none;  
+      border-radius: 6px;  
+      font-size: 0.9em;  
+  }  
+  .offer-link:hover {  
+      background-color: #218838;  
+  }  
+  
+  /* تنسيقات زر VIP العائم */  
+  .vip-fab {  
+      position: fixed;  
+      bottom: 25px; /* المسافة من الأسفل */  
+      left: 25px; /* المسافة من اليسار ليتناسب مع RTL */  
+      z-index: 1000; /* لضمان ظهوره فوق العناصر الأخرى */  
+      text-decoration: none;  
+      display: flex;  
+      align-items: center;  
+      justify-content: center;  
+      width: 60px;  
+      height: 60px;  
+      border-radius: 50%; /* لجعل الزر دائريًا */  
+      font-size: 1.1em;  
+      font-weight: bold;  
+      color: white;  
+      background-color: #ffc107; /* لون ذهبي */  
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4), /* الظل الأساسي */  
+                  inset 0 -5px 0 rgba(0, 0, 0, 0.3); /* محاكاة العمق (3D) */  
+      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;  
+      cursor: pointer;  
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5); /* لإبراز النص */  
+  }  
+  
+  .vip-fab:hover {  
+      background-color: #dc3545; /* لون أحمر/عنابي عند التحويم */  
+      transform: scale(1.1) translateY(-3px); /* تكبير وتحريك خفيف للأعلى */  
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.5),  
+                  inset 0 -5px 0 rgba(0, 0, 0, 0.4);  
+  }  
+  
+  .vip-fab:active {  
+      transform: scale(0.95); /* تأثير الضغط */  
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4),  
+                  inset 0 2px 5px rgba(0, 0, 0, 0.3); /* لإعطاء إحساس الغوص */  
+  }  
+</style>  
+</head>  
+<body>  
+<header>🎯 عروض مؤسسة كن أنت للتدريب والتأهيل</header>  
+
+<div id="offers-container"></div>  
+
+<a href="../view.html" class="vip-fab">
+    VIP
+</a>
+
+
+<footer style="text-align:center;background:#222;color:#fff;padding:25px;font-size:0.9em;">  
+  © 2025 مؤسسة كن أنت للتدريب والتأهيل — جميع الحقوق محفوظة  
+</footer>  
+
+<script>  
+// رابط الـ Apps Script Web App  
+const API_URL = "https://script.google.com/macros/s/AKfycbzafuwcpdyvKHXlKvJNSbOpz-4NVR_VpFKgasVc4G_mOZyKh3RpB9CTtOL1Jn4Yfzv8/exec"; // ← ضع هنا رابطك  
+  
+async function loadOffers() {  
+  // ... (باقي الكود كما هو)
+  const res = await fetch(API_URL);  
+  const data = await res.json();  
+  
+  // تجميع العروض حسب القسم  
+  const grouped = {};  
+  data.forEach(o => {  
+    if (!grouped[o.القسم]) grouped[o.القسم] = [];  
+    grouped[o.القسم].push(o);  
+  });  
+  
+  const container = document.getElementById('offers-container');  
+  container.innerHTML = '';  
+  
+  for (const section in grouped) {  
+    const offers = grouped[section];  
+    const sectionDiv = document.createElement('div');  
+    sectionDiv.className = 'section';  
+    sectionDiv.innerHTML = `<h2>${section}</h2><div class="offers-grid"></div>`;  
+  
+    const grid = sectionDiv.querySelector('.offers-grid');  
+    offers.sort((a, b) => a.الترتيب - b.الترتيب).forEach(o => {  
+      const card = document.createElement('div');  
+      card.className = 'offer-card';  
+      card.innerHTML = `  
+        <img src="${o.رابط_الصورة}" alt="${o.العنوان}">  
+        <div class="offer-content">  
+            <div class="offer-title">${o.العنوان}</div>  
+            <div class="offer-desc">${o.الوصف}</div>  
+<a href="offer.html?id=${o.id}" class="offer-link">عرض التفاصيل</a>  
+        </div>  
+      `;  
+      grid.appendChild(card);  
+    });  
+  
+    container.appendChild(sectionDiv);  
+  }  
+}  
+  
+loadOffers();  
+</script>  
+</body>  
+</html>

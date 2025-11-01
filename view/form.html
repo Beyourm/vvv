@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج التسجيل</title>
+    <meta property="og:title" content="مؤسسة كن أنت" />
+<meta property="og:description" content="انضم الآن وابدأ رحلتك نحو القمة. استثمر في نفسك، واصنع مستقبلك بالمعرفة." />
+<meta property="og:image" content="https://skliliia.netlify.app/images/photo.jpg" />
+<meta property="og:url" content="https://sklilia.netlify.app/index" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="ar_AR" />
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="مؤسسة كن أنت">
+<meta name="twitter:description" content="انضم الآن وابدأ رحلتك نحو القمة. استثمر في نفسك، واصنع مستقبلك بالمعرفة.">
+<meta name="twitter:image" content="https://skliliia.netlify.app/images/photo.jpg">
+
+<link rel="stylesheet" href="../assets/fonts/tajawal.css">
+<link rel="stylesheet" href="assets/fonts/tajawal.css">
+    <link rel="stylesheet" href="css/from.css">
+</head>
+<body>
+
+<div class="form-container">
+    <div class="form-header">
+        <h2 id="form-main-title">انطلق نحو التميز <span class="sparkle">✨</span> وسجّل الآن</h2>
+        <p>املأ البيانات بدقة للانضمام إلى رحلتنا التعليمية.</p>
+    </div>
+
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <form id="form" method="post">
+        <div class="input-group">
+            <div class="input-with-icon">
+                <input type="text" name="name" id="name" placeholder=" " required autofocus autocapitalize="words">
+                <label class="floating-label" for="name">الاسم الثلاثي الكامل</label>
+                <i class="icon fas fa-user"></i>
+            </div>
+            <div class="error-message" id="name-error">الرجاء إدخال الاسم الثلاثي الكامل.</div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-with-icon">
+                <select name="gender" id="gender" required>
+                    <option value="" disabled selected>الجنس</option>
+                    <option value="ذكر">ذكر</option>
+                    <option value="أنثى">أنثى</option>
+                </select>
+                <label class="floating-label" for="gender">الجنس</label>
+                <i class="icon fas fa-venus-mars"></i>
+            </div>
+            <div class="error-message" id="gender-error">الرجاء اختيار الجنس.</div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-with-icon">
+                <input type="number" name="age" id="age" placeholder=" " inputmode="numeric" required min="1" max="99">
+                <label class="floating-label" for="age">العمر</label>
+                <i class="icon fas fa-birthday-cake"></i>
+            </div>
+            <div class="error-message" id="age-error"></div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-with-icon">
+                <select name="country" id="country" required>
+                    <option value="" disabled selected>اختر البلد</option>
+                </select>
+                <label class="floating-label" for="country">البلد</label>
+                <i class="icon fas fa-globe"></i>
+            </div>
+            <div class="error-message" id="country-error">الرجاء اختيار اسم البلد.</div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-with-icon">
+                <input type="tel" name="phone" id="phone" placeholder=" " pattern="^\+\d{8,15}$" inputmode="tel" required>
+                <label class="floating-label" for="phone">رقم الواتساب</label>
+                <i class="icon fab fa-whatsapp"></i>
+            </div>
+            <div class="error-message" id="phone-error">الرجاء إدخال رقم هاتف صحيح (مثال: +966...).</div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-with-icon">
+                <input type="email" name="email" id="email" placeholder=" " required autocapitalize="none">
+                <label class="floating-label" for="email">البريد الإلكتروني</label>
+                <i class="icon fas fa-envelope"></i>
+            </div>
+            <div class="error-message" id="email-error">الرجاء إدخال بريد إلكتروني صحيح.</div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-with-icon">
+                <input type="text" name="telegram" id="telegram" placeholder=" " autocapitalize="none">
+                <label class="floating-label" for="telegram">معرّف حساب تيليجرام (اختياري)</label>
+                <i class="icon fab fa-telegram-plane"></i>
+            </div>
+        </div>
+
+
+        <input type="hidden" name="status" value="N">
+        <input type="hidden" name="CourseName" id="course-name-input">
+        <input type="hidden" name="registrationDate" id="registration-date-input">
+    	<input type="hidden" id="marketer_id_input" name="marketer_id">
+        <button type="submit" id="submit-btn">
+            <span class="btn-text">أرسل بياناتك وسجل الآن</span>
+            <div class="loader"></div>
+        </button>
+    </form>
+
+    <div id="form-message" style="display:none;"></div>
+</div>
+
+<script src="js/countries.js"></script>
+<script src="marketer_tracker.js"></script> 
+<script src="js/from-script.js"></script>
+
+</body>
+</html>
+

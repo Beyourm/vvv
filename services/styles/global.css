@@ -1,0 +1,258 @@
+/*
+|--------------------------------------------------------------------------
+| GLOBAL STYLES (styles/global.css)
+|--------------------------------------------------------------------------
+| يحتوي على المتغيرات، إعادة تعيين CSS، التنسيقات الأساسية، و Keyframes.
+| هذه الأنماط تطبق على هيكل الصفحة بالكامل.
+*/
+
+/* 1. الحل الجذري لمنع التمرير الأفقي وضمان box-sizing */
+/* تطبيق الخاصية على جميع العناصر لتشمل الـ Padding والـ Border ضمن العرض المحدد */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* تعريف متغيرات الألوان والقياسات الأساسية (CSS Variables) */
+:root {
+  --primary-color: #0d3b14;  /* اللون الأساسي (الأخضر الداكن) */
+  --secondary-color: #e5a72d; /* اللون الثانوي/المميز (الذهبي/العنبري) */
+  --accent-color: #f7f3e9;   /* لون الخلفية الفاتح */
+  --glass-color: rgba(255, 255, 255, 0.15); /* لون شفاف */
+  --text-dark: #222222;    /* لون النص الداكن */
+  --text-light: #f4f4f4;   /* لون النص الفاتح */
+  --white-color: #ffffff;  /* اللون الأبيض */
+  --border-radius-lg: 20px; /* حواف دائرية كبيرة */
+  --shadow-light: rgba(255, 255, 255, 0.7); /* ظل فاتح (لإحساس النيومورفيزم) */
+  --shadow-dark: rgba(0, 0, 0, 0.2);    /* ظل داكن */
+}
+
+/* 2. الحركات الديناميكية (Keyframes) */
+/* حركة تحريك الخلفية المتدرجة */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+/* حركة نبض ووهج لزر CTA أو العناصر البارزة */
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 10px var(--secondary-color), 0 4px 15px var(--primary-color)50; transform: scale(1); }
+    50% { box-shadow: 0 0 35px var(--secondary-color), 0 6px 30px rgba(0,0,0,0.5); transform: scale(1.03); }
+}
+/* حركة الظهور التدريجي للأعلى (Scroll Reveal) */
+@keyframes revealUp {
+    to { opacity: 1; transform: translateY(0) rotate(0deg); }
+}
+/* حركة الظهور التدريجي من اليمين (Scroll Reveal) */
+@keyframes revealRight {
+    to { opacity: 1; transform: translateX(0) rotate(0deg); }
+}
+
+/* 3. تطبيق الألوان والهيكل والخلفية الديناميكية */
+body {
+    /* الخط الافتراضي للصفحة */
+    font-family: 'Tajawal', sans-serif;
+    /* لون خلفية الجسم */
+    background-color: var(--accent-color); 
+    /* لون النص الافتراضي */
+    color: var(--text-dark);
+    /* إزالة الهوامش الافتراضية للمتصفح */
+    margin: 0;
+    padding: 0;
+    /* ارتفاع السطر */
+    line-height: 1.9;
+    /* إعداد المنظور لتأثيرات 3D */
+    perspective: 2000px; 
+    /* وضعية نسبية (لتمكين وضع الـ pseudo element) */
+    position: relative;
+    /* الحل الجذري: منع التمرير الأفقي تمامًا */
+    overflow-x: hidden !important; 
+    /* تمرير سلس للانتقال بين الأقسام */
+    scroll-behavior: smooth;
+}
+
+/* الخلفية الديناميكية للجسم (تأثير ضبابي وناعم) */
+body::before { 
+    content: ''; 
+    position: fixed; /* تثبيتها في مكانها */
+    top: 0; left: 0; 
+    width: 100%; height: 100%; 
+    /* تدرج شعاعي هادئ */
+    background: radial-gradient(circle at 20% 30%, var(--accent-color) 0%, var(--secondary-color) 50%, var(--primary-color) 100%);
+    /* شفافية خفيفة جداً */
+    opacity: 0.07; 
+    /* وضعها تحت محتوى الصفحة */
+    z-index: -1; 
+    background-size: 400% 400%;
+    /* تطبيق حركة التدرج اللونية */
+    animation: gradientShift 20s ease infinite alternate; 
+}
+
+/* حاوية المحتوى الرئيسية في منتصف الشاشة (Container) */
+.container {
+    /* تحديد أقصى عرض للحاوية */
+    max-width: 900px;
+    /* **التعديل الهام:** 0 هامش علوي، auto توسيط أفقي، 50px هامش سفلي */
+    margin: 0 auto 50px auto;
+    /* مساحة داخلية */
+    padding: 40px;
+    /* خلفية بيضاء شفافة */
+    background: var(--white-color); 
+    /* حواف دائرية كبيرة */
+    border-radius: var(--border-radius-lg);
+    /* ظل متدرج لإحساس النيومورفيزم */
+    box-shadow: 
+        -10px -10px 30px var(--shadow-light),
+        10px 10px 30px var(--shadow-dark); 
+    position: relative;
+}
+
+/* تنسيقات الفقرات والتمييز */
+p {
+    margin-bottom: 20px;
+    font-size: 18px;
+    /* إخفاء الفقرات مبدئياً لحركة الظهور */
+    opacity: 0;
+    transform: translateY(20px);
+}
+/* تنسيق للنصوص المميزة (Highlight) */
+.highlight {
+    color: var(--primary-color); 
+    font-weight: 700;
+    text-shadow: 0 0 5px var(--secondary-color)40; 
+    /* خلفية متدرجة خفيفة */
+    background: linear-gradient(90deg, var(--secondary-color)20, var(--secondary-color)40);
+    padding: 3px 7px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* تنسيق الفاصل المُحسَّن (Section Divider) */
+.section-divider {
+    width: 100%;
+    height: 2px;
+    /* خط تدرج لوني يمتد بعرض الحاوية */
+    background: linear-gradient(90deg, transparent, var(--secondary-color), var(--primary-color), var(--secondary-color), transparent);
+    border: none;
+    margin: 40px 0; 
+    /* إخفاء مبدئياً للـ Scroll Reveal */
+    opacity: 0;
+    transform: translateY(20px);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* تصميم الشبكة وخدمات الـ Flip Card */
+ul {
+    /* إزالة النقاط الافتراضية للقائمة */
+    list-style: none;
+    padding: 0;
+    margin-top: 30px;
+    /* تطبيق نظام الشبكة (Grid) */
+    display: grid;
+    /* ضبط الأعمدة لتكون متجاوبة (على الأقل 280 بكسل) */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    /* المسافة بين عناصر الشبكة */
+    gap: 20px;
+}
+
+/* بطاقة الخدمة الواحدة (Service Card) - الحاوية الخارجية */
+.service-card {
+    height: 220px;
+    position: relative;
+    /* تحديد المنظور لتأثير قلب البطاقة (Flip) */
+    perspective: 1000px; 
+    transition: transform 0.6s ease;
+    /* إخفاء مبدئياً للـ Scroll Reveal مع تأثير دوران */
+    opacity: 0;
+    transform: translateX(30px) rotateY(10deg);
+    cursor: pointer;
+}
+/* الحاوية الداخلية للبطاقة (Inner Card) - المسؤولة عن الدوران */
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    /* حركة دوران سلسة ومتميزة */
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    /* الحفاظ على تأثيرات 3D للأوجه الأمامية والخلفية */
+    transform-style: preserve-3d;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+/* تأثير التحويم: دوران و تكبير للبطاقة */
+.service-card:hover .card-inner {
+    /* **التعديل الهام:** عكس دوران الحاوية الداخلية ليتطابق مع RTL */
+    transform: rotateY(180deg) scale(1.05);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4), 0 0 25px var(--secondary-color)50; 
+}
+
+/* الوجه الأمامي والخلفي للبطاقة */
+.front, .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /* إخفاء الوجه الخلفي عند رؤية الوجه الأمامي */
+    backface-visibility: hidden;
+    /* تنسيق المحاذاة العمودية والأفقية */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    padding: 20px;
+}
+/* تنسيق الوجه الأمامي */
+.front {
+    background-color: var(--accent-color); 
+    /* تأثير الضبابية على الخلفية */
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--primary-color);
+    
+    /* **التعديل:** ضمان اختفاء الوجه الأمامي أثناء الدوران */
+    backface-visibility: hidden !important; 
+}
+.front h3 {
+    font-size: 22px;
+    margin-top: 10px;
+    color: var(--primary-color);
+}
+/* أيقونة الخدمة */
+.service-icon {
+    font-size: 40px;
+    color: var(--secondary-color);
+    transition: transform 0.3s ease;
+}
+/* تنسيق الوجه الخلفي */
+.back {
+    /* خلفية متدرجة بلون أساسي داكن */
+    background: linear-gradient(135deg, var(--primary-color), #092e0f);
+    color: var(--text-light);
+    
+    /* **التعديل:** رفعه للأمام لضمان ظهوره */
+    z-index: 2; 
+    
+    /* وضع الوجه الخلفي مقلوباً وجاهزاً للدوران */
+    transform: rotateY(-180deg);
+    padding: 30px;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* **الحل الجديد لظهور النص داخل البطاقة (الوجه الخلفي)***
+/* يضمن أن النص لا يختفي بسبب تحريك (Transform) أو شفافية (Opacity) مطبقة عالمياً */
+.back p {
+    opacity: 1 !important; 
+    transform: none !important; 
+    color: var(--text-light) !important;
+    z-index: 3 !important; 
+}
+
+
+/* إخفاء تأثيرات 3D الثقيلة على الموبايل (نصيحة الأداء) */
+/* تستهدف الأجهزة التي تعمل باللمس فقط */
+@media (pointer: coarse) {
+    .cta-button { transition: all 0.3s ease; } 
+    /* تقليل حركة التحويم على أجهزة اللمس */
+    .cta-button:hover { transform: translateY(-5px) scale(1.08); }
+}

@@ -1,0 +1,193 @@
+/* ============================================= */
+/* dark-mode.css: أنماط الوضع الداكن المصححة (شاملة) */
+/* ============================================= */
+
+/* 1. إعادة تعريف متغيرات الألوان عند تفعيل الوضع الداكن */
+/* هذا القسم هو مفتاح التغيير الشامل لكل عنصر يستخدم هذه المتغيرات */
+html.dark {
+    /* **إعادة تعريف ألوان الثيم الأساسية** */
+    --primary-color: #79a6d9;        /* اللون الأساسي (الأزرق الداكن) يصبح فاتحاً */
+    --secondary-color: #fec107;      /* الأصفر البارز (يبقى كما هو للتمييز) */
+    --accent-color: #44b694;         /* الأخضر البارز */
+    
+    /* **إعادة تعريف ألوان الخلفيات والنصوص** */
+    --text-color: #e4e6eb;           /* لون النص الأساسي يصبح فاتحاً */
+    --bg-color: #121212;             /* خلفية الجسم الرئيسية تصبح داكنة */
+
+    /* إضافة متغيرات جديدة لخلفيات العناصر الداخلية (التي كانت بيضاء ثابتة) */
+    --bg-card: #1e1e1e;              /* خلفية الحاويات والبطاقات تصبح داكنة */
+    --bg-light: #2c2c2c;             /* خلفية العناصر الفاتحة (مثل FAQ و Testimonials) */
+    --shadow-color-dark: rgba(255, 255, 255, 0.08); /* ظل فاتح للوضع الداكن */
+}
+
+
+/* 2. تطبيق التغييرات على العناصر التي لم تستخدم المتغيرات أو تحتاج لضبط خاص */
+
+/* الحاوية الرئيسية (container) التي كانت تستخدم #fff ثابتة */
+html.dark .container { 
+    background-color: var(--bg-card) !important; /* نضمن تجاوز اللون الثابت #fff */
+    box-shadow: 0 4px 20px var(--shadow-color-dark);
+}
+
+/* رأس الصفحة (Header) */
+html.dark header {
+    background: var(--bg-card); /* يصبح لون داكن ثانوي */
+    color: var(--text-color); /* لون النص يصبح فاتحاً */
+    box-shadow: 0 4px 15px var(--shadow-color-dark);
+}
+html.dark header h1 { 
+    color: var(--secondary-color); /* يبقى أصفر */ 
+}
+html.dark nav a { 
+    color: var(--text-color); /* لون الروابط يصبح فاتحاً */
+}
+html.dark nav a:hover {
+    color: var(--accent-color);
+}
+html.dark nav a::after {
+    background: var(--accent-color);
+}
+
+/* قسم الأبطال (Hero) - يجب تعديل لون الـ background overlay */
+html.dark .hero-text { 
+    background: rgba(30, 30, 30, 0.8); /* يصبح غطاء داكن */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+html.dark .hero-text h2, 
+html.dark .hero-text p {
+    color: var(--text-color);
+}
+
+/* الأزرار (Buttons) */
+/* .btn-register يستخدم الآن ألوان داكنة للنص */
+html.dark .btn-register { 
+    color: var(--bg-card); /* نص داكن داخل زر فاتح */
+}
+
+/* السلايدر (Testimonials/Instructors) */
+html.dark .testimonials-slider, 
+html.dark .instructors-slider {
+    background: var(--bg-light); /* يستخدم لون خلفية فاتح قليلاً في الداكن */
+    box-shadow: 0 3px 12px var(--shadow-color-dark);
+}
+
+/* الأسئلة الشائعة (FAQ) */
+html.dark .faq-question {
+  background: var(--bg-light);
+  color: var(--text-color);
+  box-shadow: 0 2px 5px var(--shadow-color-dark);
+}
+html.dark .faq-question:hover {
+  background: #3a3a3a;
+  box-shadow: 0 4px 8px var(--shadow-color-dark);
+}
+html.dark .faq-answer-content {
+  background: var(--bg-card);
+}
+
+/* قسم الشهادة */
+html.dark .certificate-section img { 
+    border-color: var(--primary-color); 
+    box-shadow: 0 4px 15px var(--shadow-color-dark);
+}
+
+
+/* قسم التذييل (Footer) */
+html.dark footer {
+  background: #0d0d0d;
+  color: var(--text-color);
+}
+html.dark .footer-links a, 
+html.dark .footer-social a { 
+    color: var(--text-color); 
+}
+html.dark .footer-links a:hover, 
+html.dark .footer-social a:hover { 
+    color: var(--accent-color); 
+}
+
+/* 3. تنسيق مفتاح التبديل (Toggle Switch) */
+
+.toggle-container input:checked + .switch {
+  background-color: var(--accent-color); /* استخدام لون التمييز */
+}
+/* تنسيق السويتش في الوضع الداكن */
+html.dark .switch {
+    background-color: #444; 
+}
+html.dark input:checked + .switch {
+    background-color: var(--secondary-color); /* لون التبديل النشط يصبح أصفر */
+}
+html.dark input:checked + .switch::before {
+    background-color: var(--bg-card); /* لون الدائرة يصبح داكناً */
+}
+
+
+/* ============================================= */
+/* تصميم السويتش (لتحويل checkbox إلى زر منزلق) */
+/* ============================================= */
+
+/* حاوية الزر المنزلق */
+.toggle-container {
+  position: relative;
+  width: 60px; /* العرض */
+  height: 34px; /* الارتفاع */
+  display: inline-block;
+  /* (مهم) يمكن إضافة هذا في الهيدر ليكون بجانب الروابط */
+  margin-right: 15px; 
+}
+
+/* إخفاء مربع الاختيار الأصلي */
+.toggle-container input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* الجزء الخلفي من الزر (المسار) */
+.switch {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc; /* لون المسار غير النشط (الفاتح) */
+  border-radius: 34px;
+  transition: 0.4s;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* الدائرة المنزلقة (الثمب) */
+.switch::before {
+  content: "";
+  position: absolute;
+  height: 26px;
+  width: 26px;
+  left: 4px; /* مسافة من اليسار */
+  bottom: 4px; /* مسافة من الأسفل */
+  background-color: white; /* لون الدائرة في الوضع الفاتح */
+  border-radius: 50%;
+  transition: 0.4s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* حالة التفعيل (الوضع الفاتح -> الوضع الداكن) */
+input:checked + .switch {
+  background-color: var(--primary-color); /* لون المسار عند التفعيل (الأزرق الأساسي) */
+}
+
+input:checked + .switch::before {
+  transform: translateX(26px); /* تحريك الدائرة لليمين */
+}
+
+/* ------------------------------------------- */
+/* أنماط السويتش في الوضع الداكن (لتغيير الألوان عند التبديل) */
+/* هذه الأنماط يجب أن تكون في dark-mode.css أو في نهايته */
+
+html.dark .switch {
+    background-color: #444; /* لون مسار السويتش في الوضع الداكن */
+}
+html.dark input:checked + .switch {
+    background-color: var(--secondary-color); /* لون المسار عند التفعيل في الوضع الداكن (الأصفر) */
+}
+html.dark input:checked + .switch::before {
+    background-color: var(--bg-card); /* لون الدائرة الداكن */
+}

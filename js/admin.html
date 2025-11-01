@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة إدارة المدونة</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+    :root {
+        --primary-color: #007bff;
+        --secondary-color: #1abc9c;
+        --text-color: #333;
+        --light-gray: #f2f4f6;
+        --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+    body { font-family: Tahoma, sans-serif; margin: 0; padding: 0; background: var(--light-gray); color: var(--text-color); }
+    .container { width: 90%; max-width: 1200px; margin: 20px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: var(--shadow); }
+    h1 { color: var(--primary-color); text-align: center; margin-bottom: 30px; }
+    
+    /* الفورم */
+    form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 30px; }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group.full-width { grid-column: 1 / -1; }
+    label { margin-bottom: 8px; font-weight: bold; color: var(--secondary-color); }
+    input[type="text"], input[type="url"], textarea, select {
+        padding: 10px 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--primary-color); outline: none; }
+    textarea { resize: vertical; min-height: 150px; }
+    
+    /* الأزرار */
+    .btn { padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: background-color 0.3s; }
+    .btn-primary { background-color: var(--primary-color); color: #fff; }
+    .btn-primary:hover { background-color: #0056b3; }
+    .btn-danger { background-color: #dc3545; color: #fff; }
+    .btn-danger:hover { background-color: #c82333; }
+    .btn-success { background-color: var(--secondary-color); color: #fff; }
+    .btn-success:hover { background-color: #159c82; }
+    
+    /* جدول المقالات */
+    .table-responsive { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 12px 15px; text-align: right; border-bottom: 1px solid #eee; font-size: 0.95rem; }
+    th { background-color: var(--light-gray); color: var(--secondary-color); }
+    tr:hover { background-color: #f9f9f9; }
+    
+    .actions button { margin-left: 5px; }
+    
+    /* الإشعارات */
+    .alert { padding: 15px; margin-bottom: 20px; border-radius: 6px; font-weight: bold; }
+    .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .alert-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+    /* Media Queries */
+    @media (max-width: 768px) {
+        form { grid-template-columns: 1fr; }
+        .form-group.full-width { grid-column: auto; }
+        .container { padding: 20px; }
+        table th, table td { padding: 10px 8px; font-size: 0.9rem; }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>لوحة إدارة المدونة</h1>
+    
+    <form id="post-form">
+        <input type="hidden" id="postId" value="">
+        
+        <div class="form-group">
+            <label for="postTitle">العنوان</label>
+            <input type="text" id="postTitle" name="العنوان" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="postSection">القسم (الرئيسي)</label>
+            <select id="postSection" name="القسم" required>
+                </select>
+        </div>
+        
+        <div class="form-group full-width">
+            <label for="postSummary">الملخص</label>
+            <textarea id="postSummary" name="الملخص" rows="3" required></textarea>
+        </div>
+        
+        <div class="form-group full-width">
+            <label for="postImage">رابط صورة الغلاف (URL)</label>
+            <input type="url" id="postImage" name="صورة_الغلاف" required>
+        </div>
+
+        <div id="extra-categories-container" class="form-group full-width" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            </div>
+
+        <div class="form-group full-width">
+            <label for="postContent">المحتوى الكامل (يدعم HTML مثل &lt;p&gt; و &lt;h2&gt;)</label>
+            <textarea id="postContent" name="المحتوى_الكامل" rows="10" required></textarea>
+        </div>
+
+        <div class="form-group full-width" style="text-align: right;">
+            <button type="submit" class="btn btn-primary" id="submitButton">إضافة مقال جديد</button>
+            <button type="button" class="btn btn-danger" id="cancelButton" style="display:none;">إلغاء التعديل</button>
+        </div>
+    </form>
+    
+    <h2>المقالات الحالية</h2>
+    <div id="response-message" class="alert" style="display:none;"></div>
+    <div class="table-responsive">
+        <table id="posts-table">
+            <thead>
+                <tr>
+                    <th>المعرف</th>
+                    <th>العنوان</th>
+                    <th>القسم</th>
+                    <th>التاريخ</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td colspan="5" style="text-align: center;">جارٍ تحميل البيانات...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // ** رابط Web App API الذي تم نشره **
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwT35WX1nFwzldgZoB9jgDJjF5WDXLyl_XzqaYrhSNPHffGDmgyrh1uJBvvNuLtDQ37Wg/exec'; 
+
+    // العناصر الأساسية
+    const postForm = document.getElementById('post-form');
+    const postsTableBody = document.querySelector('#posts-table tbody');
+    const responseMessage = document.getElementById('response-message');
+    const submitButton = document.getElementById('submitButton');
+    const cancelButton = document.getElementById('cancelButton');
+    const postSectionSelect = document.getElementById('postSection');
+    const extraCategoriesContainer = document.getElementById('extra-categories-container');
+
+    // العناوين الأساسية للحقول الثابتة
+    const CORE_HEADERS = ['المعرف', 'العنوان', 'الملخص', 'القسم', 'صورة_الغلاف', 'التاريخ', 'المحتوى_الكامل'];
+    let allCategories = []; // لتخزين جميع أسماء الأعمدة
+
+    // ----------------------------------------------------
+    // دالة مساعدة لإنشاء طلب XHR (محدثة لتدعم POST)
+    // ----------------------------------------------------
+    function sendApiRequest(method, url, data = null) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open(method, url);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    try {
+                        resolve(JSON.parse(xhr.responseText));
+                    } catch (e) {
+                        reject({ status: 'error', message: 'فشل في تحليل استجابة الخادم.' });
+                    }
+                } else {
+                    reject({ status: 'error', message: `فشل الاتصال: ${xhr.status} ${xhr.statusText}` });
+                }
+            };
+            xhr.onerror = function() {
+                reject({ status: 'error', message: 'فشل الاتصال بالشبكة.' });
+            };
+            
+            if (data) {
+                // للتعامل مع POST
+                xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+                xhr.send(JSON.stringify(data));
+            } else {
+                xhr.send();
+            }
+        });
+    }
+
+    // ----------------------------------------------------
+    // وظائف عرض حالة العملية
+    // ----------------------------------------------------
+    function showMessage(status, message) {
+        responseMessage.textContent = message;
+        responseMessage.className = `alert alert-${status}`;
+        responseMessage.style.display = 'block';
+        setTimeout(() => {
+            responseMessage.style.display = 'none';
+        }, 5000);
+    }
+    
+    function clearForm() {
+        postForm.reset();
+        document.getElementById('postId').value = '';
+        submitButton.textContent = 'إضافة مقال جديد';
+        submitButton.classList.remove('btn-success');
+        submitButton.classList.add('btn-primary');
+        cancelButton.style.display = 'none';
+    }
+
+    // ----------------------------------------------------
+    // وظيفة بناء عناصر الفورم الإضافية
+    // ----------------------------------------------------
+    function buildFormElements(categories) {
+        allCategories = categories;
+        
+        // 1. ملء قائمة القسم (الرئيسي)
+        // الفئات تبدأ من العنصر 7 فما بعد
+        const postSections = categories.slice(7).filter(cat => cat.trim().length > 0);
+        postSectionSelect.innerHTML = '<option value="">-- اختر قسم المقال --</option>';
+        postSections.forEach(cat => {
+            postSectionSelect.innerHTML += `<option value="${cat}">${cat}</option>`;
+        });
+        
+        // 2. بناء حقول الفئات الإضافية (نصوص)
+        extraCategoriesContainer.innerHTML = '';
+        postSections.forEach(cat => {
+            const div = document.createElement('div');
+            div.className = 'form-group';
+            div.innerHTML = `
+                <label for="cat-${cat}">${cat} (نص ترويجي/ملخص)</label>
+                <input type="text" id="cat-${cat}" name="${cat}">
+            `;
+            extraCategoriesContainer.appendChild(div);
+        });
+    }
+
+
+    // ----------------------------------------------------
+    // وظيفة جلب البيانات وعرض الجدول (GET)
+    // ----------------------------------------------------
+    async function loadPosts() {
+        postsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">جارٍ تحميل البيانات...</td></tr>';
+        
+        try {
+            const data = await sendApiRequest('GET', WEB_APP_URL);
+            
+            if (data.status === 'success') {
+                
+                // بناء عناصر الفورم أولاً باستخدام الفئات
+                if (data.categories) buildFormElements(data.categories);
+                
+                postsTableBody.innerHTML = ''; // تفريغ رسالة التحميل
+                
+                if (data.posts.length === 0) {
+                    postsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">لا يوجد مقالات حالياً.</td></tr>';
+                    return;
+                }
+
+                data.posts.forEach(post => {
+                    const row = postsTableBody.insertRow();
+                    let date = post['التاريخ'] ? new Date(post['التاريخ']).toLocaleDateString('ar-EG') : '---';
+                    
+                    row.innerHTML = `
+                        <td>${post['المعرف']}</td>
+                        <td>${post['العنوان']}</td>
+                        <td>${post['القسم'] || 'غير مصنف'}</td>
+                        <td>${date}</td>
+                        <td class="actions">
+                            <button class="btn btn-success btn-sm" onclick="editPost(${post['المعرف']})"><i class="fas fa-edit"></i> تعديل</button>
+                            <button class="btn btn-danger btn-sm" onclick="deletePost(${post['المعرف']})"><i class="fas fa-trash"></i> حذف</button>
+                        </td>
+                    `;
+                });
+            } else {
+                showMessage('danger', `خطأ في تحميل المقالات: ${data.message}`);
+                postsTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: red;">فشل التحميل: ${data.message}</td></tr>`;
+            }
+        } catch (error) {
+            showMessage('danger', `فشل الاتصال بـ API: ${error.message}`);
+            postsTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: red;">فشل الاتصال: ${error.message}</td></tr>`;
+        }
+    }
+
+    // ----------------------------------------------------
+    // وظيفة معالجة إضافة/تعديل مقال (POST)
+    // ----------------------------------------------------
+    async function handlePostSubmit(event) {
+        event.preventDefault();
+        
+        const postId = document.getElementById('postId').value;
+        const action = postId ? 'updatePost' : 'addPost';
+        
+        // بناء كائن البيانات للإرسال
+        const postData = { action: action };
+        if (postId) postData.postId = parseInt(postId); // إضافة المعرف للتعديل
+
+        // جمع البيانات من جميع الحقول (بما في ذلك الحقول الديناميكية)
+        const formElements = postForm.elements;
+        for (let i = 0; i < formElements.length; i++) {
+            const element = formElements[i];
+            if (element.name && element.value) {
+                // تجنب إرسال حقل المعرف (لأنه تم إضافته بالفعل)
+                if (element.name !== 'postId' && !['submitButton', 'cancelButton'].includes(element.id)) {
+                     postData[element.name] = element.value;
+                }
+            } else if (element.name && allCategories.includes(element.name) && element.value === '') {
+                // لضمان إرسال الحقول الإضافية الفارغة كنص فارغ
+                postData[element.name] = '';
+            }
+        }
+        
+        // التحقق من الحقول الأساسية
+        if (!postData['العنوان'] || !postData['القسم'] || !postData['المحتوى_الكامل']) {
+            showMessage('danger', 'الرجاء ملء الحقول الأساسية (العنوان، القسم، المحتوى الكامل).');
+            return;
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = postId ? 'جارٍ التعديل...' : 'جارٍ الإضافة...';
+
+        try {
+            // إرسال البيانات كـ POST
+            const result = await sendApiRequest('POST', WEB_APP_URL, postData);
+            
+            if (result.status === 'success') {
+                showMessage('success', result.message || (postId ? 'تم تعديل المقال بنجاح!' : 'تم إضافة المقال بنجاح!'));
+                clearForm();
+                loadPosts(); // تحديث الجدول
+            } else {
+                showMessage('danger', result.message || 'فشل في العملية.');
+            }
+        } catch (error) {
+            showMessage('danger', `خطأ في إرسال الطلب: ${error.message}`);
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = postId ? 'تعديل المقال' : 'إضافة مقال جديد';
+        }
+    }
+    
+    // ----------------------------------------------------
+    // وظيفة ملء الفورم لغرض التعديل (Edit)
+    // ----------------------------------------------------
+    window.editPost = async function(postId) {
+        // جلب مقال واحد بالـ ID
+        try {
+            const url = `${WEB_APP_URL}?action=getPost&postId=${postId}`;
+            const result = await sendApiRequest('GET', url);
+            
+            if (result.status === 'success' && result.post) {
+                const post = result.post;
+                
+                // تعبئة حقول النموذج
+                document.getElementById('postId').value = post['المعرف'];
+                document.getElementById('postTitle').value = post['العنوان'];
+                document.getElementById('postSummary').value = post['الملخص'];
+                document.getElementById('postImage').value = post['صورة_الغلاف'];
+                document.getElementById('postContent').value = post['المحتوى_الكامل'];
+                document.getElementById('postSection').value = post['القسم'];
+
+                // تعبئة حقول الفئات الإضافية
+                allCategories.slice(7).forEach(cat => {
+                    const inputElement = document.getElementById(`cat-${cat}`);
+                    if (inputElement && post.hasOwnProperty(cat)) {
+                        inputElement.value = post[cat] || '';
+                    }
+                });
+                
+                // تعديل مظهر زر الإرسال
+                submitButton.textContent = 'تعديل المقال';
+                submitButton.classList.remove('btn-primary');
+                submitButton.classList.add('btn-success');
+                cancelButton.style.display = 'inline-block';
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                showMessage('danger', result.message || 'فشل في جلب بيانات المقال للتعديل.');
+            }
+        } catch (error) {
+            showMessage('danger', `خطأ: ${error.message}`);
+        }
+    };
+
+    // ----------------------------------------------------
+    // وظيفة حذف مقال (Delete)
+    // ----------------------------------------------------
+    window.deletePost = async function(postId) {
+        if (!confirm('هل أنت متأكد من حذف هذا المقال؟ لا يمكن التراجع عن هذا الإجراء.')) return;
+        
+        try {
+            const result = await sendApiRequest('POST', WEB_APP_URL, { 
+                action: 'deletePost', 
+                postId: parseInt(postId) 
+            });
+            
+            if (result.status === 'success') {
+                showMessage('success', result.message || 'تم حذف المقال بنجاح.');
+                loadPosts(); // تحديث الجدول
+            } else {
+                showMessage('danger', result.message || 'فشل في حذف المقال.');
+            }
+        } catch (error) {
+            showMessage('danger', `خطأ في طلب الحذف: ${error.message}`);
+        }
+    };
+
+
+    // ----------------------------------------------------
+    // ربط الأحداث وبدء التحميل
+    // ----------------------------------------------------
+    postForm.addEventListener('submit', handlePostSubmit);
+    cancelButton.addEventListener('click', clearForm);
+    
+    // بدء تحميل المقالات عند تحميل الصفحة
+    loadPosts();
+</script>
+</body>
+</html>

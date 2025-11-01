@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج التسجيل</title>
+    <meta property="og:title" content="مؤسسة كن أنت للتدريب والتأهيل" />
+    <meta property="og:description" content="نصنع قادة الغد من خلال المعرفة. استثمر في نفسك، واستثمر في مستقبلك." />
+    <meta property="og:image" content="https://skillia.netlify.app/images/photo.jpg" />
+    <meta property="og:url" content="https://sklilia.netlify.app/Trainees_Records" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ar_AR" />
+    
+    
+  <meta name="description" content="مؤسسة كن أنت للتدريب والتأهيل. نقدم دورات متخصصة في تطوير الذات، الأمن السيبراني، إدارة الأعمال، والمزيد.">
+  <meta name="keywords" content="دورات تدريبية، مؤسسة كن أنت، تطوير الذات، اليمن، صنعاء، دورات أونلاين، حفظ القرآن">
+
+    <link rel="stylesheet" href="assets/fonts/tajawal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <style>
+        /* ... (جميع أنماط CSS السابقة) ... */
+        :root {
+            --primary-color: #011f4b;
+            --secondary-color: #fec107;
+            --accent-color: #5ad5b0;
+            --text-color: #212529;
+            --bg-color: #f8f9fa;
+            --main-font: 'Tajawal', sans-serif; 
+        }
+
+        body {
+            font-family: var(--main-font); 
+            padding:25px;
+            background: linear-gradient(to bottom, #f0fdfa, #d1fae5); 
+            color:var(--text-color);
+            line-height:1.6;
+            font-weight: 400; 
+        }
+        h1 { 
+            color:var(--primary-dark); 
+            font-weight: 800; 
+            margin-bottom:20px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1); 
+            font-family: var(--main-font);
+        }
+        h2 { 
+            border-bottom:2px solid var(--accent-color); 
+            padding-bottom:8px; 
+            margin-bottom:30px; 
+            color:var(--primary-dark); 
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            font-family: var(--main-font);
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: linear-gradient(135deg, #e0f7f2, #ffffff);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid var(--accent-color);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.8s ease-in-out;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-header h2 {
+            color: var(--primary-color);
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .form-header h2 .sparkle {
+            animation: sparkle 1s infinite alternate;
+            display: inline-block;
+        }
+
+        @keyframes sparkle {
+            from { transform: scale(1); opacity: 0.8; }
+            to { transform: scale(1.2); opacity: 1; }
+        }
+
+        .form-header p {
+            color: #555;
+            font-size: 16px;
+        }
+
+        .progress-bar-container {
+            height: 8px;
+            background-color: #ccc;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent-color);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon input,
+        .input-with-icon select {
+            width: 100%;
+            padding: 12px 15px;
+            padding-left: 45px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-sizing: border-box;
+            font-family: var(--main-font); 
+            color: var(--text-color); 
+        }
+        
+        .input-with-icon select:valid {
+            color: var(--text-color);
+        }
+
+        .input-with-icon input:focus, .input-with-icon select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(1, 31, 75, 0.15);
+        }
+
+        .input-with-icon .floating-label {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            font-weight: 700;
+            color: #888;
+            font-size: 15px;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-with-icon input:focus + .floating-label,
+        .input-with-icon input:not(:placeholder-shown) + .floating-label,
+        .input-with-icon select:focus + .floating-label,
+        .input-with-icon select:not(:placeholder-shown):valid + .floating-label, 
+        .input-with-icon select:not([value=""]) + .floating-label {
+            top: -10px;
+            right: 0;
+            font-size: 12px;
+            color: var(--primary-color);
+            background: linear-gradient(135deg, #e0f7f2, #ffffff);
+            padding: 0 5px;
+        }
+        
+        .input-with-icon select:valid + .floating-label {
+            top: -10px;
+            right: 0;
+            font-size: 12px;
+            color: var(--primary-color);
+            background: linear-gradient(135deg, #e0f7f2, #ffffff);
+            padding: 0 5px;
+        }
+
+
+        .input-with-icon .icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            pointer-events: none;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .input-with-icon input:focus, .input-with-icon select:focus {
+            padding-left: 45px;
+        }
+
+        .input-with-icon .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .field-instructions {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 5px;
+            padding-right: 5px;
+        }
+
+
+        .input-with-icon input.is-invalid, .input-with-icon select.is-invalid {
+            border-color: #dc3545;
+            animation: shake 0.5s;
+        }
+
+        button {
+            background: linear-gradient(45deg, var(--secondary-color), #ff9800);
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s, background-color 0.3s, opacity 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover:not(:disabled) {
+            transform: scale(1.03);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .form-container button {
+            position: relative;
+            overflow: hidden; 
+            transition: all 0.3s ease;
+        }
+
+        .form-container button.loading .btn-text {
+            visibility: hidden; 
+        }
+
+        .form-container button.loading .loader {
+            opacity: 1; 
+        }
+
+        .form-container button .loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-color); 
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            opacity: 0; 
+            transition: opacity 0.3s ease;
+        }
+
+        #form-message {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-top: 15px;
+            text-align: center;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #form-message.success {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+
+        #form-message.error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        /* --- النمط الجديد لرابط الشروط والأحكام --- */
+        #terms-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: var(--primary-color);
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+        #terms-link:hover {
+            color: var(--accent-color);
+        }
+        /* ------------------------------------------- */
+
+    </style>
+    <script src="url_longr.js"></script> 
+</head>
+<body>
+
+<div class="form-container">
+    <div class="form-header">
+        <h2 id="form-main-title">انطلق نحو التميز <span class="sparkle">✨</span> وسجّل الآن</h2>
+        <p>املأ البيانات بدقة للانضمام إلى رحلتنا التعليمية.</p>
+    </div>
+
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <form id="form" method="post">
+        
+        <div class="input-group" id="course-name-group">
+            <div class="input-with-icon">
+                <select name="CourseName" id="course-name"> 
+                    <option value="" disabled selected>... جاري تحميل الدورات</option>
+                </select>
+                <label class="floating-label" for="course-name">اختر الدورة</label>
+                <i class="icon fas fa-graduation-cap"></i>
+            </div>
+            <div class="error-message" id="course-name-error">الرجاء اختيار الدورة التي تريد التسجيل بها.</div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-with-icon">
+                <input type="text" name="name" id="name" placeholder=" " required autofocus autocapitalize="words">
+                <label class="floating-label" for="name">الاسم الثلاثي الكامل</label>
+                <i class="icon fas fa-user"></i>
+            </div>
+            <div class="error-message" id="name-error">الرجاء إدخال الاسم الثلاثي الكامل.</div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-with-icon">
+                <select name="gender" id="gender" required>
+                    <option value="" disabled selected>الجنس</option>
+                    <option value="ذكر">ذكر</option>
+                    <option value="أنثى">أنثى</option>
+                </select>
+                <label class="floating-label" for="gender">الجنس</label>
+                <i class="icon fas fa-venus-mars"></i>
+            </div>
+            <div class="error-message" id="gender-error">الرجاء اختيار الجنس.</div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-with-icon">
+                <input type="number" name="age" id="age" placeholder=" " inputmode="numeric" required min="8" max="99">
+                <label class="floating-label" for="age">العمر</label>
+                <i class="icon fas fa-birthday-cake"></i>
+            </div>
+            <div class="error-message" id="age-error">يجب أن لا يقل العمر عن 8 سنوات.</div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-with-icon">
+                <select name="country" id="country" required>
+                    <option value="" disabled selected>اختر البلد</option>
+                </select>
+                <label class="floating-label" for="country">البلد</label>
+                <i class="icon fas fa-globe"></i>
+            </div>
+            <div class="error-message" id="country-error">الرجاء اختيار اسم البلد.</div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-with-icon">
+                <input type="tel" name="phone" id="phone" placeholder=" " pattern="^\+\d{8,15}$" inputmode="tel" required>
+                <label class="floating-label" for="phone">رقم الواتساب</label>
+                <i class="icon fab fa-whatsapp"></i>
+            </div>
+            <div class="error-message" id="phone-error">الرجاء إدخال رقم هاتف صحيح (مثال: +966...).</div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-with-icon">
+                <input type="email" name="email" id="email" placeholder=" " required autocapitalize="none">
+                <label class="floating-label" for="email">البريد الإلكتروني</label>
+                <i class="icon fas fa-envelope"></i>
+            </div>
+            <div class="error-message" id="email-error">الرجاء إدخال بريد إلكتروني صحيح.</div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-with-icon">
+                <input type="text" name="telegram" id="telegram" placeholder=" " autocapitalize="none">
+                <label class="floating-label" for="telegram">معرّف حساب تيليجرام (اختياري)</label>
+                <i class="icon fab fa-telegram-plane"></i>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-with-icon">
+                <input 
+                    type="text" 
+                    name="marketer_id" 
+                    id="marketer_id" 
+                    placeholder=" " 
+                    required
+                    maxlength="8"
+                    pattern="[A-Z]{6}\d{2}"
+                    oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8);"
+                >
+                <label class="floating-label" for="marketer_id">كود التخفيض</label>
+                <i class="icon fas fa-id-badge"></i>
+            </div>
+            <div class="error-message" id="marketer_id-error">يجب أن يكون المعرّف مكوناً من 6 حروف إنجليزية كبيرة متبوعة برقمين بالضبط (مثال: TRAINE01).</div>
+            <div class="field-instructions">
+                🎯 تنبيه مهم:
+
+يجب أن يتكوّن كود التخفيض من 8 أحرف بالضبط:
+6 أحرف كبيرة (A–Z) + رقمين (0–9).
+
+إذا لم يكن لديك كود، لا تقلق! استخدم الكود الافتراضي: TTTTTT11 ✨
+            </div>
+        </div>
+                	
+        <input type="hidden" name="registrationDate" id="registration-date-input">
+    	<input type="hidden" name="status" value="N">
+
+
+        <button type="submit" id="submit-btn" disabled>
+            <span class="btn-text">أرسل بياناتك وسجل الآن</span>
+            <div class="loader"></div>
+        </button>
+        
+        <a href="terms-conditions/index.html" target="_blank" id="terms-link">
+            الشروط والأحكام
+        </a>
+        </form>
+
+    <div id="form-message" style="display:none;"></div>
+</div>
+
+<script>
+    const arabCountries = [
+        "فلسطين", "الأردن", "سوريا", "العراق", "لبنان", "مصر", "السودان", "ليبيا", "تونس", 
+        "الجزائر", "المغرب", "موريتانيا", "الصومال", "جيبوتي", "جزر القمر", "السعودية", 
+        "اليمن", "الإمارات", "الكويت", "البحرين", "قطر", "سلطنة عمان"
+    ];
+    
+    // 🛠️ وظيفة loadCourses (لتحميل الدورات يدوياً عند عدم وجود رابط)
+    const loadCourses = async (courseSelect, submitBtn, formMessage) => {
+        let coursesData = [];
+        try {
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+
+            // 🚨 COURSES_API_URL يجب أن يكون مُعرّفاً
+            const response = await fetch(COURSES_API_URL); 
+            const data = await response.json();
+            
+            if (Array.isArray(data)) {
+                coursesData = data;
+            } else if (data && Array.isArray(data.courses)) {
+                coursesData = data.courses;
+            } else {
+                throw new Error('بيانات الدورات غير صالحة.');
+            }
+
+            courseSelect.innerHTML = '<option value="" disabled selected>اختر الدورة المناسبة لك</option>';
+
+            if (coursesData.length > 0) {
+                coursesData.forEach(courseName => {
+                    const option = document.createElement('option');
+                    option.value = courseName;
+                    option.textContent = courseName;
+                    courseSelect.appendChild(option);
+                });
+            } else {
+                courseSelect.innerHTML = '<option value="" disabled selected>❌ لا توجد دورات متاحة حاليًا</option>';
+            }
+
+        } catch (error) {
+            console.error('فشل تحميل الدورات:', error);
+            courseSelect.innerHTML = '<option value="" disabled selected>❌ فشل تحميل الدورات. يرجى تحديث الصفحة.</option>';
+            formMessage.style.display = 'block';
+            formMessage.className = 'error';
+            formMessage.textContent = '❌ تعذر تحميل قائمة الدورات من الخادم. يرجى التحقق من رابط API.';
+        } finally {
+            submitBtn.classList.remove('loading');
+            // تأكد من تفعيل زر الإرسال فقط إذا تم تحميل الدورات وتوفر خيارات
+            if (courseSelect.options.length > 1 && courseSelect.options[1].value !== '❌ لا توجد دورات متاحة حاليًا') {
+                submitBtn.disabled = false;
+            }
+        }
+    };
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('form');
+        const submitBtn = document.getElementById('submit-btn');
+        const formMessage = document.getElementById('form-message');
+        const inputs = document.querySelectorAll("#form input:not([type='hidden']), #form select");
+        const progressBar = document.getElementById('progress-bar');
+        const formMainTitle = document.getElementById('form-main-title');
+        const courseSelect = document.getElementById('course-name'); 
+        const ageInput = document.getElementById('age'); 
+        const courseSelectGroup = document.getElementById('course-name-group'); // 🚨 العنصر الجديد
+        let totalInputs = inputs.length; // 🚨 متغير لتتبع عدد الحقول الإجمالي
+
+        
+        // رسائل الخطأ الخاصة بالعمر المبالغ فيه (نفس الرسائل السابقة)
+        const ageTooHighErrorMessages = [
+            "يا سلام! ✨ أنت نجم من زمن قديم — النظام يقف عند 99 عام، لكن احترامنا لك بلا حدود 🤗.",
+            "ما شاء الله عليك! 🌟 خبرة وحكايات لا تُقَدَّر... النظام يقبل حتى 99 عام ، والباقي لنا فخر به 👏.",
+            "ضحكتنا من فرط الإعجاب 😄 — والله لو عندنا خانة للأبطال، تملأها أنت، والنظام عنده حد 99 عام بس.",
+            "يا مرحباً بالأسطورة! 🏅 النظام يوقف عند 99 عام، لكن تحياتنا تمتد أكثر من صفحة سجل 🤗.",
+            "واو! ✨ مثل هذا العمر يستحق وصفة شاي وكرسي مريح — النظام يوقف عند 99 عام ، ومحبتنا لك بلا سقف ☕️.",
+            "هههه 😄 واضح إنك خزنة حكمة! عندنا حد 99 عام، لكن الكاريزما محفوظة لك دائماً 🤝.",
+            "يا سلام على التجربة! 🌿 سجل النظام 99 عام كحد أعلى، لكن شهادتك في الحياة لا تُقَيَّم.",
+            "ما نملك سوى كلمة: احترام 🙏 — النظام يحدد 99 عام ، لكن تقديرنا لك أبداً ما ينتهي.",
+            "أنت تاريخ مكتوب بلطف ⭐️ — النظام يتعامل مع الأرقام حتى 99 عام، لكن تحياتنا وأمنياتنا لك تدوم.",
+            "ضحكتنا لك من القلب 😄 — العمر كبير جدًا، والنظام عنده سقف 99 عام، لكن محبتنا لك بلا حدود.",
+            "يا له من مشوار! 🚶‍♂️🚶‍♀️ النظام يطلب إدخال حتى 99 عام، والباقي نعتبره جزء من تاريخ جميل.",
+            "يا مرحبا بالحكمة! 🦉 سجل النظام 99 عام ، لكن تجربتك في الحياة دروس للجميع.",
+            "أنت رمز للصبر والخبرة 🌟 — النظام يتعامل حتى 99 عام، لكن تقديرنا لك بلا سقف.",
+            "يا سلام على العمر! 🏛️ النظام يحدد 99 عام، لكن حكاياتك وأمجادك محفوظة في قلوبنا.",
+            "مذهل! 😄 النظام يقف عند 99 عام، لكن تاريخك يملأ صفحات الكتب.",
+            "واو! 🌟 هذا العمر يستحق احتفالًا يوميًا — النظام عنده حد 99 عام ، لكن احترامنا لك أبدي.",
+            "أنت نجم مضيء ✨ — النظام يقرأ حتى 99 عام، والباقي مجرد سحر الحياة.",
+            "يا له من مشوار! 🚀 النظام يقف عند 99 عام، لكن رحلتك في الحياة لا نهاية لها.",
+            "ضحكتنا من فرط الإعجاب 😄 — العمر أكبر من 99 عام، لكن قلبك مليء بالشباب دائماً.",
+            "يا سلام! 🌿 النظام يطلب إدخال حتى 99 عام ، لكن تقديرنا لك يفوق كل الحدود.",
+            "أنت أسطورة حقيقية 🏅 — النظام يقف عند 99 عام، لكن ذكراك باقية للأبد.",
+            "واو! 😄 خبرة وحكمة بلا حدود — النظام عنده سقف 99 عام، والباقي نحتفل به في قلوبنا.",
+            "يا مرحبا بالحكمة! 🦉 سجل النظام 99 عام ، لكن قصصك ممتدة بلا نهاية.",
+            "أنت رمز الإلهام 🌟 — العمر فوق 99 عام، والنظام عنده حد، لكن روحك تتجاوز كل القوانين.",
+            "يا له من مشوار! 🚶‍♂️🌿 النظام يقف عند 99 عام، لكن رحلتك حياة مليئة بالإبداع.",
+            "ضحكتنا لك من القلب 😄 — العمر كبير، والنظام عنده سقف، لكن محبتنا لك بلا نهاية.",
+            "أنت كنز من الحكمة ✨ — النظام يقرأ حتى 99 عام، والباقي نحتفل به في القلب.",
+            "واو! 🌟 هذه الخبرة لا تُقَيَّم — النظام عنده حد 99 عام، لكن احترامنا لك أبدي.",
+            "يا مرحبا بالأسطورة! 🏛️ العمر أكبر من 99 عام، والنظام يوقف، لكن حكايتك تواصل التألق.",
+            "مذهل! 😄 كل عام منك مليئة بالحكمة — النظام عنده سقف، لكن تقديرنا لك بلا حدود.",
+            "يا سلام على العمر! 🌿 النظام يقف عند 99 عام، لكن تجاربك وقصصك لا تُحصى."
+        ];
+        
+        document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+
+        // تعبئة قائمة الدول العربية
+        const countrySelect = document.getElementById('country');
+        arabCountries.forEach(country => {
+            const option = document.createElement('option');
+            option.value = country;
+            option.textContent = country;
+            countrySelect.appendChild(option);
+        });
+        
+        // 🔍 الحصول على معاملات URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseParam = urlParams.get("course");
+        const marketerIdParam = urlParams.get('marketer_id');
+
+        // 1. فك تشفير اسم الدورة فوراً
+        const courseToSelect = courseParam ? decodeURIComponent(courseParam) : null; 
+
+        // ********** 🟢 آلية التحقق الثنائي (الحل الجذري: الإزالة والاستبدال) **********
+        let isCourseRemoved = false; // 🚨 متغير جديد
+        
+        if (courseToSelect) {
+            
+            // 1. تحديث العنوان الرئيسي
+            formMainTitle.innerHTML = `📘 أنت تسجل الآن في: <span style="color:var(--accent-color);">${courseToSelect}</span>`;
+            
+            // 2. إزالة مجموعة حقل الاختيار الأصلي بالكامل من DOM 🟢
+            if (courseSelectGroup) {
+                courseSelectGroup.remove();
+                isCourseRemoved = true;
+                totalInputs--; // 🚨 تقليل عدد الحقول الإجمالي
+            }
+            
+            // 3. إنشاء حقل إدخال مخفي جديد يحمل القيمة
+            const hiddenCourseInput = document.createElement('input');
+            hiddenCourseInput.type = 'hidden';
+            hiddenCourseInput.name = 'CourseName'; // يجب أن يحمل نفس اسم حقل الاختيار القديم
+            hiddenCourseInput.value = courseToSelect;
+            
+            // 4. إضافته إلى النموذج
+            form.appendChild(hiddenCourseInput);
+            
+            // 5. تفعيل زر الإرسال فوراً
+            submitBtn.disabled = false;
+
+
+        } else {
+            // سيناريو 2: لا يوجد اسم دورة في الرابط (عرض الحقل وتحميل الدورات)
+            // إعادة required يدوياً والتحميل
+            courseSelect.setAttribute('required', 'required');
+            loadCourses(courseSelect, submitBtn, formMessage); 
+        }
+        // *******************************************************************
+         
+        // 🟢 تعبئة حقل marketer_id من الرابط (المنطق كما هو)
+        const marketerIdInput = document.getElementById('marketer_id');
+        
+        if (marketerIdParam && marketerIdInput) {
+            const upperCaseId = marketerIdParam.toUpperCase(); 
+            marketerIdInput.value = upperCaseId;
+            marketerIdInput.readOnly = true; 
+            const fieldInstructions = marketerIdInput.closest('.input-group').querySelector('.field-instructions');
+            if (fieldInstructions) fieldInstructions.style.display = 'none';
+        }
+         
+        // 🛑 كود TTTTTT11 (المنطق كما هو) 🛑
+        if (!marketerIdParam && marketerIdInput) {
+            marketerIdInput.value = 'TTTTTT11';
+            marketerIdInput.readOnly = true; 
+            marketerIdInput.style.backgroundColor = '#f7f7f7';
+            marketerIdInput.style.cursor = 'not-allowed';
+            
+            const fieldInstructions = marketerIdInput.closest('.input-group').querySelector('.field-instructions');
+            if (fieldInstructions) fieldInstructions.style.display = 'none';
+
+            const infoMsg = document.createElement('p');
+            infoMsg.textContent = '✨ تم تطبيق كود التخفيض الافتراضي تلقائيًا';
+            infoMsg.style.color = '#16a34a';
+            infoMsg.style.fontSize = '0.9rem';
+            infoMsg.style.marginTop = '5px';
+            marketerIdInput.closest('.input-group').appendChild(infoMsg);
+        }
+        // 🛑 نهاية الإضافة الخاصة بكود TTTTTT11 🛑
+         
+        // تحديث شريط التقدم 
+        const updateProgress = () => {
+            let filledInputs = 0;
+            
+            // 🚨 تحديث قائمة الحقول المراد فحصها 
+            const currentInputs = document.querySelectorAll("#form input:not([type='hidden']), #form select");
+
+            currentInputs.forEach(input => {
+                // الآن لا داعي لـ isCourseSelectHidden لأننا إما أزلنا الحقل أو تركناه مرئياً
+                if (input.value && input.checkValidity() && input.value !== "") {
+                    filledInputs++;
+                }
+            });
+            
+            // استخدام totalInputs المُعدّل
+            const finalTotalInputs = totalInputs;
+            
+            if (finalTotalInputs <= 0) { 
+                 progressBar.style.width = `100%`;
+                 return;
+            }
+
+            const progress = (filledInputs / finalTotalInputs) * 100;
+            progressBar.style.width = `${progress}%`;
+        };
+        
+        // ... (معالجة أحداث الإدخال و blur كما هي، باستخدام updateProgress الجديد) ...
+        inputs.forEach(input => {
+            const icon = input.closest('.input-with-icon').querySelector('.icon');
+            const errorMessage = input.closest('.input-group').querySelector('.error-message');
+
+            input.addEventListener("input", () => {
+                // ... (منطق التحقق من العمر) ...
+                if (input.id === 'age') {
+                    const ageValue = parseInt(input.value, 10);
+                    if (ageValue > 99) {
+                        input.classList.add('is-invalid');
+                        const randomIndex = Math.floor(Math.random() * ageTooHighErrorMessages.length);
+                        errorMessage.textContent = ageTooHighErrorMessages[randomIndex];
+                        if (errorMessage) errorMessage.style.display = 'block';
+                    } else if (ageValue < 8 && input.value.length > 0) {
+                        input.classList.add('is-invalid');
+                        errorMessage.textContent = "يجب أن لا يقل العمر عن 8 سنوات.";
+                        if (errorMessage) errorMessage.style.display = 'block';
+                    } else {
+                        input.classList.remove('is-invalid');
+                        if (errorMessage) errorMessage.style.display = 'none';
+                    }
+                }
+                // ... (نهاية منطق التحقق من العمر) ...
+
+                if (input.checkValidity() && input.value !== "") {
+                    icon.style.color = "#28a745";
+                } else {
+                    icon.style.color = "var(--primary-color)";
+                }
+                updateProgress();
+            });
+
+            input.addEventListener("blur", () => {
+                const isValid = input.checkValidity();
+                const ageValue = input.id === 'age' ? parseInt(input.value, 10) : null;
+                const isAgeInvalid = input.id === 'age' && (ageValue > 99 || (ageValue < 8 && input.value.length > 0));
+
+                if (!isValid || isAgeInvalid) {
+                    if (input.value !== "") {
+                        input.classList.add('is-invalid');
+                        // ... (تحديث رسائل الخطأ للعمر والمسوق) ...
+                        if (input.id === 'age') {
+                             if (ageValue > 99) {
+                                const randomIndex = Math.floor(Math.random() * ageTooHighErrorMessages.length);
+                                errorMessage.textContent = ageTooHighErrorMessages[randomIndex];
+                            } else if (ageValue < 8) {
+                                errorMessage.textContent = "يجب أن لا يقل العمر عن 8 سنوات.";
+                            }
+                        } else if (input.id === 'marketer_id' && input.value.length !== 8) {
+                            errorMessage.textContent = "يجب أن يكون المعرّف مكوناً من 8 حروف بالضبط (6 حروف إنجليزية كبيرة متبوعة برقمين).";
+                        }
+                        // ... (نهاية تحديث رسائل الخطأ) ...
+                        if (errorMessage) errorMessage.style.display = 'block';
+                    }
+                } else {
+                    input.classList.remove('is-invalid');
+                    if (errorMessage) errorMessage.style.display = 'none';
+                }
+            });
+        });
+
+
+        
+        // معالجة إرسال النموذج
+        form.addEventListener('submit', async (e) => {
+            
+            e.preventDefault(); 
+            
+            // ... (كود التحقق من كود المسوق) ...
+            
+            // 🔍 التحقق من كود المسوّق قبل الإرسال
+            const marketerId = document.getElementById('marketer_id').value.trim();
+
+            try {
+              // 🚨 يجب التأكد من تعريف الدالتين validateMarketerCode و VALIDATION_SCRIPT_URL في ملف validation.js
+              const validationResult = await validateMarketerCode(marketerId, VALIDATION_SCRIPT_URL); 
+
+              if (validationResult.status === 'success') {
+                console.log('✅ كود التخفيض ساري المفعول.');
+              } else if (validationResult.status === 'pending') {
+                alert(validationResult.message);
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+                return;
+              } else {
+                alert(validationResult.message || '❌ كود التخفيض غير صالح.');
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+                return;
+              }
+
+            } catch (error) {
+              alert('حدث خطأ أثناء التحقق من كود التخفيض. يرجى المحاولة لاحقًا.');
+              console.error(error);
+              submitBtn.disabled = false;
+              submitBtn.classList.remove('loading');
+              return;
+            }
+         
+            let isFormValid = form.checkValidity();
+            const ageValue = parseInt(ageInput.value, 10);
+            
+            // تحقق إضافي للعمر
+            if (ageValue > 99 || ageValue < 8) {
+                isFormValid = false;
+            }
+            
+            // التحقق اليدوي من حقل المسوق
+            const marketerIdInput = document.getElementById('marketer_id');
+             if (marketerIdInput && !marketerIdInput.checkValidity()) {
+                 isFormValid = false;
+             }
+             
+            // 🛑 التحقق من حقل الدورة 🛑
+            if (!isCourseRemoved) { // إذا لم يتم إزالة حقل الاختيار (أي أنه مرئي)
+                if (courseSelect.value === "") {
+                    isFormValid = false;
+                }
+            } else {
+                // إذا تم إزالته، فإن الحقل المخفي يحمل القيمة، لذا لا نحتاج للتحقق هنا
+            }
+            // 🛑 نهاية التحقق من حقل الدورة 🛑
+
+
+            if (!isFormValid) {
+                // ... (منطق عرض رسائل الخطأ) ...
+                inputs.forEach(input => {
+                    const errorMessage = input.closest('.input-group').querySelector('.error-message');
+                    
+                    // 🛑 تجاهل حقل الدورة الأصلي إذا تمت إزالته 🛑
+                    if (input.id === 'course-name' && isCourseRemoved) {
+                        return; 
+                    }
+                    
+                    const isValid = input.checkValidity();
+                    const ageValue = input.id === 'age' ? parseInt(input.value, 10) : null;
+                    const isAgeInvalid = input.id === 'age' && (ageValue > 99 || ageValue < 8);
+
+                    if (!isValid || isAgeInvalid) {
+                        input.classList.add('is-invalid');
+                        // ... (منطق عرض رسائل الخطأ) ...
+                        if (input.id === 'age') {
+                            if (ageValue > 99) {
+                                const randomIndex = Math.floor(Math.random() * ageTooHighErrorMessages.length);
+                                errorMessage.textContent = ageTooHighErrorMessages[randomIndex];
+                            } else if (ageValue < 8) {
+                                errorMessage.textContent = "يجب أن لا يقل العمر عن 8 سنوات.";
+                            }
+                        } else if (input.id === 'marketer_id') {
+                             errorMessage.textContent = "يجب أن يكون المعرّف مكوناً من 6 حروف إنجليزية كبيرة متبوعة برقمين بالضبط (مثال: TRAINE01).";
+                        } else if (input.id === 'course-name' && input.value === "") { // في حالة لم تُختر دورة والحقل مرئي
+                             errorMessage.textContent = "الرجاء اختيار الدورة التي تريد التسجيل بها.";
+                        }
+                        // ... (نهاية منطق عرض رسائل الخطأ) ...
+                        if (errorMessage) errorMessage.style.display = 'block';
+                    } else {
+                        input.classList.remove('is-invalid');
+                        if (errorMessage) errorMessage.style.display = 'none';
+                    }
+                });
+                return;
+            }
+
+            document.getElementById('registration-date-input').value = new Date().toLocaleString('ar-AE', { timeZone: 'Asia/Dubai' });
+
+            const isConfirmed = confirm('هل أنت متأكد من صحة البيانات المدخلة؟');
+            if (!isConfirmed) return;
+
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            formMessage.style.display = 'none';
+            const phoneInput = document.getElementById('phone');
+             phoneInput.value = phoneInput.value.replace(/\s/g, ''); 
+
+
+            try {
+                // الخطوة 1: إرسال البيانات إلى قوقل شيت أولاً
+                // 🚨 SUBMISSION_SCRIPT_URL يجب أن يكون مُعرّفاً
+                const formData = new FormData(form);
+                
+                // 🚨 التأكد من استخدام القيمة الصحيحة للدورة في رسالة الواتساب
+                const courseNameValue = formData.get('CourseName'); 
+
+                const response = await fetch(SUBMISSION_SCRIPT_URL, { 
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    // الخطوة 2: جمع البيانات لرسالة الواتساب
+                    const data = {};
+                    for (let [key, value] of formData.entries()) {
+                        data[key] = value;
+                    }
+
+                    // رسالة الواتساب 
+                    const messageBody = `
+🎓 *تسجيل جديد في دورة ${courseNameValue}!*
+
+📘 الدورة: ${courseNameValue}
+👤 الاسم: ${data.name}
+🧬 الجنس: ${data.gender}
+🎂 العمر: ${data.age}
+🌍 البلد: ${data.country}
+📱 رقم الواتساب: ${data.phone}
+✉️ البريد الإلكتروني: ${data.email}
+?? تيليجرام: ${data.telegram || 'غير محدد'}
+🧾 كود التخفيض: ${data.marketer_id}
+
+🚀 تهانينا! تم تسجيلك في رحلتنا التعليمية.
+✨ أنت الآن على أول خطوة لتحقيق التفوق!
+
+📩 سيتم التواصل معك قريبًا لتأكيد بياناتك والانطلاق في الدورة.
+`;
+                    // الخطوة 3: توجيه المستخدم إلى واتساب
+                    window.location.href = `https://wa.me/967778185189?text=${encodeURIComponent(messageBody)}`;
+
+                    // ⬅️ تم إضافة سطر "return;" هنا لضمان نجاح التوجيه.
+                    return;
+
+                    form.reset();
+                    updateProgress();
+                    // ... (إعادة تعيين أيقونات الإدخال) ...
+                    
+                } else {
+                    throw new Error('Form submission failed.');
+                }
+
+            } catch (error) {
+                formMessage.style.display = 'block';
+                formMessage.className = 'error';
+                formMessage.textContent = '❌ حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+            }
+        });
+    });
+</script>
+
+<script src="marketer_tracker.js"></script> 
+<script src="js/validation.js"></script>
+<script src="/tracker.js"></script>
+</body>
+</html>

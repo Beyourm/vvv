@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم - كن أنت</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --------------------
+           أنماط إعادة الضبط الأساسية والخط
+           -------------------- */
+        :root {
+            --primary-color: #43a047; /* أخضر غامق */
+            --secondary-color: #1a237e; /* أزرق داكن */
+            --accent-color: #c8e6c9; /* أخضر فاتح جدًا */
+            --text-dark: #333;
+            --text-light: #f4f4f4;
+            --bg-light: #f8f9fa;
+            --card-bg: #ffffff;
+            --shadow-strong: rgba(0,0,0,0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            direction: rtl; /* لضمان التوجيه من اليمين لليسار */
+            padding-bottom: 60px; /* مساحة للتذييل الثابت */
+        }
+
+        /* --------------------
+           تخطيط لوحة التحكم
+           -------------------- */
+        .dashboard-container {
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-color);
+            text-align: right;
+        }
+
+        /* --------------------
+           أنماط البطاقات (Cards)
+           -------------------- */
+        .card {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--shadow-strong);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-right: 5px solid var(--primary-color); /* شريط جانبي لوني */
+        }
+
+        /* ✨ التحسين 2: تأثير ضوء ناعم على البطاقات عند التمرير */
+        .card:hover {
+            transform: translateY(-7px);
+            /* ظل متعدد الطبقات يركز على الأخضر الأنيق */
+            box-shadow: 0 10px 25px rgba(46, 125, 50, 0.25), 
+                        0 0 12px rgba(67, 160, 71, 0.2); 
+            /* خلفية متدرجة تعطي تأثير "إضاءة ناعمة" */
+            background: linear-gradient(135deg, #ffffff, #e8f5e9, #ffffff); 
+            cursor: pointer;
+            filter: brightness(1.03); /* ✨ لمسة ضوء ناعمة */
+        }
+
+        /* بطاقات الإحصاء */
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon-circle {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .icon-circle svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .card-title {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+        .card-value {
+            font-size: 2.2em;
+            font-weight: 700;
+            line-height: 1;
+            color: var(--secondary-color);
+        }
+
+        /* تخصيص لون القيمة حسب نوع البطاقة */
+        .total-users .card-value { color: var(--primary-color); }
+        .active-projects .card-value { color: #1a237e; }
+        .weekly-visits .card-value { color: #ff9800; }
+        .revenue .card-value { color: #ef5350; }
+
+
+        /* --------------------
+           أنماط الجدول
+           -------------------- */
+        .table-container-wrapper {
+            /* نستخدم نمط البطاقة هنا لتوحيد المظهر */
+            border-right: 5px solid var(--secondary-color); /* تغيير لون الشريط الجانبي للتمييز */
+            padding-bottom: 0; /* إزالة الـ padding السفلي لبطاقة الجدول */
+        }
+
+        /* حاوية التمرير الخاصة بالجدول - *فصل الجدول* */
+        .scrollable-table-content {
+            max-height: 450px; /* تحديد ارتفاع أقصى */
+            overflow-y: auto; /* تمكين التمرير العمودي فقط داخل هذه الحاوية */
+            margin: 0 -25px; /* لتغطية حواف البطاقة لتمكين التمرير الكامل */
+            padding: 0 25px 25px 25px; /* لإعادة الـ padding الداخلي للمحتوى */
+            -webkit-overflow-scrolling: touch; 
+        }
+
+        /* إخفاء شريط التمرير (اختياري) */
+        .scrollable-table-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scrollable-table-content::-webkit-scrollbar-thumb {
+            background-color: var(--accent-color);
+            border-radius: 10px;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: separate; 
+            border-spacing: 0;
+            min-width: 700px; 
+            margin-bottom: 10px; /* مسافة بسيطة أسفل الجدول */
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+        }
+
+        thead th {
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+            font-weight: 600;
+            position: sticky; /* تثبيت رأس الجدول عند التمرير */
+            top: 0;
+            z-index: 10;
+        }
+
+        /* تصحيح حدود الرأس لتكون مدورة مع الحاوية */
+        .table-container-wrapper thead th:first-child { border-top-right-radius: 8px; }
+        .table-container-wrapper thead th:last-child { border-top-left-radius: 8px; }
+
+
+        tbody tr:hover {
+            background-color: #f0f4f7;
+        }
+
+        /* أنماط حالة العملية */
+        .status {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: inline-block;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .status.complete {
+            background-color: #e8f5e9; 
+            color: var(--primary-color);
+        }
+
+        .status.pending {
+            background-color: #fff3e0; 
+            color: #ff9800;
+        }
+
+        .status.canceled {
+            background-color: #ffebee; 
+            color: #ef5350;
+        }
+
+        /* --------------------
+           أنماط التذييل (Footer)
+           -------------------- */
+        .dashboard-footer {
+            position: fixed; /* تثبيت التذييل */
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #1a237e; /* نفس لون الـ secondary */
+            color: var(--text-light);
+            text-align: center;
+            padding: 15px 0;
+            font-size: 0.9em;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .footer-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: #ffffff;
+        }
+
+        /* --------------------
+           تنسيقات الاستجابة (Responsive)
+           -------------------- */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 15px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr; /* عمود واحد على الجوال */
+                gap: 15px;
+            }
+
+            .card-value {
+                font-size: 1.8em;
+            }
+
+            .scrollable-table-content {
+                max-height: 400px;
+            }
+
+            /* لضمان رؤية الجدول بالكامل على الجوال مع التمرير الأفقي */
+            table {
+                min-width: 600px; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header style="
+        background: linear-gradient(to left, #43a047, #1a237e);
+        color: white;
+        padding: 15px 25px;
+        border-bottom: 4px solid #c8e6c9;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        text-align: center;
+        font-size: 1.4em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    ">
+        لوحة تحكم مؤسسة <span style="color:#c8e6c9;">كن أنت</span>
+    </header>
+
+
+    <div class="dashboard-container">
+        
+        <div class="cards-grid">
+            <div class="card stat-card total-users">
+                <div class="icon-circle" style="background-color: rgba(67, 160, 71, 0.1);">
+                    <svg viewBox="0 0 24 24" fill="#43a047"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </div>
+                <div>
+                    <p class="card-title">إجمالي المستخدمين</p>
+                    <p class="card-value">12,500</p>
+                </div>
+            </div>
+            
+            <div class="card stat-card active-projects">
+                <div class="icon-circle" style="background-color: rgba(26, 35, 126, 0.1);">
+                    <svg viewBox="0 0 24 24" fill="#1a237e"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15.93l-4.5-4.5 1.41-1.41L11 15.1l7.07-7.07 1.41 1.41-8.48 8.49z"/></svg>
+                </div>
+                <div>
+                    <p class="card-title">المشاريع النشطة</p>
+                    <p class="card-value">180</p>
+                </div>
+            </div>
+
+            <div class="card stat-card weekly-visits">
+                <div class="icon-circle" style="background-color: rgba(255, 152, 0, 0.1);">
+                    <svg viewBox="0 0 24 24" fill="#ff9800"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h4v-4zm0-6h-4v4h4V7zM7 7h4v4H7V7zm0 6h4v4H7v-4z"/></svg>
+                </div>
+                <div>
+                    <p class="card-title">زيارات الأسبوع</p>
+                    <p class="card-value">8,100</p>
+                </div>
+            </div>
+
+            <div class="card stat-card revenue">
+                <div class="icon-circle" style="background-color: rgba(239, 83, 80, 0.1);">
+                    <svg viewBox="0 0 24 24" fill="#ef5350"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                </div>
+                <div>
+                    <p class="card-title">معدل التفاعل</p>
+                    <p class="card-value">4.7%</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            
+            <div class="table-container-wrapper card">
+                <h2 class="section-title">آخر العمليات المنجزة</h2>
+                <div class="scrollable-table-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الرمز</th>
+                                <th>المستخدم</th>
+                                <th>العملية</th>
+                                <th>التاريخ</th>
+                                <th>الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="5" style="text-align: center; color: #6c757d;">جاري تحميل بيانات العمليات...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <footer class="dashboard-footer">
+        <p>&copy; 2024 مؤسسة كن أنت. جميع الحقوق محفوظة. <span class="footer-link">سياسة الخصوصية</span> | <span class="footer-link">شروط الاستخدام</span></p>
+    </footer>
+
+    <script src="tracker.js"></script> 
+
+</body>
+</html>

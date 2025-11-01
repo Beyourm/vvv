@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عمولات المسوّق</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: #f9fafc;
+      color: #222;
+      text-align: center;
+      padding: 20px;
+      direction: rtl;
+    }
+    .card {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 10px auto;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    h2 { color: #2b4f81; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    th {
+      background: #2b4f81;
+      color: white;
+    }
+    tr:nth-child(even) { background: #f4f4f4; }
+    .loader {
+      margin-top: 40px;
+      font-size: 20px;
+      color: #2b4f81;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="infoCard">
+    <h2>جاري تحميل بيانات المسوّق...</h2>
+    <div class="loader"><i class="fa fa-spinner fa-spin"></i></div>
+  </div>
+
+  <div class="card" id="studentsCard" style="display:none;">
+    <h3>قائمة الطلاب المحالين</h3>
+    <table id="studentsTable">
+      <thead>
+        <tr>
+          <th>الاسم الكامل</th>
+          <th>اسم الدورة</th>
+          <th>رقم الهاتف</th>
+          <th>البريد الإلكتروني</th>
+          <th>طريقة الدفع</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbwXXXXXXXXXXXXXXX/exec'; // 🔗 ضع رابط السكربت هنا
+
+    function getParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    const marketerId = getParam('marketer_id');
+
+    if (!marketerId) {
+      document.getElementById('infoCard').innerHTML = '<h2>❌ لم يتم تحديد معرف المسوّق في الرابط</h2>';
+    } else {
+      fetch(`${scriptUrl}?marketer_id=${marketerId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            document.getElementById('infoCard').innerHTML = `<h2>${data.error}</h2>`;
+            return;
+          }
+
+          const m = data.marketer;
+          document.getElementById('infoCard').innerHTML = `
+            <h2>مرحبا ${m['اسم المسوّق']} 👋</h2>
+            <p>📞 رقم الهاتف: ${m['رقم الهاتف']}</p>
+            <p>📊 عدد الإحالات: ${m['عدد الإحالات']}</p>
+            <p>💰 المبلغ المدفوع للمؤسسة: ${m['المبلغ المدفوع للمؤسسة']} ريال</p>
+            <p>🏆 نسبة العمولة: ${m['نسبة العمولة']}%</p>
+            <p>💸 العمولة المستحقة: ${m['العمولة المستحقة']} ريال</p>
+            <p>🎁 المكافآت: ${m['المكافآت']}</p>
+          `;
+
+          if (data.students.length > 0) {
+            const tbody = document.querySelector('#studentsTable tbody');
+            data.students.forEach(s => {
+              const row = `
+                <tr>
+                  <td>${s['الاسم الكامل']}</td>
+                  <td>${s['اسم الدورة المطلوب']}</td>
+                  <td>${s['رقم الهاتف']}</td>
+                  <td>${s['البريد الإلكتروني']}</td>
+                  <td>${s['طريقة الدفع المستخدمة']}</td>
+                </tr>`;
+              tbody.innerHTML += row;
+            });
+            document.getElementById('studentsCard').style.display = 'block';
+          } else {
+            document.getElementById('studentsCard').innerHTML = '<p>لا يوجد طلاب محالين حتى الآن.</p>';
+          }
+        })
+        .catch(err => {
+          document.getElementById('infoCard').innerHTML = '<h2>حدث خطأ في الاتصال بالبيانات.</h2>';
+          console.error(err);
+        });
+    }
+  </script>
+</body>
+</html>

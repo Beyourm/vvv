@@ -1,0 +1,354 @@
+
+    /*
+    |======================================================
+    | 1. تعريف الألوان والخصائص
+    |======================================================
+    */
+    :root {
+      --primary-color: #00BFA5; 
+      --primary-darker: #00A38D; 
+      --secondary-color: #383838;
+      --light-bg: #F0F2F5; 
+      --white-color: #ffffff;
+      --border-color: #DDD;
+      --border-radius: 10px;
+      --text-color-dark: var(--secondary-color);
+      --error-color: #E74C3C;
+      --warning-color: #FFC107; /* لون غير مدفوعة */
+      --success-color: var(--primary-darker); /* لون مدفوعة */
+      --input-bg: #fefefe; /* خلفية حقل الإدخال */
+      --header-bg: #ffffff; /* خلفية حاوية الفلتر */
+    }
+
+    /* الحل الجذري: تطبيق box-sizing على الجميع لمنع تجاوز العرض */
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Tajawal', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background: var(--light-bg);
+      color: var(--text-color-dark);
+      direction: rtl; 
+      text-align: right;
+      /* الحل الجذري: إخفاء أي تمرير أفقي بشكل قاطع */
+      overflow-x: hidden; 
+    }
+
+    /* ---------------- Loader ---------------- */
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      transition: opacity 0.5s ease;
+    }
+    #loader::after {
+      content: " ⏳";
+      animation: spin 1s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* تنسيق خاص بـ Loader جلب البيانات داخل التبويب */
+    .loader-placeholder {
+        width: 100%;
+        text-align: center;
+        padding: 50px 0;
+    }
+    .loader {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+
+    /* ---------------- Header / Search ---------------- */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: var(--primary-color);
+      color: var(--white-color);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      width: 100%;
+    }
+
+    .header .search-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-grow: 1; 
+      max-width: 450px; 
+    }
+
+    .header input[type="text"] {
+      padding: 8px 12px;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+      flex-grow: 1; 
+      width: 100%; 
+      font-size: 1rem;
+    }
+    
+    /* تنسيق خاص بالفلتر الجديد */
+    .filter-row {
+        max-width: 1200px; 
+        margin: 0 auto 20px auto; 
+        padding: 0 20px; 
+        width: 100%;
+    }
+    .header-filter-container {
+        /* الأنماط المدمجة من طلب المستخدم */
+        padding: 15px; 
+        background: var(--header-bg); 
+        border-radius: var(--border-radius); 
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    #marketer-select {
+        /* الأنماط المدمجة من طلب المستخدم */
+        width: 100%; 
+        padding: 10px; 
+        border-radius: 5px; 
+        border: 1px solid var(--border-color); 
+        background: var(--input-bg); 
+        color: var(--text-color-dark); 
+        font-size: 1rem; 
+        cursor: pointer;
+        /* تفعيل الانتقال في Mobile */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: left 10px center;
+        background-size: 1em;
+        padding-right: 30px; 
+    }
+    .header-filter-container label {
+        color: var(--primary-darker);
+    }
+
+
+    /* ---------------- Content ---------------- */
+    .content {
+      flex: 1;
+      padding: 0 20px 20px 20px; 
+      overflow-y: auto;
+      transition: opacity 0.4s ease-in-out;
+      max-width: 1200px; 
+      margin: 0 auto;
+      width: 100%;
+      overflow-x: hidden; 
+    }
+
+    /* ---------------- Tabs ---------------- */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      background: var(--primary-color);
+      border-top: 2px solid var(--primary-darker);
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+      position: sticky; 
+      bottom: 0;
+      z-index: 100;
+      padding: 0 5px;
+      overflow-x: auto; 
+      width: 100%;
+    }
+    
+    .tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tab {
+      padding: 12px 25px;
+      cursor: pointer;
+      color: var(--white-color);
+      font-weight: bold;
+      transition: all 0.3s ease;
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+      margin: 5px;
+      flex: 0 0 auto;
+    }
+
+    .tab:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .tab.active {
+      background-color: var(--light-bg);
+      color: var(--primary-color);
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
+      margin-bottom: 0;
+    }
+
+    .tab-content {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out;
+      padding-top: 10px; /* لإعطاء مسافة بعد العنوان */
+    }
+
+    .tab-content.active {
+      display: block;
+      opacity: 1;
+    }
+
+    h2 { 
+      color: var(--primary-darker); 
+      margin-top: 10px; 
+      margin-bottom: 20px; 
+      padding-bottom: 5px; 
+      border-bottom: 2px solid var(--border-color);
+    }
+    
+    /* ---------------- تنسيقات بطاقات البيانات (Grid) ---------------- */
+    .students-container { 
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+      gap: 20px;
+      margin-top: 20px;
+      padding: 10px 0; 
+    }
+    
+    .student-card { 
+      background-color: var(--white-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius); 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+      padding: 16px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border-right: 5px solid var(--primary-color); 
+    }
+
+    .student-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); 
+    }
+    
+    .student-card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+      color: var(--secondary-color); 
+      font-weight: bold;
+    }
+    
+    .student-card .course {
+      font-size: 1rem;
+      color: var(--primary-color);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    
+    .student-card .info {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--text-color-dark);
+      border-top: 1px dashed var(--border-color);
+      padding-top: 10px;
+    }
+    
+    .student-card .label {
+      font-weight: 600;
+      color: var(--primary-darker);
+      display: inline-block;
+      min-width: 100px;
+    }
+    
+    .status {
+        font-weight: bold;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        float: left;
+        color: var(--white-color);
+        margin-right: 5px;
+    }
+    .status.paid { background-color: var(--success-color); }
+    .status.unpaid { background-color: var(--error-color); }
+    .commission-status { 
+        font-weight: bold; 
+        color: #E67E22;
+        font-size: 1rem;
+    }
+    .receipt-img-container {
+        display: block; 
+        margin-top: 5px;
+        overflow: hidden; 
+        border-radius: 5px;
+    }
+    .receipt-img-container img {
+        max-width: 100%; 
+        height: auto; 
+        display: block;
+        transition: transform 0.3s ease;
+    }
+    .receipt-img-container:hover img {
+        transform: scale(1.05);
+    }
+    /* ---------------- 9. استعلامات الوسائط (Mobile Responsiveness) ---------------- */
+    @media (max-width: 600px) {
+        .header { 
+            flex-direction: column; 
+            align-items: stretch; 
+            gap: 10px; 
+            padding: 10px 15px; 
+            width: 100vw; 
+            margin: 0;
+        }
+        
+        .header .search-container { flex-direction: column; width: 100%; max-width: 100%; }
+        
+        .header input[type="text"] { 
+            width: 100%; 
+            padding: 7px 10px;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .filter-row { 
+            padding: 0 15px; 
+            margin-bottom: 15px;
+        }
+
+        .content { 
+            padding: 0 15px 15px 15px; 
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .tabs { 
+            justify-content: flex-start;
+            width: 100vw; 
+            padding: 0 15px;
+            margin: 0;
+        }
+        .tab { padding: 10px 15px; font-size: 0.9rem; margin: 0 2px; }
+        
+        .students-container {
+             grid-template-columns: 1fr;
+             gap: 15px;
+        }
+    }
+  

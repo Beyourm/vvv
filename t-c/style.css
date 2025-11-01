@@ -1,0 +1,529 @@
+
+
+
+        :root {
+            --primary-color: #0d3b14; 
+            --secondary-color: #e5a72d; 
+            --accent-color: #f7f3e9; 
+            --text-color-dark: #2d3748;
+            --danger-color: #dc3545;
+            --white-color: #ffffff; 
+            --muted-color: #4a5568;
+            --success-color: #28a745;
+            --status-y-bg: #e8f9ed; 
+            --status-n-bg: #f9e8e8; 
+            --status-pending-bg: #fff8e8; 
+        }
+
+        body {
+            font-family: "Tajawal", sans-serif;
+            background: linear-gradient(120deg, var(--accent-color) 0%, #eaf0f5 100%); 
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--text-color-dark);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            max-width: 900px; 
+            margin-top: 50px;
+            background: var(--white-color);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            background: var(--primary-color);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+        }
+        
+        header p {
+            margin-top: 5px;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+        
+        .id-highlight {
+            font-weight: 900;
+            color: var(--secondary-color);
+            direction: ltr;
+        }
+
+        .content {
+            padding: 30px;
+        }
+        
+        /* 1. تنسيق رسالة الحالة والـ Spinner */
+        #statusMessage {
+            padding: 15px;
+            font-weight: 700;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .loading { color: var(--muted-color); border: 1px solid #ccc;} 
+        .success { background-color: var(--status-y-bg); color: var(--success-color); }
+        .error { background-color: var(--status-n-bg); color: var(--danger-color); }
+
+
+        .loading .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--secondary-color);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 2. تنسيق الـ Toast Notification */
+        .toast-notification {
+            position: fixed;
+            top: 20px; 
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+        }
+        .toast-notification.show {
+            opacity: 1;
+        }
+        .toast-notification i {
+            margin-left: 10px;
+        }
+        
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+        .stats-card {
+            background: var(--accent-color);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stats-card:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .stats-card.active-card {
+            background: #e6f7ff; 
+        }
+
+
+        .stats-card h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 16px; 
+            font-weight: 700;
+        }
+        
+        .card-title-icon {
+            margin-left: 8px;
+            color: var(--secondary-color);
+        }
+        .active-card .card-title-icon {
+            color: var(--success-color);
+        }
+
+
+        .stats-count {
+            font-size: 40px; 
+            font-weight: 900;
+            color: var(--secondary-color);
+            display: block;
+            margin-top: 5px;
+        }
+        
+        .stats-card.active-card .stats-count {
+             color: var(--success-color); 
+        }
+        
+        .referral-link-box {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px dashed var(--primary-color);
+            margin-top: 15px;
+            word-break: break-all;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .referral-link-box:hover {
+            background: #e6f7ff;
+        }
+        
+        .copy-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .copy-btn:hover {
+            background: #1a5c24;
+        }
+        
+        .details-card {
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            padding: 20px;
+            background: #fff;
+            margin-bottom: 20px;
+        }
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dotted #eee;
+        }
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        .detail-item i {
+            color: var(--primary-color);
+            margin-left: 10px;
+            font-size: 16px;
+        }
+        .detail-label {
+            font-weight: 700;
+            color: var(--muted-color);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .detail-value {
+            font-weight: 600;
+            color: var(--text-color-dark);
+            font-size: 15px;
+            text-align: left;
+        }
+        /* التنسيقات المتعلقة بالجدول (مثل .table-container) ستنتقل إلى table-styles.css */
+
+
+
+
+
+
+/*الإضافات الجديدة */
+
+
+
+
+
+
+
+
+
+
+
+
+   
+        /* 1. إخفاء زر القائمة بالكامل */
+        #menu-toggle, .menu-toggle {
+            display: none !important; 
+        }
+        
+        /* 2. تغيير لون أيقونة القائمة إلى الأبيض (كإجراء احتياطي إذا ظهرت) */
+        .menu-toggle i {
+            color: white !important;
+        }
+        
+        
+        
+             /* 3. تنسيق عام لأزرار القائمة (3D CSS) */
+        nav a, nav button, 
+        .close-btn { /* تم إضافة .close-btn هنا ليأخذ تنسيق الـ 3D الأساسي */
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 10px 15px;
+            margin: 5px 15px; 
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.1s ease-out; 
+            position: relative;
+            border: none;
+            box-shadow: 0 4px 0 0 #555; 
+            transform: translateY(0);
+        }
+
+        nav a:active, nav button:active,
+        .close-btn:active { /* تم إضافة .close-btn:active هنا */
+            box-shadow: 0 0 0 0 #555; 
+            transform: translateY(4px); 
+        }
+        
+        /* 4. تنسيق ألوان أزرار القائمة */
+        nav a[href="../contact.html"] { background-color: #007bff; color: white; box-shadow: 0 4px 0 0 #0056b3; }
+        nav a[href="w-c.html"] { background-color: #28a745; color: white; box-shadow: 0 4px 0 0 #1e7e34; }
+        #show-courses-btn { background-color: var(--secondary-color, #ff6b6b); color: white; box-shadow: 0 4px 0 0 #e84343; }
+        nav a[href="../contact.html"]:active { box-shadow: 0 0 0 0 #0056b3; }
+        nav a[href="w-c.html"]:active { box-shadow: 0 0 0 0 #1e7e34; }
+        #show-courses-btn:active { box-shadow: 0 0 0 0 #e84343; }
+
+        /* 5. تنسيق زر إغلاق الدايلوج (لونه وشكله) */
+        .close-btn {
+            /* تعديل اللون ليناسب الإغلاق */
+            background-color: #ef4444; 
+            color: white; 
+            /* تطبيق ظلال 3D خاصة به */
+            box-shadow: 0 4px 0 0 #b91c1c; 
+            width: 100%; /* اجعله يملأ المساحة المتاحة في الفورم */
+            margin: 0; /* إزالة الهوامش الزائدة */
+            font-size: 16px;
+        }
+
+        .close-btn:active {
+            box-shadow: 0 0 0 0 #b91c1c;
+        }
+
+        /* 6. ترتيب الأزرار داخل قائمة التنقل - محاذاة للوسط */
+        nav {
+            display: flex; 
+            flex-wrap: wrap;
+            justify-content: center; 
+            padding-bottom: 15px; 
+        }
+
+        /* 7. تنسيق الدايلوج لملء الشاشة */
+        #courses-dialog {
+            width: 90%; 
+            height: 90vh; 
+            max-width: 500px;
+            border: none;
+            border-radius: 10px;
+            padding: 0;
+            overflow: hidden;
+            margin: auto; 
+        }
+        
+        #courses-dialog::backdrop {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        /* 8. تنسيق محتوى الدايلوج (الـ iframe و زر الإغلاق) */
+        .dialog-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100%; 
+        }
+        
+        #courses-dialog iframe {
+            flex-grow: 1; 
+            width: 100%; 
+            border: none;
+        }
+
+        #courses-dialog form {
+            flex-shrink: 0; 
+            padding: 15px 20px;
+            text-align: center; /* **التعديل الرئيسي: محاذاة الزر للوسط** */
+        }
+  
+
+
+
+
+/*ملف الدوائر */
+
+
+
+/* ================== شاشة التحميل ================== */
+#loadingOverlay {
+  display: none; /* مخفي افتراضياً */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9); /* خلفية نصف شفافة */
+  z-index: 9999; /* فوق كل العناصر */
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* دائرة التحميل */
+#loadingOverlay .spinner {
+  border: 6px solid #f3f3f3; /* لون الإطار الخارجي */
+  border-top: 6px solid #28a745; /* لون الجزء المتحرك */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+/* نص التحميل */
+#loadingOverlay .loading-text {
+  font-family: 'Tajawal', sans-serif;
+  color: #555;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* حركة الدوران */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+
+
+/*ملف الفوتر */
+
+
+/* ================== Footer CSS Styling ================== */
+
+/* تعريف الفوتر وجعله ثابتاً في الأسفل */
+.footer {
+  background-color: var(--primary-color, #0d3b14); /* لون خلفية أساسي */
+  color: var(--white-color, #ffffff);
+  padding: 15px 20px;
+  text-align: center;
+  width: 100%;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.2);
+  font-family: 'Tajawal', sans-serif;
+  
+  /* **التعديلات الحاسمة لثبات الفوتر في الأسفل** */
+  position: fixed; 
+  bottom: 0; 
+  left: 0; /* لضمان تغطية كامل العرض من اليسار لليمين */
+  right: 0; /* لضمان تغطية كامل العرض من اليمين لليسار (مهم للـ RTL) */
+  z-index: 900; /* يجب أن يكون أعلى من معظم العناصر، لكن أقل من الـ Toast */
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-text {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* تنسيق زر تسجيل الخروج */
+.btn-logout {
+  background-color: var(--success-color, #28a745);
+  color: var(--white-color, #fff);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.btn-logout:hover {
+  background-color: #218838;
+  transform: translateY(-1px);
+}
+
+.btn-logout:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+
+/* **إضافة مسافة أسفل الـ body لتجنب تداخل المحتوى مع الفوتر الثابت** */
+body {
+  /* يُضاف هذا التعديل إلى كود body العام */
+  margin: 0;
+  padding-bottom: 80px; /* يجب أن تكون القيمة أكبر قليلاً من ارتفاع الفوتر (60 بكسل تقريباً) */
+}
+
+/* التنسيق للشاشات الصغيرة */
+@media (max-width: 768px) {
+  .footer {
+    padding: 10px 15px; /* تقليل الـ padding في الجوال */
+  }
+  .footer-container {
+    flex-direction: column;
+    gap: 5px; /* تقليل المسافة بين العناصر */
+  }
+  .footer-text {
+      font-size: 12px; /* تصغير الخط */
+  }
+}
+
+
+
+
+
+
+
+
+/* ================== إخفاء حاوية إجمالي المسجلين والنشطين ================== */
+.stats-grid {
+  display: none !important;
+}
+
+
+
+
+
+

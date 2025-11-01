@@ -1,0 +1,892 @@
+/* index.css */
+/* -------------------- إعدادات CSS العامة -------------------- */
+    
+/* --- بداية النمط المشترك 1: تعريف المتغيرات الجذرية (Root Variables) --- */
+:root {
+  --primary-color: #0d3b14; /* اللون الأساسي: أخضر داكن */
+  --secondary-color: #e5a72d; /* اللون الثانوي: ذهبي/أصفر */
+  --accent-color: #f7f3e9; /* لون الخلفية: بيج فاتح */
+  --text-color: #f4f4f4; /* لون النصوص: أبيض */
+  --white-color: #ffffff; /* لون أبيض إضافي */
+  --border-radius-lg: 20px; /* حواف دائرية كبيرة */
+}
+/* --- نهاية النمط المشترك 1: تعريف المتغيرات الجذرية (Root Variables) --- */
+
+/* --- بداية النمط المشترك 2: التنسيق الأساسي لـ Body و HTML --- */
+body {
+  margin: 0;
+  font-family: 'Tajawal', sans-serif;
+  background-color: var(--accent-color); 
+  color: var(--primary-color);
+  line-height: 1.7;
+  overflow-x: hidden; 
+}
+/* --- نهاية النمط المشترك 2: التنسيق الأساسي لـ Body و HTML --- */
+
+/* -------------------- تنسيق الهيدر والتنقل (مُحدّث) -------------------- */
+
+/* --- بداية النمط المشترك 4: تنسيق الهيدر والـ Nav (شريط التنقل) --- */
+/* ====== تنسيق الهيدر الأساسي ====== */
+.main-header {
+  background: var(--primary-color); /* اللون الأساسي الداكن */
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 35px; 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.main-header .logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.main-header .logo h1 {
+  font-size: 1.6rem;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.main-header .logo i {
+  font-size: 1.8rem;
+  color: var(--secondary-color); 
+}
+
+/* ====== روابط القائمة (Desktop) ====== */
+.main-nav {
+  display: flex;
+  gap: 30px; 
+  align-items: center;
+}
+
+.main-nav a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  padding: 8px 15px; 
+  border-radius: 5px;
+  position: relative;
+}
+
+/* نمط الخط السفلي الذي يظهر عند التحويم */
+.main-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0%;
+  height: 2px;
+  background-color: var(--secondary-color);
+  transition: width 0.3s ease;
+}
+
+.main-nav a:hover {
+  color: var(--secondary-color); 
+  background-color: transparent; 
+  transform: none; 
+}
+
+.main-nav a:hover::after {
+  width: 100%; 
+}
+.main-nav hr {
+  display: none; 
+}
+
+/* ====== زر القائمة للجوال (Menu Toggle) ====== */
+.menu-toggle {
+  display: none;
+  font-size: 1.8rem; /* أيقونة أكبر قليلاً */
+  cursor: pointer;
+  z-index: 1050; 
+  color: var(--text-color); 
+}
+
+
+
+
+/* -------------------- نهاية تنسيق الهيدر والتنقل -------------------- */
+
+/* -------------------- تنسيق قسم Hero (مُحدّث) -------------------- */
+.hero {
+  background: url('images/photo.jpg') no-repeat center/cover;
+  color: #fff;
+  text-align: center;
+  padding: 130px 20px;
+  position: relative;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7); /* طبقة شفافة أغمق */
+}
+.hero-text {
+  position: relative;
+  z-index: 2;
+  background: rgba(13, 59, 20, 0.85); /* خلفية أقل شفافية */
+  padding: 40px 50px;
+  border-radius: var(--border-radius-lg); 
+  color: var(--accent-color);
+  border: 4px solid var(--secondary-color); 
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.4); 
+}
+.hero-text h2 { 
+  font-size: clamp(30px, 6vw, 42px);
+  margin: 0 0 15px 0;
+  font-weight: 800;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+.hero-text p {
+  font-size: clamp(18px, 4vw, 22px);
+  margin: 0 0 30px 0;
+  font-weight: 500;
+}
+
+/* --- بداية النمط المشترك 7: تنسيق الأزرار الرئيسية --- */
+.hero-text a {
+  background: linear-gradient(90deg, #e5a72d 0%, #f9c257 100%); 
+  color: var(--primary-color);
+  padding: 16px 35px; 
+  border-radius: 50px; 
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: none;
+  box-shadow: 0 5px 15px rgba(229, 167, 45, 0.4); 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hero-text a:hover { 
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(229, 167, 45, 0.6);
+} 
+/* --- نهاية النمط المشترك 7: تنسيق الأزرار الرئيسية --- */
+
+
+/* -------------------- تنسيق الأقسام والمميزات (مُحدّث ليكون جذابًا) -------------------- */
+
+/* --- بداية النمط المشترك 3: تنسيق الحاوية الرئيسية (Container) - تحديث جذري --- */
+.section {
+  width: 90%;
+  max-width: 1200px; 
+  margin: 40px auto; 
+  padding: 40px 30px; 
+  background: var(--white-color); 
+  border-radius: var(--border-radius-lg); 
+  /* ظل بثلاث طبقات لخلق عمق متدرج (Floating Effect) */
+  box-shadow: 
+    0 5px 15px rgba(13, 59, 20, 0.1), 
+    0 15px 35px rgba(13, 59, 20, 0.08), 
+    0 0 0 1px rgba(0, 0, 0, 0.05); 
+  box-sizing: border-box;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.section:hover {
+    transform: translateY(-2px); 
+    box-shadow: 
+        0 10px 20px rgba(13, 59, 20, 0.15),
+        0 20px 45px rgba(13, 59, 20, 0.12);
+}
+/* --- نهاية النمط المشترك 3: تنسيق الحاوية الرئيسية (Container) --- */
+
+/* التحكم في ارتفاع قسم الدورات */
+#coursess.section {
+  height: 350px; 
+  overflow: hidden;
+}
+
+/* --- بداية النمط المشترك 5: تنسيق عناوين الأقسام (Section Titles) - تحديث جذري --- */
+.section h2 {
+  color: var(--primary-color);
+  margin-bottom: 20px; 
+  font-size: 34px; 
+  font-weight: 800; 
+  text-align: center;
+  position: relative;
+}
+
+.section h2::after {
+  content: '';
+  display: block;
+  width: 100px; 
+  height: 5px; 
+  /* خط متدرج من الأخضر الداكن إلى الذهبي */
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%); 
+  margin: 10px auto 0;
+  border-radius: 50px; 
+}
+/* --- نهاية النمط المشترك 5: تنسيق عناوين الأقسام (Section Titles) --- */
+
+
+
+.features-section {
+  display: flex;
+  justify-content: center; /* مركز الحاوية أفقيًا */
+  padding: 50px 20px; /* يمكنك تعديل المسافة العليا والسفلى */
+  background: var(--section-bg-color, #f8f9fb); /* خلفية القسم */
+}
+
+.features-container {
+  display: flex; /* عرض أفقي */
+  gap: 30px; /* المسافة بين البطاقات */
+  overflow-x: auto; /* التمرير أفقي */
+  scroll-behavior: smooth; /* تمرير سلس */
+  padding: 20px 0;
+  max-width: 1200px; /* أقصى عرض للحاوية */
+  width: 100%; /* عرض كامل الشاشة إن أحببت */
+  justify-content: flex-start; /* البطاقات تبدأ من اليسار */
+}
+
+/* إخفاء شريط التمرير على معظم المتصفحات */
+.features-container::-webkit-scrollbar {
+  display: none;
+}
+.features-container {
+  -ms-overflow-style: none;  /* IE و Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* بطاقة الميزة */
+.feature-card {
+  flex: 0 0 auto; /* لا تتقلص، لا تتوسع */
+  background: var(--accent-color); 
+  padding: 35px; 
+  border-radius: 18px; 
+  border: 1px solid rgba(0, 0, 0, 0.05); 
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
+  text-align: center; /* محاذاة كل شيء للوسط */
+}
+
+.feature-card:hover {
+  transform: translateY(-8px); 
+  box-shadow: 
+    0 15px 30px rgba(13, 59, 20, 0.15),
+    0 0 0 4px var(--secondary-color); 
+}
+
+/* الأيقونات */
+.feature-card i {
+  font-size: 55px; /* الحجم كما كان سابقًا */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); 
+  color: var(--secondary-color);
+  margin-bottom: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.feature-card h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.feature-card p {
+    color: #444; 
+    font-weight: 500;
+}
+
+
+
+
+
+/* -------------------- تنسيق قسم التواصل والفوتر -------------------- */
+    
+
+
+/* تنسيق قسم التواصل */
+.contact { 
+  text-align: center; 
+  padding-top: 15px;
+}
+.contact a {
+  display: inline-flex;
+  align-items: center;
+  margin: 12px; 
+  padding: 16px 30px; 
+  background: var(--primary-color);
+  color: var(--text-color);
+  text-decoration: none;
+  border-radius: 50px; 
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: background 0.3s ease, transform 0.3s ease;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.contact a:hover {
+  background: var(--secondary-color);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+}
+.contact a i {
+  margin-left: 12px;
+  font-size: 22px;
+}
+    
+/* تنسيق الفوتر (نهاية الصفحة) */
+footer {
+  background: var(--primary-color);
+  color: var(--text-color);
+  text-align: center;
+  padding: 25px;
+  margin-top: 50px;
+  font-size: 15px;
+}
+    
+/* -------------------- تنسيقات الشاشات الصغيرة (الجوال) - مُحدّثة -------------------- */
+
+@media (max-width: 768px) {
+  /* تعديل الهيدر للجوال */
+  .main-header { padding: 10px 15px; }
+  .main-header .logo h1 { font-size: 1.4rem; }
+  .menu-toggle { display: block; } /* إظهار زر القائمة في الجوال */
+  
+
+
+
+
+  /* ====== نمط القائمة الجانبية في الجوال ====== */
+  .main-nav {
+    position: fixed;
+    top: 0;
+    right: -100%; /* القائمة مخفية خارج الشاشة */
+    width: 70%;
+    height: 100%;
+    background: var(--primary-color); 
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 80px;
+    gap: 25px;
+    transition: right 0.4s ease;
+    z-index: 999;
+    display: flex; /* إظهار flexbox لنمط العمود */
+  }
+
+  .main-nav.open {
+      right: 0; /* القائمة تظهر عند إضافة كلاس open بالـ JavaScript */
+  }
+
+  .main-nav a {
+      color: var(--text-color);
+      padding: 10px 30px;
+      width: 100%;
+      box-sizing: border-box;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      /* إزالة الخط السفلي في نمط الجوال */
+      position: static;
+      text-align: right; 
+  }
+  .main-nav a::after {
+      display: none;
+  }
+  .main-nav a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  /* تطبيق الأنماط الجديدة على الأقسام الأخرى */
+  .hero { padding: 100px 15px; }
+  .hero-text { padding: 30px 30px; border-width: 3px; border-radius: 15px; }
+  .hero-text a { padding: 12px 25px; font-size: 1rem; }
+  
+  .section {
+    width: 95%;
+    padding: 25px 15px;
+    margin: 30px auto;
+    border-radius: 15px;
+  }
+  .section h2 { font-size: 26px; }
+  .section h2::after { width: 60px; height: 3px; }
+
+  .features { grid-template-columns: 1fr; gap: 20px; }
+  .feature-card { padding: 30px; }
+  .contact a {
+    width: 90%;
+    margin: 10px auto;
+    font-size: 1rem;
+    padding: 14px 20px;
+  }
+  footer { padding: 20px; font-size: 13px; margin-top: 30px; }
+
+  /* تنسيقات إضافية للجوال (مُحافظ عليها من التعديلات السابقة) */
+  .mySwiper-gallery,
+  .gallery-slide {
+      height: 250px !important; 
+  }
+  .gallery-slide img {
+      width: 150px;
+      height: 150px;
+  }
+  .gallery-caption {
+      font-size: 1.1em;
+      padding: 3px;
+  }
+}
+@media (max-width: 400px) {
+  .hero { padding: 80px 10px; }
+  .hero-text { padding: 25px 15px; }
+  .section { padding: 20px 10px; }
+}
+
+
+
+
+/* -------------------- تنسيق شريط الأخبار المتحرك -------------------- */
+
+/* تنسيق شريط الأخبار المتحرك */
+.marquee {
+  width: 100%;
+  background: var(--primary-color); 
+  color: var(--secondary-color);    
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  padding: 12px 0;
+  font-weight: bold;
+}
+.marquee span {
+  display: inline-block;
+  padding-right: 100%; 
+  animation: marquee 70s linear infinite;
+}
+
+/* تنسيق الحاوية الخارجية لشريط الأخبار */
+.ticker-wrap {
+  width: 100%;
+  overflow: hidden;
+  background: var(--primary-color);
+  color: var(--text-color);
+  padding: 10px 0;
+  font-weight: bold;
+}
+
+.ticker {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 30s linear infinite;
+}
+
+/* تحديد حركة التمرير */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%); /* يبدأ عند حافة اليسار */
+  }
+  100% {
+    transform: translateX(100%); /* يتحرك للخارج جهة اليمين */
+  }
+}
+
+
+
+
+/* -------------------- تنسيق Swiper (سلايدر الدورات) -------------------- */
+
+.swiper {
+  width: 100%;
+  padding-bottom: 5px;
+  box-sizing: border-box;
+  height: 150px; 
+}
+.swiper-wrapper {
+  padding-top: 0; 
+  align-items: center;
+}
+.swiper-slide {
+  text-align: center;
+  background: var(--accent-color);
+  height: 70px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 25px; 
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.swiper-slide:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.swiper-slide .course-title {
+  font-weight: bold;
+  font-size: 18px;
+  color: var(--primary-color);
+}
+.swiper-button-next, .swiper-button-prev {
+  color: var(--primary-color) !important;
+  background: var(--secondary-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+.swiper-button-next::after, .swiper-button-prev::after {
+  font-size: 16px !important;
+  font-weight: bold;
+}
+.swiper-button-next:hover, .swiper-button-prev:hover {
+  background: #f9c257;
+}
+.swiper-pagination-bullet {
+  background: var(--primary-color);
+  width: 10px;
+  height: 10px;
+  opacity: 0.7;
+}
+.swiper-pagination-bullet-active {
+  opacity: 1;
+  background: var(--secondary-color);
+}
+
+/* -------------------- تنسيق سلايدر آراء الطلاب -------------------- */
+
+.slider-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto; 
+  overflow: hidden;
+  padding-bottom: 40px;
+}
+.testimonial {
+  display: none;
+  background: var(--accent-color);
+  padding: 30px;
+  border-radius: 12px;
+  font-style: italic;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.testimonial.active {
+  display: block; 
+}
+.testimonial::before {
+  content: '\201C';
+  font-size: 50px;
+  color: var(--secondary-color);
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+.testimonial::after {
+  content: '\201D';
+  font-size: 50px;
+  color: var(--secondary-color);
+  position: absolute;
+  bottom: -15px;
+  left: 20px;
+}
+    
+/* تنسيق نقاط التنقل (dots) */
+.slider-dots {
+  text-align: center;
+  margin-top: 20px; 
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  max-width: 220px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.dot {
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  background-color: #bbb;
+  border-radius: 50%;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.dot.active {
+  background-color: var(--primary-color);
+}
+
+/* -------------------- تنسيقات معرض الصور (Swiper Gallery) -------------------- */
+
+/* 1. الحاوية الأب لـ Swiper Gallery - يجب أن يكون Overflow مخفياً */
+.mySwiper-gallery {
+    width: 100%; 
+    /* 💥 التعديل الأول: تصغير ارتفاع الحاوية الأب 💥 */
+    height: 300px !important; 
+    overflow: hidden !important; 
+    padding: 0; 
+    margin-top: 20px;
+}
+
+/* 2. حاوية الشرائح (لضمان أنها ليست السبب في العرض الزائد) */
+.mySwiper-gallery .swiper-wrapper {
+    width: 100% !important; 
+}
+
+/* 3. الشريحة الرئيسية (Card) */
+.gallery-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 15px;
+    width: 100% !important; 
+    margin: 0 !important; 
+    padding: 0 !important;
+    
+    /* 💥 التعديل الثاني: تصغير ارتفاع الشريحة الداخلية (يجب أن يطابق الأب) 💥 */
+    height: 300px !important; 
+    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--white-color);
+    overflow: hidden; /* قص المحتوى الزائد داخل الشريحة فقط */
+}
+
+/* 4. الصورة داخل الشريحة */
+.gallery-slide img {
+    /* تصغير حجم الصورة أيضاً ليتناسب مع الارتفاع الجديد (مثلاً 200px) */
+    width: 200px; 
+    height: 200px;
+    object-fit: contain; 
+    transition: transform 0.3s;
+    border-radius: 50%; 
+    border: 5px solid var(--primary-color); 
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px; /* تقليل المسافة أيضاً */
+}
+
+.gallery-slide:hover img {
+    transform: scale(1.05); 
+}
+
+/* 5. النص (العنوان) */
+.gallery-caption {
+    width: 100%;
+    background-color: transparent; 
+    color: var(--secondary-color); 
+    padding: 5px; /* تقليل البادينج */
+    font-size: 1.2em; /* تصغير حجم الخط */
+    font-weight: bold;
+    text-shadow: none; 
+    text-align: center;
+}
+.section-title {
+    text-align: center; /* هذه هي الخاصية المطلوبة */
+    margin-bottom: 20px; /* يمكنك إضافة أو تعديل الهوامش حسب تصميمك */
+    /* ... أي خصائص أخرى للعناوين ... */
+}
+
+/* الكود الذي يجب إضافته إلى ملف index.css */
+.myFeaturesSlider .swiper-slide {
+    height: auto;
+}
+.myFeaturesSlider .features-container {
+    align-items: stretch; /* لضمان تساوي ارتفاع البطاقات */
+}
+
+
+/* index.css */
+/* ... (كود CSS السابق) ... */
+
+/* -------------------- تنسيق قسم Hero -------------------- */
+/* ... (كود Hero السابق) ... */
+
+/* --- تنسيق الأزرار الرئيسية --- */
+/* دمج الأزرار لتوحيد الأساس البصري */
+.hero-cta, .cta-button {
+  background: linear-gradient(90deg, #e5a72d 0%, #f9c257 100%); 
+  color: var(--primary-color) !important;
+  padding: 16px 35px; 
+  border-radius: 50px; 
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: none;
+  box-shadow: 0 5px 15px rgba(229, 167, 45, 0.4); 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: inline-block; 
+}
+.hero-cta:hover, .cta-button:hover { 
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(229, 167, 45, 0.8); /* زيادة قوة الظل عند التحويم */
+} 
+
+/* -------------------- تنسيق زر CTA أسفل الدورات (النمط الجديد والمخصص) -------------------- */
+.courses-cta-wrap {
+    text-align: center; /* لضمان توسيط الزر */
+    margin-top: 30px; /* زيادة الهامش العلوي */
+    padding-top: 10px;
+    border-top: 1px dashed rgba(13, 59, 20, 0.1); /* فاصل خفيف */
+}
+
+.courses-cta-wrap .cta-button {
+    font-size: 1.25rem; /* جعل الخط أكبر */
+    padding: 18px 45px; /* زيادة مساحة الزر */
+    box-shadow: 0 7px 20px rgba(229, 167, 45, 0.5); /* ظل أقوى افتراضياً */
+}
+
+/* -------------------- تنسيقات الجوال (768px) -------------------- */
+@media (max-width: 768px) {
+    /* ... (كود الميديا كويري السابق) ... */
+
+    .courses-cta-wrap .cta-button {
+        font-size: 1.1rem; 
+        padding: 14px 30px; 
+    }
+}
+/* ... (بقية كود CSS) ... */
+
+
+
+
+.hero-cta, .cta-button {
+  /* تم تغيير الخلفية إلى اللون الأساسي الأخضر الداكن */
+  background: var(--primary-color); 
+  /* تم تغيير لون النص إلى الأبيض */
+  color: var(--text-color) !important; 
+  
+  padding: 16px 35px; 
+  border-radius: 50px; 
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: none;
+  
+  /* تم تعديل ظل الزر ليتناسب مع اللون الأخضر الداكن */
+  box-shadow: 0 5px 15px rgba(13, 59, 20, 0.4); 
+  
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: inline-block; 
+}
+
+.hero-cta:hover, .cta-button:hover { 
+    transform: translateY(-3px);
+    /* تم تعديل قوة الظل ودرجة لونه لجعله أغمق وأقوى عند التحويم */
+    box-shadow: 0 10px 25px rgba(13, 59, 20, 0.9); 
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ============================================= */
+/* ========== 1. تنسيق قسم الدورات الرئيسي ========== */
+/* ============================================= */
+.swiper.mySwiper {
+    width: 100%;
+    max-width: 1200px; 
+    padding: 0 10px; 
+}
+
+
+/* ============================================= */
+/* ========== 2. تنسيق أزرار التنقل (الأسهم) ========== */
+/* ============================================= */
+.mySwiper .swiper-button-next,
+.mySwiper .swiper-button-prev {
+    color: var(--text-color); /* الخط الأبيض */
+    background-color: var(--primary-color); /* الخلفية الخضراء الداكنة */
+    border-radius: 50%;
+    width: 45px; 
+    height: 45px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(13, 59, 20, 0.4); 
+}
+
+.mySwiper .swiper-button-next::after,
+.mySwiper .swiper-button-prev::after {
+    font-size: 1.2rem;
+    font-weight: 900;
+}
+
+.mySwiper .swiper-button-next:hover,
+.mySwiper .swiper-button-prev:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(13, 59, 20, 0.6);
+}
+
+.mySwiper .swiper-button-next {
+    right: 5px; 
+}
+.mySwiper .swiper-button-prev {
+    left: 5px;
+}
+
+@media (max-width: 600px) {
+    .mySwiper .swiper-button-next,
+    .mySwiper .swiper-button-prev {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+
+/* ============================================= */
+/* ========== 3. تنسيق الشرائح (بطاقة الدورة) ========== */
+/* ============================================= */
+.mySwiper .swiper-slide {
+    padding: 20px;
+    background-color: #f7f3ed; /* لون الخلفية البيج الفاتح */
+    border-radius: 12px;
+    text-align: center;
+    min-height: 180px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); 
+    transition: transform 0.3s ease;
+}
+
+.mySwiper .swiper-slide:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.mySwiper .swiper-slide i {
+    font-size: 2.5rem;
+    color: var(--secondary-color); /* اللون الذهبي/البرتقالي */
+    margin-bottom: 10px;
+}
+
+.mySwiper .swiper-slide .course-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-color); /* اللون الأخضر الداكن */
+}
+
+
+/* ============================================= */
+/* ========== 4. تنسيق مؤشرات الترقيم (النقاط) ========== */
+/* ============================================= */
+.mySwiper .swiper-pagination-bullet {
+    background-color: #d1d1d1; 
+    opacity: 1; 
+    width: 10px;
+    height: 10px;
+    margin: 0 4px;
+    transition: background-color 0.3s ease;
+}
+
+.mySwiper .swiper-pagination-bullet-active {
+    background-color: var(--secondary-color); 
+    transform: scale(1.2); 
+}

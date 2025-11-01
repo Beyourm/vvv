@@ -1,0 +1,186 @@
+/* تنسيقات قسم المدونة الرئيسي (Hero) */
+.blog-hero-section {
+    position: relative;
+    height: 350px; /* أقل ارتفاعاً من الصفحة الرئيسية */
+    background-image: url('https://images.unsplash.com/photo-1507679799270-cd2cc1b7f00d?q=80&w=2970&auto=format&fit=crop'); 
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.blog-hero-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* طبقة تعتيم أقوى قليلاً */
+}
+
+/* تنسيقات شريط البحث والفئات */
+.blog-search-categories {
+    padding: 30px;
+    margin-bottom: 40px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+}
+
+.search-bar {
+    display: flex;
+    max-width: 600px;
+    margin: 0 auto 20px auto;
+    border: 2px solid var(--secondary-color);
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 12px 20px;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    color: var(--text-color);
+}
+
+.search-bar button {
+    background-color: var(--secondary-color);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-bar button:hover {
+    background-color: var(--primary-color);
+}
+
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.category-tag {
+    background-color: var(--light-gray);
+    color: var(--text-color);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.category-tag:hover, .category-tag.active {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+/* تنسيقات شبكة المقالات (Posts Grid) */
+.blog-posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.post-card {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.post-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.post-content {
+    padding: 20px;
+}
+
+.post-category {
+    display: inline-block;
+    background-color: var(--secondary-color);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.post-content h3 {
+    text-align: right;
+    color: var(--primary-color);
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.read-more {
+    display: inline-block;
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: 700;
+    margin-top: 15px;
+    transition: color 0.3s;
+}
+
+.read-more:hover {
+    color: var(--primary-color);
+}
+
+.post-meta {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: 15px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.post-meta i {
+    margin-left: 5px;
+    color: var(--secondary-color);
+}
+
+/* تنسيق ترقيم الصفحات (Pagination) */
+.pagination {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 60px;
+}
+
+
+/* Media Queries للمدونة */
+@media (max-width: 600px) {
+    .blog-posts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .blog-hero-section {
+        height: 250px;
+    }
+    
+    .search-bar input {
+        padding: 10px 15px;
+    }
+}

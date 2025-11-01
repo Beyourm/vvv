@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قصص النجاح المُلهمة | مؤسسة كن أنت</title>
+<link rel="stylesheet" href="../assets/fonts/tajawal.css">
+    
+    <link rel="stylesheet" href="cssc/success_stories.css">
+    <link rel="stylesheet" href="cssc/success_stories_responsive.css">
+</head>
+<body>
+
+    <header class="hero-section">
+        <h1>إلهام الغد يبدأ هنا!</h1>
+        <p>شاهد كيف حول خريجونا الشغف إلى مسارات وظيفية ناجحة وملهمة.</p>
+    </header>
+
+    <div class="container">
+
+        <div class="insta-stories-slider animated-section" id="instaStories"></div>
+
+        <section class="stats-section animated-section" id="statsSection">
+
+        </section>
+
+        <div class="cta-inline animated-section">
+            <p>هل اقتنعت بالأرقام؟ لا تنتظر لتكون جزءاً من هذا الإحصاء!</p>
+            <a href="../courses.html" class="cta-button">تصفح الدورات وابدأ فوراً</a>
+        </div>
+
+        <section class="interactive-stat animated-section">
+            <h2>هل أنت مستعد لقصتك الخاصة؟</h2>
+            <p>أدخل عمرك لترى كم من زملائك في نفس المرحلة نجحوا معنا!</p>
+            <div class="age-input-group">
+                <input type="number" id="ageInput" placeholder="أدخل عمرك هنا" min="18" max="65">
+                <button onclick="checkAgeSuccess()">تحقق الآن</button>
+            </div>
+            <div id="interactiveResult"></div>
+        </section>
+
+        <section class="stories-carousel animated-section" id="storiesCarousel"></section>
+        
+        <section class="cta-section animated-section">
+            <h2>دورك قد حان. متى تبدأ قصة نجاحك؟</h2>
+            <a href="../courses.html" class="cta-button">تصفح الدورات وابدأ الآن</a>
+        </section>
+
+    </div>
+    
+    <!-- ملفات الجافاسكربت -->
+    <script src="jsc/success_stories_counter.js"></script>
+    <script src="jsc/success_stories_interactiveStat.js"></script>
+    <script src="jsc/success_stories_carousel.js"></script> 
+    <script src="jsc/insta_stories_slider.js"></script> 
+    <script src="jsc/success_stories.js"></script>
+
+    <!-- الإضافة المطلوبة -->
+    <section id="statsSection" class="animated-section"></section>
+
+    <script src="js/success_stories_counter.js"></script>
+    <script src="js/success_stories.js"></script>
+    <script>
+      // استدعاء تحميل البيانات عند تحميل الصفحة
+      loadStats();
+    </script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> تسجيل المتدربين - مؤسسة كن أنت </title>
+    
+    
+    <meta property="og:title" content="نموذج التسجيل | مؤسسة كن أنت" />
+    <meta property="og:description" content="سجل بياناتك الآن لتكون ضمن سجلات المتدربين وابدأ رحلة التغيير نحو التميز." />
+    <meta property="og:image" content="https://skillia.netlify.app/images/photo.jpg" />
+    <meta property="og:url" content="https://sklilia.netlify.app/Trainees_Records" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ar_AR" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/tajawal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/Trainees_Records.css">
+    
+</head>
+<body>
+
+<header>
+    <h1>مؤسسة كن أنت</h1>
+    <nav>
+        <a href="https://skillia.netlify.app">الرئيسية</a>
+        <a href="https://skillia.netlify.app/about/index">من نحن</a>
+        <a href="https://skillia.netlify.app/courses">الدورات</a>
+        <a href="https://skillia.netlify.app/contact">تواصل معنا</a>
+    </nav>
+</header>
+
+<main>
+    <div class="container">
+        <div class="form-section">
+            <img src="https://skillia.netlify.app/images/photo.jpg" alt="شعار مؤسسة كن أنت" class="logo">
+            <h1 style="text-align: center;">نموذج تسجيل المتدربين في الدورات</h1>
+            <div class="welcome">
+                <p>في مؤسسة كن أنت، **نحن ملتزمون بتطوير قدراتك نحو التميز**. سجّل بياناتك الآن لتكون ضمن سجلات المتدربين.</p>
+                <p>عملية التسجيل تتم على ثلاث خطوات سهلة وضرورية. **كن أنت، وابدأ رحلة التغيير**.</p>
+                <p>يرجى التأكد من إرفاق سند الإيصال في الخطوة الأخيرة.</p>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="step active" data-step-index="0">
+                <span class="step-icon">1</span>
+                المعلومات الشخصية
+            </div>
+            <div class="step" data-step-index="1">
+                <span class="step-icon">2</span>
+                المؤهلات والدورة
+            </div>
+            <div class="step" data-step-index="2">
+                <span class="step-icon">3</span>
+                الاتصال وإثبات الدفع
+            </div>
+        </div>
+
+        <form id="TraineeForm" enctype="multipart/form-data">
+            
+            <div class="form-step active" data-step="1">
+                <h2><span class="response-icon">1</span> بياناتك الأساسية</h2>
+
+                <div class="form-group">
+                    <label for="full_name">الاسم الكامل <span class="required">*</span></label>
+                    <input type="text" id="full_name" name="full_name" required data-step="1">
+                    <div class="error-message" data-input="full_name"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">البريد الإلكتروني <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required data-step="1">
+                    <div class="error-message" data-input="email"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">الجنس <span class="required">*</span></label>
+                    <select id="gender" name="gender" required data-step="1">
+                        <option value="">-- اختر جنسك --</option>
+                        <option value="ذكر">ذكر</option>
+                        <option value="أنثى">أنثى</option>
+                    </select>
+                    <div class="error-message" data-input="gender"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">العمر <span class="required">*</span></label>
+                    <input type="number" id="age" name="age" required min="8" max="99" data-step="1">
+                    <div class="error-message" data-input="age"></div>
+                </div>
+                
+                <div class="conditional-age-fields" style="display: none;">
+                    <div class="form-group">
+                        <label for="parent_name">اسم ولي الأمر/الوصي <span class="required">*</span></label>
+                        <input type="text" id="parent_name" name="parent_name_visible" data-step="1" value="">
+                        <div class="error-message" data-input="parent_name"></div>
+                        
+                        <input type="hidden" id="parent_name_hidden" name="parent_name" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="nationality">الجنسية <span class="required">*</span></label>
+                    <select id="nationality" name="nationality" required data-step="1">
+                        <option value="">-- اختر جنسيتك --</option>
+                        </select>
+                    <div class="error-message" data-input="nationality"></div>
+                </div>
+
+
+                <div class="form-group action-buttons">
+                    <button type="button" class="btn-action next-btn">التالي <i class="fas fa-arrow-left"></i></button>
+                </div>
+            </div>
+
+            <div class="form-step" data-step="2">
+                <h2><span class="response-icon">2</span> اختيار الدورة والمؤهل</h2>
+
+                <div class="form-group">
+                    <label for="qualification">المؤهل الدراسي <span class="required">*</span></label>
+                    <select id="qualification" name="qualification" required data-step="2">
+                        <option value="">-- اختر مؤهلك --</option>
+                        <option value="أساسي">أساسي</option>
+                        <option value="ثانوية عامة">ثانوية عامة</option>
+                        <option value="دبلوم">دبلوم</option>
+                        <option value="بكالوريوس">بكالوريوس</option>
+                        <option value="ماجستير">ماجستير</option>
+                        <option value="دكتورة">دكتوراه</option>
+                    </select>
+                    <div class="error-message" data-input="qualification"></div>
+                </div>
+
+
+<div class="form-group">
+    <label for="course_name">الدورة المختارة <span class="required">*</span></label>
+    <select id="course_name" name="course_name" required data-step="2">
+        <option value="">-- اختر دورتك --</option>
+    </select>
+    <div class="error-message" data-input="course_name"></div>
+</div>
+
+
+                
+                <div class="conditional-course-fields" style="display: none;">
+                    <div class="form-group">
+                        <label for="years_of_experience">سنوات الخبرة في المجال <span class="required">*</span></label>
+                        <input type="number" id="years_of_experience" name="years_of_experience" data-step="2" min="1" max="50">
+                        <div class="error-message" data-input="years_of_experience"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="linkedin_url">رابط ملفك الشخصي (LinkedIn أو Portfolio) <span class="optional">(اختياري)</span></label>
+                        <input type="url" id="linkedin_url" name="linkedin_url" data-step="2" placeholder="http://linkedin.com/in/yourprofile">
+                        <div class="error-message" data-input="linkedin_url"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="previous_courses">دورات تدريبية سابقة في المجال <span class="optional">(اختياري)</span></label>
+                    <textarea id="previous_courses" name="previous_courses" data-step="2" placeholder="اذكر أسماء الدورات والمؤسسات التي درست بها سابقاً"></textarea>
+                    <div class="error-message" data-input="previous_courses"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="joining_reason">سبب رغبتك في الانضمام للدورة؟ <span class="required">*</span></label>
+                    <textarea id="joining_reason" name="joining_reason" required data-step="2"></textarea>
+                    <div class="error-message" data-input="joining_reason"></div>
+                    <p id="reason-tip" class="expectation-message" style="display: none;">
+                        الإجابة المُفصَّلة والمُقنعة تزيد من فرصة قبولك وتخصيص تجربتك التدريبية. **لا تكتفِ بكلمة واحدة!**
+                    </p>
+                </div>
+
+                <div class="form-group action-buttons">
+                    <button type="button" class="btn-action prev-btn"><i class="fas fa-arrow-right"></i> السابق</button>
+                    <button type="button" class="btn-action next-btn">التالي <i class="fas fa-arrow-left"></i></button>
+                </div>
+            </div>
+
+            <div class="form-step" data-step="3">
+                <h2><span class="response-icon">3</span> الاتصال وإثبات الدفع</h2>
+
+                <div class="conditional-age-fields-step3" style="display: none;">
+                    <div class="form-group">
+                        <label for="parent_phone">رقم هاتف ولي الأمر (مع رمز الدولة التلقائي) <span class="required">*</span></label>
+                        <input type="tel" id="parent_phone" name="parent_phone" data-step="3" placeholder="سيظهر المفتاح الدولي هنا تلقائياً">
+                        <div class="error-message" data-input="parent_phone"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone_number">رقم الهاتف للتواصل (مع رمز الدولة التلقائي) <span class="required">*</span></label>
+                    <input type="tel" id="phone_number" name="phone_number" required data-step="3" placeholder="سيظهر المفتاح الدولي هنا تلقائياً">
+                    <div class="error-message" data-input="phone_number"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="telegram_url">رابط حسابك على تيليجرام <span class="optional">(اختياري)</span></label>
+                    <input type="url" id="telegram_url" name="telegram_url" data-step="3" placeholder="مثال: https://t.me/username">
+                    <div class="error-message" data-input="telegram_url"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="course_fees">مبلغ الرسوم المدفوعة بحيث تكون بـ الدولار <span class="required">*</span></label>
+                    <input type="number" id="course_fees" name="course_fees" required min="0" step="1" data-step="3" placeholder="أدخل المبلغ كاملاً">
+                    <div class="error-message" data-input="course_fees"></div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="payment_method">طريقة الدفع المستخدمة <span class="required">*</span></label>
+                    <select id="payment_method" name="payment_method" required data-step="3">
+                        <option value="">-- اختر طريقة الدفع --</option>
+                        <option value="التحويل_البنكي">التحويل البنكي</option>
+                        <option value="كريمي">الخدمات المصرفية (كريمي)</option>
+                        <option value="تحويل_صراف">تحويل صراف/حوالة</option>
+                        <option value="بايبال">باي بال (PayPal)</option>
+                        <option value="غيرها">أخرى (يرجى التوضيح في سبب الانضمام)</option>
+                    </select>
+                    <div class="error-message" data-input="payment_method"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="payment_receipt">إرفاق سند إيصال الدفع <span class="required">*</span></label>
+                    <input type="file" id="payment_receipt" name="payment_receipt" class="file-input" accept="image/*, application/pdf" required data-step="3">
+
+                   <input type="hidden" id="marketer_id_input" name="marketer_id">
+                   <input type="hidden" name="status" value="N">
+                    <div class="drag-and-drop-area" id="dragAndDropArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>انقر للتحميل أو اسحب الملف هنا.</p>
+                        <p class="file-info">يُفضل أن يكون الإيصال بصيغة PNG, JPG أو PDF.</p>
+                    </div>
+                    
+                    <div id="filePreviewContainer"></div>
+                    <div class="error-message" data-input="payment_receipt"></div>
+                </div>
+
+                <div class="form-group action-buttons">
+                    <button type="button" class="btn-action prev-btn"><i class="fas fa-arrow-right"></i> السابق</button>
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        إرسال نموذج التسجيل <i class="fas fa-check-circle"></i>
+                    </button>
+                </div>
+                
+                <div class="loading-indicator" id="loadingIndicator">جاري معالجة البيانات وإرفاق الإيصال...</div>
+                <div class="success-message" id="successMessage"></div>
+                <div class="error-message" id="generalErrorMessage"></div>
+            </div>
+
+        </form>
+    </div>
+</main>
+
+
+<footer>
+    <div class="footer-social">
+        <a href="https://whatsapp.com/channel/0029VaCRNug3bbV13vVHyR0Z" target="_blank" aria-label="WhatsApp Channel"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://www.instagram.com/be.youar" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com/BeYouTrainin" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://t.me/beyoue" target="_blank" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://www.linkedin.com/in/beyouar" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://www.tiktok.com/@beyoutq" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+    </div>
+    <div class="footer-copyright">
+        &copy; 2025 مؤسسة كن أنت. جميع الحقوق محفوظة.
+    </div>
+</footer>
+<div class="overlay" id="successOverlay">
+  <div class="dialog">
+    <div class="check-wrap">
+      <svg viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#10b981"/>
+            <stop offset="100%" stop-color="#34d399"/>
+          </linearGradient>
+        </defs>
+        <circle class="circle" cx="50" cy="50" r="50"/>
+        <path class="tick" d="M28 53 L42 67 L72 37"/>
+      </svg>
+    </div>
+    <h2 id="dialogTitle">تهانينا! اكتمل التسجيل بنجاح</h2>
+    <p id="dialogMessage">تم استلام بياناتك وإيصال الدفع بنجاح. سنقوم بمراجعة طلبك وإرسال تفاصيل انضمامك للدورة قريباً عبر البريد الإلكتروني أو واتساب.</p>
+    <button class="btn" id="closeDialogBtn">موافق</button>
+  </div>
+</div>
+<script src="js/courseList.js"></script>
+<script src="../marketer_tracker.js"></script> 
+<script src="js/Trainees_Records.js"></script>
+</body>
+</html>

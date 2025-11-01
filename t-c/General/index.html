@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>لوحة تحكم بيانات التسجيل</title>
+  
+      <meta property="og:title" content="مؤسسة كن أنت للتدريب والتأهيل" />
+    <meta property="og:description" content="نصنع قادة الغد من خلال المعرفة. استثمر في نفسك، واستثمر في مستقبلك." />
+    <meta property="og:image" content="https://skillia.netlify.app/images/photo.jpg" />
+    <meta property="og:url" content="https://sklilia.netlify.app/Trainees_Records" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ar_AR" />
+    
+    
+  <meta name="description" content="مؤسسة كن أنت للتدريب والتأهيل. نقدم دورات متخصصة في تطوير الذات، الأمن السيبراني، إدارة الأعمال، والمزيد.">
+  <meta name="keywords" content="دورات تدريبية، مؤسسة كن أنت، تطوير الذات، اليمن، صنعاء، دورات أونلاين، حفظ القرآن">
+  
+<link rel="preload" href="../assets/fonts/tajawal.css" as="style" onload="this.rel='stylesheet'">
+ <link rel="stylesheet" href="../../assets/fonts/tajawal.css">
+<link rel="stylesheet" href="style.css">
+
+
+
+
+</head>
+<body>
+
+<div id="loader">جاري التحميل...</div>
+
+<div class="header">
+  <div class="search-container">
+    <input type="text" id="searchInput" oninput="filterCards()" placeholder="ابحث بالاسم، الكورس، أو الكود...">
+  </div>
+</div>
+
+<div class="filter-row">
+    <div class="header-filter-container">
+        <label for="marketerSelect" style="display: block; margin-bottom: 8px; font-weight: bold; color: var(--primary-darker);">
+            👤 تصفية حسب المسوّق:
+        </label>
+        <select id="marketerSelect" onchange="handleMarketerFilterChange(this.value)">
+            <option value="">جميع المسوّقين</option>
+            </select>
+    </div>
+</div>
+
+<div class="content">
+  <div class="tab-content active" id="tab1">
+    <h2>📚 قائمة جميع الطلاب</h2>
+    <div id="students-container" class="students-container">
+      <div class="loader-placeholder">
+        <div class="loader">جاري جلب بيانات الطلاب...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab2">
+    <h2>💰 قائمة الدافعين والمدفوعات</h2>
+    <div id="payers-container" class="students-container">
+        <div class="loader-placeholder">
+            <div class="loader">جاري جلب بيانات الدافعين...</div>
+        </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab3">
+    <h2>👥 قائمة المسوّقين المسجلين</h2>
+    <div id="marketers-container" class="students-container">
+        <div class="loader-placeholder">
+            <div class="loader">جاري جلب بيانات المسوّقين...</div>
+        </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab4">
+    <h2>💲 ملخص عمولات المسوّقين</h2>
+    <div id="commissions-container" class="students-container">
+        <div class="loader-placeholder">
+            <div class="loader">جاري جلب بيانات العمولات...</div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab(1)">ج الطلاب</div>
+  <div class="tab" onclick="showTab(2)">ج الدافعين</div>
+  <div class="tab" onclick="showTab(3)">ج المسوقين</div>
+  <div class="tab" onclick="showTab(4)">العمولات</div>
+</div>
+
+<script>
+// ==============================================
+//        المتغيرات والروابط الأساسية
+// ==============================================
+const STUDENTS_DATA_URL = 'https://script.google.com/macros/s/AKfycbxTAdC8g-J42sbnCfIxe2_Z286N5v7vKVhrL9iyJ_b3JzRMIpsClyPWqYV7usFjiIKmVQ/exec';
+const PAYERS_DATA_URL = 'https://script.google.com/macros/s/AKfycbyT7IZOVPIqwg4mM8crdSsvOzXFiYKzyZfdBk2N1sTk2HFFcBbkPWcbszU92hKT96docw/exec';
+const MARKETERS_DATA_URL = 'https://script.google.com/macros/s/AKfycbz-oJ9hpI6R-y-aRh4k10sbsyvcSam_BOB0BwYN77eE5OFazSLjF87kPTzF5zbgzRVh/exec';
+const COMMISSIONS_DATA_URL = 'https://script.google.com/macros/s/AKfycbyDhar1MzMQYqP-6zpeHHEhBvWYkFif8rJJWSy79MN32g16nUNIxmcZst46Wq3BczSRbw/exec';
+
+let allStudentsData = []; 
+let allPayersData = []; 
+let allMarketersData = []; 
+let allCommissionsData = []; 
+let currentActiveTabId = 'tab1';
+
+// متغيرا الفلترة العامة
+let currentMarketerFilter = ''; 
+let currentSearchTerm = '';
+const SELECT_ELEMENT_ID = 'marketerSelect'; // ID الجديد للعنصر المختار
+
+
+// ==============================================
+//        وظائف المساعدة والتنسيق
+// ==============================================
+
+function escapeHTML(str) {
+  if (str === null || str === undefined || str === '') return '-';
+  if (str === 0) return '0';
+  if (typeof str === 'string' && str.startsWith('https://script.google.com/macros/')) {
+    return 'رابط API';
+  }
+  return str.toString().replace(/[&<>"']/g, match => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[match]));
+}
+
+function formatFlexibleDate(dateString) {
+    if (!dateString) return 'غير متوفر';
+    try {
+        const dateObj = new Date(dateString);
+        if (!isNaN(dateObj) && dateObj.getFullYear() > 2000) { 
+            return dateObj.toLocaleDateString('ar-EG', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric'
+            });
+        }
+    } catch (e) {
+        return escapeHTML(dateString);
+    }
+    return escapeHTML(dateString);
+}
+
+function formatISODate(isoString) {
+    if (!isoString) return 'غير متوفر';
+    try {
+        const dateObj = new Date(isoString);
+        if (isNaN(dateObj)) {
+            return escapeHTML(isoString);
+        }
+        return dateObj.toLocaleDateString('ar-EG', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    } catch (e) {
+        return escapeHTML(isoString);
+    }
+}
+
+function formatCurrency(number) {
+    if (typeof number !== 'number') {
+        number = parseFloat(number);
+    }
+    if (isNaN(number)) {
+        return 'غير محدد';
+    }
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0, 
+        maximumFractionDigits: 0
+    }).format(number);
+}
+
+
+function formatReceipt(link) {
+    if (!link || typeof link !== 'string' || !link.includes('drive.google.com')) {
+        return `<span style="color: var(--error-color, #E74C3C);">لا يوجد إيصال/رابط غير صالح.</span>`;
+    }
+
+    const match = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    const fileId = match ? match[1] : null;
+    const linkText = 'عرض الإيصال (رابط أصلي)';
+
+    if (fileId) {
+        const directLink = `https://drive.google.com/thumbnail?id=${fileId}&sz=w250`; 
+
+        return `
+            <span class="label" style="display: block; margin-top: 10px;">صورة الإيصال:</span>
+            <a href="${link}" target="_blank" class="receipt-img-container" style="display: block;">
+                <img src="${directLink}" alt="صورة إيصال الدفع" 
+                     onerror="this.onerror=null; this.src='https://via.placeholder.com/150?text=تعذر+عرض+الصورة';"
+                     style="max-width: 100%; height: auto; border-radius: 5px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            </a>
+            <a href="${link}" target="_blank" style="font-size: 0.8rem; color: var(--primary-darker); display: block; margin-top: 5px;">${linkText}</a>
+        `;
+    } else {
+        return `<span class="label">الإيصال (رابط):</span> <a href="${link}" target="_blank" style="color: var(--primary-color);">${linkText}</a>`;
+    }
+}
+
+
+// ==============================================
+//        وظائف جلب البيانات والعرض (Tab 1: Students)
+// ==============================================
+async function loadStudentsData() {
+  const container = document.getElementById('students-container');
+  if (!container) return;
+  
+  if (allStudentsData.length === 0) {
+      container.innerHTML = `<div class="loader-placeholder"><div class="loader">جاري جلب بيانات الطلاب...</div></div>`;
+  }
+
+  try {
+    if (allStudentsData.length === 0) {
+        const response = await fetch(STUDENTS_DATA_URL);
+        if (!response.ok) {
+            throw new Error(`فشل الاتصال بالخادم. الحالة: ${response.status}`);
+        }
+        allStudentsData = await response.json();
+    }
+
+    renderStudentsCards(allStudentsData);
+    
+  } catch (err) {
+    console.error('Error fetching students data:', err);
+    container.style.display = 'block';
+    container.innerHTML = `<p style="text-align:center; color: var(--error-color); padding: 10px; border-radius: 8px;">
+        حدث خطأ أثناء جلب بيانات الطلاب: ${err.message}.
+    </p>`;
+  }
+}
+
+function renderStudentsCards(students) {
+    const container = document.getElementById('students-container');
+    if (!container) return;
+
+    // تطبيق الفلترة
+    let filteredStudents = students.filter(s => {
+        const textContent = 
+            (s['الاسم'] || '') + (s['اسم الدورة'] || '') + (s['رقم الواتساب'] || '') + (s['معرّف المسوّق'] || '');
+        const searchMatch = textContent.toLowerCase().includes(currentSearchTerm.toLowerCase());
+        
+        const marketerId = (s['معرّف المسوّق'] || '').toLowerCase();
+        const marketerMatch = currentMarketerFilter === "" || marketerId === currentMarketerFilter.toLowerCase();
+        
+        return searchMatch && marketerMatch;
+    });
+
+    if (!Array.isArray(filteredStudents) || filteredStudents.length === 0) {
+        container.style.display = 'block';
+        const message = currentSearchTerm || currentMarketerFilter ? 
+            `لا توجد سجلات مطابقة للبحث أو الفلتر المختار.` : 
+            'لا توجد بيانات طلاب لعرضها حالياً.';
+        container.innerHTML = `<p style="text-align:center; color: var(--text-color-dark);">${message}</p>`;
+        return;
+    }
+
+    const cardsHtml = filteredStudents.map(s => {
+      const name = escapeHTML(s['الاسم']); 
+      const course = `دورة : ${escapeHTML(s['اسم الدورة'])}`; 
+      const phoneRaw = s['رقم الواتساب']; 
+      const phone = phoneRaw ? `<a href="tel:${phoneRaw}" target="_blank" style="color: var(--primary-color); text-decoration: none;">${escapeHTML(phoneRaw)}</a>` : 'غير متوفر';
+      const registrationDate = formatFlexibleDate(s['تاريخ التسجيل']); 
+      const marketerId = escapeHTML(s['معرّف المسوّق']); 
+      const country = escapeHTML(s['البلد']); 
+      const gender = escapeHTML(s['الجنس']);
+      const age = escapeHTML(s['العمر']);
+      const email = escapeHTML(s['البريد الإلكتروني']);
+      const telegram = escapeHTML(s['تيليجرام']);
+      const statusRaw = s['الحالة'];
+      const status = statusRaw && (statusRaw.toUpperCase() === 'Y' || statusRaw.includes('مدفوع'));
+      const statusText = status ? 'تم الدفع' : 'لم يدفع';
+      const statusColor = status ? 'var(--success-color)' : 'var(--warning-color)';
+      
+      return `
+        <div class="student-card" data-marketer-id="${marketerId}" style="border-right: 5px solid ${statusColor};">
+          <div class="course">${course}</div>
+          <h3>${name} <span class="status ${status ? 'paid' : 'unpaid'}" style="float: left;">${statusText}</span></h3>
+          
+          <div class="info">
+            <div><span class="label">تاريخ التسجيل:</span> ${registrationDate}</div>
+            <div><span class="label">البلد:</span> ${country}</div>
+            <div><span class="label">الجنس / العمر:</span> ${gender} / ${age}</div>
+            <div><span class="label">معرّف المسوّق:</span> ${marketerId}</div>
+            
+            <hr style="border-top: 1px dashed var(--border-color); margin: 10px 0;">
+            
+            <div><span class="label">رقم الواتساب:</span> ${phone}</div>
+            <div><span class="label">البريد الإلكتروني:</span> ${email}</div>
+            <div><span class="label">تيليجرام:</span> ${telegram}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+    container.style.display = 'grid'; 
+    container.innerHTML = cardsHtml;
+}
+
+// ==============================================
+//        وظائف جلب البيانات والعرض (Tab 2: Payers)
+// ==============================================
+async function loadPayersData() {
+  const container = document.getElementById('payers-container');
+  if (!container) return;
+  
+  if (allPayersData.length === 0) {
+      container.innerHTML = `<div class="loader-placeholder"><div class="loader">جاري جلب بيانات الدافعين...</div></div>`;
+  }
+
+  try {
+    if (allPayersData.length === 0) {
+        const response = await fetch(PAYERS_DATA_URL);
+        if (!response.ok) {
+            throw new Error(`فشل الاتصال بالخادم. الحالة: ${response.status}`);
+        }
+        allPayersData = await response.json();
+    }
+    
+    renderPayersCards(allPayersData);
+    
+  } catch (err) {
+    console.error('Error fetching payers data:', err);
+    container.style.display = 'block';
+    container.innerHTML = `<p style="text-align:center; color: var(--error-color); padding: 10px; border-radius: 8px;">
+        حدث خطأ أثناء جلب بيانات الدافعين: ${err.message}.
+    </p>`;
+  }
+}
+
+function renderPayersCards(payers) {
+    const container = document.getElementById('payers-container');
+    if (!container) return;
+    
+    // تطبيق الفلترة
+    let filteredPayers = payers.filter(p => {
+        const textContent = 
+            (p['الاسم الكامل'] || '') + (p['اسم الدورة المطلوب'] || '') + (p['رقم الهاتف'] || '') + (p['marketer_id'] || '');
+        const searchMatch = textContent.toLowerCase().includes(currentSearchTerm.toLowerCase());
+
+        const marketerId = (p['marketer_id'] || '').toLowerCase();
+        const marketerMatch = currentMarketerFilter === "" || marketerId === currentMarketerFilter.toLowerCase();
+
+        return searchMatch && marketerMatch;
+    });
+
+    if (!Array.isArray(filteredPayers) || filteredPayers.length === 0) {
+        container.style.display = 'block';
+        const message = currentSearchTerm || currentMarketerFilter ? 
+            `لا توجد سجلات دافعين مطابقة للبحث أو الفلتر المختار.` : 
+            'لا توجد بيانات دافعين لعرضها حالياً.';
+        container.innerHTML = `<p style="text-align:center; color: var(--text-color-dark);">${message}</p>`;
+        return;
+    }
+
+    const cardsHtml = filteredPayers.map(p => {
+      const name = escapeHTML(p['الاسم الكامل']);
+      const course = `دورة : ${escapeHTML(p['اسم الدورة المطلوب'])}`;
+      const phoneRaw = p['رقم الهاتف'];
+      const phone = phoneRaw ? `<a href="tel:${phoneRaw}" target="_blank" style="color: var(--primary-color); text-decoration: none;">${escapeHTML(phoneRaw)}</a>` : 'غير متوفر';
+      const email = escapeHTML(p['البريد الإلكتروني']);
+      const marketerId = escapeHTML(p['marketer_id']); 
+      const receiptLinkField = p['رابط الإيصال']; 
+      const paidAmount = p['الرسوم'] ? `${escapeHTML(p['الرسوم'])} $` : 'غير محدد';
+      const paymentMethod = escapeHTML(p['طريقة الدفع المستخدمة']);
+      const receiptHTML = formatReceipt(receiptLinkField);
+      
+      return `
+        <div class="student-card" data-marketer-id="${marketerId}" style="border-right: 5px solid var(--success-color);">
+          <div class="course">${course}</div>
+          <h3>${name} <span class="status paid" style="float: left;">تم الدفع</span></h3>
+          
+          <div class="info">
+            <div><span class="label">الاسم الكامل:</span> ${name}</div>
+            <div><span class="label">البريد الإلكتروني:</span> ${email}</div>
+            <div><span class="label">رقم الهاتف:</span> ${phone}</div>
+            
+            <hr style="border-top: 1px dashed var(--border-color); margin: 10px 0;">
+            
+            <div><span class="label">المبلغ المدفوع:</span> <strong style="color: var(--success-color);">${paidAmount}</strong></div>
+            <div><span class="label">طريقة الدفع:</span> ${paymentMethod}</div>
+            
+            <div style="margin-top: 10px;">${receiptHTML}</div>
+            
+            <hr style="border-top: 1px solid var(--primary-color); margin: 10px 0;">
+            
+            <div><span class="label">سجل عبر:</span> ${marketerId}</div>
+            
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    container.style.display = 'grid'; 
+    container.innerHTML = cardsHtml;
+}
+
+// ==============================================
+//        وظائف جلب البيانات والعرض (Tab 3: Marketers)
+// ==============================================
+async function loadMarketersData() {
+  const container = document.getElementById('marketers-container');
+  if (!container) return;
+  
+  if (allMarketersData.length === 0) {
+      container.innerHTML = `<div class="loader-placeholder"><div class="loader">جاري جلب بيانات المسوّقين...</div></div>`;
+  }
+
+  try {
+    if (allMarketersData.length === 0) {
+        const response = await fetch(MARKETERS_DATA_URL);
+        if (!response.ok) {
+            throw new Error(`فشل الاتصال بالخادم. الحالة: ${response.status}`);
+        }
+        allMarketersData = await response.json();
+    }
+    
+    renderMarketersCards(allMarketersData);
+    
+  } catch (err) {
+    console.error('Error fetching marketers data:', err);
+    container.style.display = 'block';
+    container.innerHTML = `<p style="text-align:center; color: var(--error-color); padding: 10px; border-radius: 8px;">
+        حدث خطأ أثناء جلب بيانات المسوّقين: ${err.message}.
+    </p>`;
+  }
+}
+
+function renderMarketersCards(marketers) {
+    const container = document.getElementById('marketers-container');
+    if (!container) return;
+    
+    // تطبيق الفلترة (فقط حسب مربع البحث)
+    const normalizedSearchTerm = currentSearchTerm.toLowerCase();
+    let filteredMarketers = marketers.filter(m => {
+        const name = (m['fullname'] || '').toLowerCase();
+        const phone = (m['phone'] || '').toString();
+        const marketerId = (m['marketer_id'] || '').toLowerCase();
+        
+        // هنا لا نستخدم currentMarketerFilter لهذا التبويب، بل فقط البحث.
+        return name.includes(normalizedSearchTerm) || 
+               phone.includes(normalizedSearchTerm) || 
+               marketerId.includes(normalizedSearchTerm);
+    });
+    
+    if (!Array.isArray(filteredMarketers) || filteredMarketers.length === 0) {
+        container.style.display = 'block';
+        const message = normalizedSearchTerm ? 
+            `لا توجد سجلات مسوّقين مطابقة لـ: "${escapeHTML(currentSearchTerm)}".` : 
+            'لا توجد بيانات مسوّقين لعرضها حالياً.';
+        container.innerHTML = `<p style="text-align:center; color: var(--text-color-dark);">${message}</p>`;
+        return;
+    }
+
+    // إنشاء البطاقات
+    const cardsHtml = filteredMarketers.map(m => {
+      const name = escapeHTML(m['fullname']);
+      const marketerId = escapeHTML(m['marketer_id']);
+      const registrationDate = formatISODate(m['تاريخ_التسجيل']);
+      const country = escapeHTML(m['country']);
+      const gender = escapeHTML(m['gender']);
+      const phoneRaw = m['phone'];
+      const phone = phoneRaw ? `<a href="tel:${phoneRaw}" target="_blank" style="color: var(--primary-color); text-decoration: none;">${escapeHTML(phoneRaw)}</a>` : 'غير متوفر';
+      const emailRaw = m['email'];
+      const email = emailRaw ? `<a href="mailto:${emailRaw}" target="_blank" style="color: var(--primary-color); text-decoration: none;">${escapeHTML(emailRaw)}</a>` : 'غير متوفر';
+      const status = m['الحالة'] === 'Y';
+      const statusText = status ? 'مُفعَّل' : 'غير مُفعَّل';
+      const statusColor = status ? 'var(--success-color)' : 'var(--error-color)';
+      
+      return `
+        <div class="student-card" data-marketer-id="${marketerId}" style="border-right: 5px solid ${statusColor};">
+          <div class="course" style="color: ${statusColor};">حالة التسجيل: ${statusText}</div>
+          <h3>${name}</h3>
+          
+          <div class="info">
+            <div><span class="label">معرّف المسوّق:</span> <strong>${marketerId}</strong></div>
+            <div><span class="label">تاريخ التسجيل:</span> ${registrationDate}</div>
+            
+            <hr style="border-top: 1px dashed var(--border-color); margin: 10px 0;">
+            
+            <div><span class="label">الدولة:</span> ${country}</div>
+            <div><span class="label">الجنس:</span> ${gender}</div>
+
+            <hr style="border-top: 1px dashed var(--border-color); margin: 10px 0;">
+            
+            <div><span class="label">رقم الهاتف:</span> ${phone}</div>
+            <div><span class="label">البريد الإلكتروني:</span> ${email}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    container.style.display = 'grid'; 
+    container.innerHTML = cardsHtml;
+}
+
+// ==============================================
+//        وظائف جلب البيانات والعرض (Tab 4: Commissions)
+// ==============================================
+async function loadCommissionsData() {
+  const container = document.getElementById('commissions-container');
+  if (!container) return;
+  
+  if (allCommissionsData.length === 0) {
+      container.innerHTML = `<div class="loader-placeholder"><div class="loader">جاري جلب بيانات العمولات...</div></div>`;
+  }
+
+  try {
+    if (allCommissionsData.length === 0) {
+        const response = await fetch(COMMISSIONS_DATA_URL);
+        if (!response.ok) {
+            throw new Error(`فشل الاتصال بالخادم. الحالة: ${response.status}`);
+        }
+        allCommissionsData = await response.json();
+    }
+    
+    renderCommissionsCards(allCommissionsData);
+    
+  } catch (err) {
+    console.error('Error fetching commissions data:', err);
+    container.style.display = 'block';
+    container.innerHTML = `<p style="text-align:center; color: var(--error-color); padding: 10px; border-radius: 8px;">
+        حدث خطأ أثناء جلب بيانات العمولات: ${err.message}.
+    </p>`;
+  }
+}
+
+function renderCommissionsCards(commissions) {
+    const container = document.getElementById('commissions-container');
+    if (!container) return;
+    
+    // 1. تصفية السجل الأخير الفارغ
+    let filteredCommissions = commissions.filter(c => c['اسم المسوّق'] && c['اسم المسوّق'].trim() !== '');
+    
+    // 2. تطبيق الفلترة (حسب مربع البحث وفلتر المسوق)
+    const normalizedSearchTerm = currentSearchTerm.toLowerCase();
+    
+    filteredCommissions = filteredCommissions.filter(c => {
+        const name = (c['اسم المسوّق'] || '').toLowerCase();
+        const marketerId = (c['معرف المسوّق'] || '').toLowerCase();
+        
+        const searchMatch = name.includes(normalizedSearchTerm) || marketerId.includes(normalizedSearchTerm);
+        const marketerMatch = currentMarketerFilter === "" || marketerId === currentMarketerFilter.toLowerCase(); // الفلتر حسب الـ ID
+        
+        return searchMatch && marketerMatch;
+    });
+
+    if (!Array.isArray(filteredCommissions) || filteredCommissions.length === 0) {
+      container.style.display = 'block';
+      const message = currentSearchTerm || currentMarketerFilter ? 
+            `لا توجد بيانات عمولات مطابقة للبحث أو الفلتر المختار.` : 
+            'لا توجد بيانات عمولات لعرضها حالياً.';
+      container.innerHTML = `<p style="text-align:center; color: var(--text-color-dark);">${message}</p>`;
+      return;
+    }
+
+    // إنشاء البطاقات
+    const cardsHtml = filteredCommissions.map(c => {
+      const name = escapeHTML(c['اسم المسوّق']);
+      const marketerId = escapeHTML(c['معرف المسوّق']);
+      const phoneRaw = c['رقم الهاتف'];
+      const phone = phoneRaw ? `<a href="tel:${phoneRaw}" target="_blank" style="color: var(--primary-color); text-decoration: none;">${escapeHTML(phoneRaw)}</a>` : 'غير متوفر';
+      const referralsCount = escapeHTML(c['عدد الإحالات']);
+      const paidToInstitution = formatCurrency(c['المبلغ المدفوع للمؤسسة']);
+      const commissionDue = formatCurrency(c['العمولة المستحقة']);
+      const bonus = formatCurrency(c['المكافآت']);
+      const commissionPercentage = escapeHTML(c['نسبة العمولة']) + '%';
+      
+      const dueValue = parseFloat(c['العمولة المستحقة']) || 0;
+      const cardBorderColor = dueValue > 0 ? 'var(--warning-color)' : 'var(--success-color)';
+      const dueTextColor = dueValue > 0 ? 'var(--error-color)' : 'var(--success-color)'; 
+      const dueText = dueValue > 0 ? 'متبقية للدفع' : 'تم تصفيرها';
+      
+      return `
+        <div class="student-card" data-marketer-id="${marketerId}" style="border-right: 5px solid ${cardBorderColor};">
+          <div class="course" style="color: var(--primary-darker);">معرف: ${marketerId}</div>
+          <h3>${name} <span class="status" style="background-color: ${dueTextColor}; float: left; font-size: 0.9rem;">${dueText}</span></h3>
+          
+          <div class="info">
+            <div><span class="label">عدد الإحالات:</span> <strong style="color: var(--primary-color);">${referralsCount}</strong></div>
+            <div><span class="label">الهاتف:</span> ${phone}</div>
+            
+            <hr style="border-top: 1px dashed var(--border-color); margin: 10px 0;">
+            
+            <div><span class="label">المبلغ المدفوع (للمؤسسة):</span> ${paidToInstitution}</div>
+            <div><span class="label">نسبة العمولة:</span> ${commissionPercentage}</div>
+            
+            <hr style="border-top: 2px solid var(--border-color); margin: 10px 0;">
+            
+            <div><span class="label">العمولة المستحقة:</span> <strong style="color: ${dueTextColor}; font-size: 1.1em;">${commissionDue}</strong></div>
+            <div><span class="label">المكافآت:</span> ${bonus}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    container.style.display = 'grid'; 
+    container.innerHTML = cardsHtml;
+}
+
+
+// ==============================================
+//        وظائف الفلترة والتبديل بين التبويبات
+// ==============================================
+
+/**
+ * وظيفة عامة لتطبيق فلاتر البحث والمسوق على التبويب النشط.
+ */
+function filterCards() {
+    currentSearchTerm = document.getElementById('searchInput').value;
+    // currentMarketerFilter يتم تحديثها بواسطة handleMarketerFilterChange
+
+    if (currentActiveTabId === 'tab1') {
+        renderStudentsCards(allStudentsData);
+    } else if (currentActiveTabId === 'tab2') {
+        renderPayersCards(allPayersData);
+    } else if (currentActiveTabId === 'tab3') {
+        renderMarketersCards(allMarketersData);
+    } else if (currentActiveTabId === 'tab4') {
+        renderCommissionsCards(allCommissionsData);
+    }
+}
+
+/**
+ * وظيفة لمعالجة تغيير قيمة فلتر المسوق وتحديث الفلترة.
+ */
+function handleMarketerFilterChange(selectedMarketerId) {
+    currentMarketerFilter = selectedMarketerId;
+    filterCards(); 
+}
+
+async function showTab(tabIndex) {
+  const tabs = document.querySelectorAll('.tab');
+  const contents = document.querySelectorAll('.tab-content');
+
+  tabs.forEach(tab => tab.classList.remove('active'));
+  contents.forEach(content => content.classList.remove('active'));
+
+  const activeContent = contents[tabIndex - 1];
+  tabs[tabIndex - 1].classList.add('active');
+  activeContent.classList.add('active');
+  
+  currentActiveTabId = activeContent.id;
+  
+  // تحميل البيانات للتبويب النشط إن لم تكن محملة
+  if (currentActiveTabId === 'tab1' && allStudentsData.length === 0) {
+      await loadStudentsData();
+  } else if (currentActiveTabId === 'tab2' && allPayersData.length === 0) {
+      await loadPayersData();
+  } else if (currentActiveTabId === 'tab3' && allMarketersData.length === 0) {
+      await loadMarketersData();
+  } else if (currentActiveTabId === 'tab4' && allCommissionsData.length === 0) {
+      await loadCommissionsData();
+  }
+  
+  // تطبيق الفلترة بعد تحميل البيانات
+  filterCards();
+}
+
+// ==============================================
+//        وظائف ملء قائمة المسوّقين ديناميكياً
+// ==============================================
+
+async function populateMarketerSelect() {
+    const selectElement = document.getElementById(SELECT_ELEMENT_ID);
+    if (!selectElement) return;
+
+    // تعطيل وإظهار رسالة التحميل
+    selectElement.disabled = true;
+    selectElement.innerHTML = `<option value="">جاري تحميل المسوقين...</option>`;
+
+    try {
+        // إذا لم يتم تحميل بيانات المسوقين مسبقاً، قم بتحميلها
+        if (allMarketersData.length === 0) {
+             const response = await fetch(MARKETERS_DATA_URL);
+             allMarketersData = await response.json();
+        }
+        
+        selectElement.innerHTML = `<option value="">جميع المسوّقين</option>`; // إعادة الخيار الافتراضي
+
+        if (Array.isArray(allMarketersData)) {
+            allMarketersData.forEach(marketer => {
+                const id = marketer['marketer_id'];
+                const name = marketer['fullname'];
+                if (id && name && id.trim() !== '') {
+                    const option = document.createElement('option');
+                    // القيمة هي المعرف (ID) للتصفية
+                    option.value = id.toLowerCase(); 
+                    option.textContent = `${name} (${id})`;
+                    selectElement.appendChild(option);
+                }
+            });
+        }
+    } catch (error) {
+        console.error("Failed to load marketers for select filter:", error);
+        selectElement.innerHTML = `<option value="">فشل التحميل (حاول تحديث الصفحة)</option>`;
+    } finally {
+        selectElement.disabled = false;
+    }
+}
+
+
+// ---------------- وظيفة التشغيل عند تحميل الصفحة ----------------
+document.addEventListener('DOMContentLoaded', async () => {
+    // إخفاء Loader الشامل
+    const loader = document.getElementById('loader');
+    loader.style.opacity = '0';
+    setTimeout(() => {
+        loader.style.display = 'none';
+    }, 300);
+
+    // 1. ملء قائمة المسوقين أولاً
+    await populateMarketerSelect();
+
+    // 2. تفعيل التبويب الأول وتحميل البيانات
+    showTab(1);
+});
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تم التسجيل بنجاح - مؤسسة كن أنت</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/Trainees_Records.css"> 
+    
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f6f9; /* لون الخلفية */
+            font-family: 'Tajawal', sans-serif;
+            padding: 20px;
+        }
+        .success-dialog {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        .success-icon {
+            font-size: 5rem;
+            color: #2ecc71; /* الأخضر */
+            margin-bottom: 20px;
+            /* 💡 لإنشاء حركة بسيطة لعلامة الصح */
+            animation: bounceIn 0.8s ease-out;
+        }
+        .success-dialog h1 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        .success-dialog p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .dialog-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        .dialog-btn:hover {
+            background-color: #2980b9;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="success-dialog">
+    <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+    </div>
+    <h1>تهانينا! اكتمل التسجيل بنجاح</h1>
+    <p>تم استلام بياناتك وإيصال الدفع بنجاح. سنقوم بمراجعة طلبك وإرسال تفاصيل انضمامك للدورة قريباً عبر البريد الإلكتروني أو واتساب.</p>
+    <a href="index.html" class="dialog-btn">العودة للصفحة الرئيسية</a>
+</div>
+
+</body>
+</html>

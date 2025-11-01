@@ -1,0 +1,134 @@
+/* ===================== success_stories.css – نسخة متجاوبة (معدل) ===================== */
+
+/* ===================== المتغيرات العامة ===================== */ :root { --primary-color: #2980b9; --accent-color: #f39c12; --background-light: #f4f6f9; --text-color: #34495e; --success-color: #2ecc71; }
+
+/* ===================== ضمان box-sizing للعناصر كلها (✅ جديد) ===================== */ html { box-sizing: border-box; } *, *::before, *::after { box-sizing: inherit; }
+
+/* ===================== الجسم والحاوية ===================== / html, body { margin: 0; padding: 0; width: 100%; max-width: 100%; overflow-x: hidden; / يمنع التمرير الأفقي */ font-family: 'Tajawal', sans-serif; background-color: var(--background-light); color: var(--text-color); line-height: 1.7; text-align: right; }
+
+/* الحاوية الرئيسية مع هوامش جانبية / .container { width: 100%; max-width: 1200px; padding: 0 40px; / هوامش جانبية مناسبة */ margin: 0 auto; }
+
+/* ===================== الصور والفيديو ===================== */ .success-stories img, .success-stories video, .success-stories iframe { max-width: 100%; height: auto; display: block; }
+
+/* ===================== الأعمدة ===================== / .success-stories .row, .success-stories .column { display: flex; flex-wrap: wrap; gap: 20px; / مسافة بين الأعمدة */ }
+
+/* ✅ جديد: تأكد أن عناصر الـ flex يمكنها الانكماش (important جداً لمنع التجاوز) */ .success-stories .row > *, .success-stories .column > * { min-width: 0; flex-shrink: 1; }
+
+/* ===================== النصوص ===================== */ .success-stories h1, .success-stories h2, .success-stories h3, .success-stories p { word-wrap: break-word; overflow-wrap: break-word; }
+
+/* ✅ جديد: كسر الكلمات والنصوص الطويلة داخل أي زر أو عنصر تسبّب تجاوز */ .success-stories button, .success-stories a, .success-stories input, .success-stories textarea { white-space: normal; word-break: break-word; }
+
+/* ===================== تأثير الظهور عند التمرير ===================== */ .animated-section { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; will-change: opacity, transform; } .animated-section.is-visible { opacity: 1; transform: translateY(0); }
+
+/* ===================== تنسيقات الشاشات المتوسطة ===================== */ @media (max-width: 1024px) { .container { padding: 0 25px; } .success-stories .row, .success-stories .column { gap: 15px; } }
+
+/* ===================== تنسيقات الشاشات الصغيرة ===================== */
+
+@media (max-width: 768px) { .container { padding: 0 20px; }
+
+.animated-section,
+.stats-section,
+.stories-carousel,
+.cta-section {
+    margin-left: 15px;
+    margin-right: 15px; 
+    width: calc(100% - 30px);
+    max-width: unset;
+}
+
+.interactive-stat {
+    margin-left: 15px;
+    margin-right: 15px;
+    width: calc(100% - 30px);
+    max-width: unset;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box; 
+    position: relative;         /* لسهولة ضبط العناصر المطلقة داخله */
+    overflow-x: hidden;         /* يمنع أي تجاوز أفقي داخلي */
+    -webkit-overflow-scrolling: touch;
+}
+
+.age-input-group {
+    flex-direction: column; 
+    gap: 10px; 
+    margin-left: 0;
+    margin-right: 0;
+    min-width: 0; /* مهم داخل flex */
+}
+
+.age-input-group input, 
+.age-input-group button {
+    width: 100%;
+    margin: 0; 
+    box-sizing: border-box; 
+    white-space: normal; /* كسر النص إذا كان طويلاً */
+}
+
+.interactive-stat * {
+    max-width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.story-card {
+    width: calc(100% - 40px); /* يترك مسافة 20px على كل جانب */
+    max-width: 520px;         /* تقييد أقصى عرض للبطاقة حتى لا تكون عريضة جداً */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+/* 🎯 إصلاح hero و stats */
+.hero-section {
+    width: 100%;
+    margin: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.stats-section {
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+/* ✅ جديد: عناصر ذات position:absolute أو fixed داخل interactive-stat
+   – إذا كان لديك عناصر مطلقة داخل القسم، نجبرها أن تبقى داخل حدود الحاوية */
+.interactive-stat [style*="position:absolute"],
+.interactive-stat [style*="position:fixed"] {
+    left: 15px !important;
+    right: 15px !important;
+    max-width: calc(100% - 30px) !important;
+    box-sizing: border-box !important;
+}
+
+/* ✅ جديد: تأكد أن عناصر row/column الداخلية أيضاً قابلة للانكماش */
+.success-stories .row,
+.success-stories .column {
+    min-width: 0;
+}
+
+}
+
+/* ===================== تنسيقات الشاشات الصغيرة جدًا ===================== */ @media (max-width: 480px) { .container { padding: 0 15px; } .success-stories h1 { font-size: 1.5rem; } .success-stories h2 { font-size: 1.3rem; } .success-stories h3 { font-size: 1.1rem; } .success-stories p  { font-size: 0.95rem; }
+
+.success-stories .row,
+.success-stories .column {
+    gap: 10px;
+}
+
+/* تأكد من أن story-card يناسب الشاشات الصغيرة جدًا */
+.story-card {
+    width: calc(100% - 30px);
+    padding: 14px;
+    max-width: none;
+}
+
+}
+
+

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>إدارة المتدربين - احترافي</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<style>
+/* ... ضع هنا CSS الذي أرسلته سابقاً ... */
+body { font-family: 'Tajawal', sans-serif; margin: 0; padding: 20px; background: #f7f7f8; color: #111; }
+h1,h2 { margin-bottom: 12px; }
+.filter-controls { display:flex; gap:10px; margin-bottom:15px; }
+.filter-controls input,.filter-controls select { flex-grow:1; }
+.table-container { max-height:60vh; overflow-y:auto; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,.06); margin-top:15px; }
+table { width:100%; border-collapse:collapse; background:#fff; }
+th,td { padding:12px 10px; text-align:right; border-bottom:1px solid #eee; }
+th { background:#f0f0f0; font-weight:600; position:sticky; top:0; cursor:pointer; user-select:none; }
+.sort-asc::after { content:' \25B2'; }
+.sort-desc::after { content:' \25BC'; }
+tr:nth-child(even) td { background:#fafafa; }
+tr:hover td { background:#fcfcfd; }
+.editing-row td { background-color:#ffeeb3 !important; transition: background-color 0.3s; }
+#notification { opacity:0; transition: opacity 0.4s ease-in-out; position:fixed; top:10px; right:10px; padding:10px 15px; border-radius:5px; z-index:9999; }
+.notif-show { opacity:1 !important; }
+.notif-success { background:#28a745; color:#fff; }
+.notif-error { background:#dc3545; color:#fff; }
+td button { margin-left:6px; padding:8px; width:35px; border:none; color:#fff; text-align:center; }
+.edit-btn { background:#007bff; } .edit-btn:hover { background:#0056b3; }
+.delete-btn { background:#dc3545; } .delete-btn:hover { background:#c82333; }
+#addForm button { background:#28a745; color:#fff; border:none; width:100%; margin-top:10px; }
+#addForm button:hover { background:#1e7e34; }
+.modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999; justify-content:center; align-items:center; }
+.modal-content { background:#fff; padding:20px; border-radius:8px; width:90%; max-width:500px; }
+</style>
+</head>
+<body>
+
+<h1>إدارة المتدربين</h1>
+<div id="notification"></div>
+
+<div class="filter-controls">
+    <select id="filterCourse"><option value="">جميع الدورات</option></select>
+    <input type="search" id="search" placeholder="ابحث بالاسم، البلد، أو رقم الواتساب..." />
+</div>
+
+<h2>إضافة متدرب جديد</h2>
+<div id="addForm">
+  <select id="newCourse" required>
+    <option value="" disabled selected>اسم الدورة *</option>
+  </select>
+  <input type="text" placeholder="الاسم *" id="newName" required />
+  <select id="newGender" required>
+    <option value="" disabled selected>الجنس *</option>
+    <option value="ذكر">ذكر</option>
+    <option value="أنثى">أنثى</option>
+  </select>
+  <input type="number" placeholder="العمر" id="newAge" min="10" max="100"/>
+  <input type="text" placeholder="البلد" id="newCountry" />
+  <div class="input-icon-container">
+    <i class="fa-solid fa-whatsapp"></i>
+    <input type="text" placeholder="رقم الواتساب" id="newWhatsapp" class="input-with-icon" />
+  </div>
+  <div class="input-icon-container">
+    <i class="fa-solid fa-envelope"></i>
+    <input type="email" placeholder="البريد الإلكتروني" id="newEmail" class="input-with-icon" />
+  </div>
+  <div class="input-icon-container">
+    <i class="fa-brands fa-telegram"></i>
+    <input type="text" placeholder="تيليجرام" id="newTelegram" class="input-with-icon" />
+  </div>
+  <input type="date" placeholder="تاريخ التسجيل" id="newDate" />
+  <button onclick="addTrainee()">إضافة متدرب</button>
+</div>
+
+<div class="table-container">
+    <table id="table">
+      <thead id="thead"></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+</div>
+
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <h3>تعديل بيانات المتدرب</h3>
+    <div id="editFields"></div>
+    <div class="modal-buttons">
+      <button class="save-btn" onclick="saveEdit()">حفظ التعديلات</button>
+      <button class="cancel-btn" onclick="closeModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<script>
+	const API_URL = 'https://script.google.com/macros/s/AKfycbzwL6NXW8w1Wkl5lBoWnjcI1_rkKagGrNYxXYY3RW0VHovQG7qL-sO0GHbR5_myJYlI/exec';
+
+const COLUMN_ORDER = ['اسم الدورة','الاسم','الجنس','العمر','البلد','رقم الواتساب','البريد الإلكتروني','تيليجرام','تاريخ التسجيل'];
+
+let allData = [];
+let currentEditRow = null;
+
+// جلب البيانات من Web App
+function fetchTrainees() {
+  fetch(API_URL)
+    .then(res => res.json())
+    .then(res => {
+        if(res.success) {
+            allData = res.data.trainees;
+            updateCourseSelects(res.data.courses);
+            renderTable();
+        } else { showNotification(res.message,'error'); }
+    })
+    .catch(err => showNotification('خطأ في الاتصال: '+err,'error'));
+}
+
+function updateCourseSelects(courses) {
+  const filterSelect = document.getElementById('filterCourse');
+  const addSelect = document.getElementById('newCourse');
+  filterSelect.innerHTML = '<option value="">جميع الدورات</option>';
+  addSelect.innerHTML = '<option value="" disabled selected>اسم الدورة *</option>';
+  courses.forEach(c=>{
+    let optF=document.createElement('option'); optF.value=c; optF.textContent=c; filterSelect.appendChild(optF);
+    let optA=document.createElement('option'); optA.value=c; optA.textContent=c; addSelect.appendChild(optA);
+  });
+}
+
+function showNotification(msg,type='success'){
+  const notif = document.getElementById('notification');
+  notif.textContent = msg;
+  notif.className = '';
+  notif.classList.add(type==='success'?'notif-success':'notif-error');
+  notif.classList.add('notif-show');
+  setTimeout(()=> notif.classList.remove('notif-show'),4000);
+}
+
+function renderTable(){
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  allData.forEach((row,index)=>{
+    const tr = document.createElement('tr');
+    COLUMN_ORDER.forEach(col=>{
+      const td = document.createElement('td'); td.textContent = row[col]||''; tr.appendChild(td);
+    });
+    const td = document.createElement('td');
+    td.innerHTML = `
+      <button class="edit-btn" onclick="openEditModal(${row.__row})"><i class="fa-solid fa-pen-to-square"></i></button>
+      <button class="delete-btn" onclick="deleteTrainee(${row.__row})"><i class="fa-solid fa-trash"></i></button>`;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+  });
+}
+
+// إضافة متدرب
+function addTrainee(){
+  const obj={
+    'اسم الدورة': document.getElementById('newCourse').value,
+    'الاسم': document.getElementById('newName').value,
+    'الجنس': document.getElementById('newGender').value,
+    'العمر': document.getElementById('newAge').value,
+    'البلد': document.getElementById('newCountry').value,
+    'رقم الواتساب': document.getElementById('newWhatsapp').value,
+    'البريد الإلكتروني': document.getElementById('newEmail').value,
+    'تيليجرام': document.getElementById('newTelegram').value,
+    'تاريخ التسجيل': document.getElementById('newDate').value
+  };
+  fetch(API_URL,{
+    method:'POST',
+    body:JSON.stringify({action:'add', data:obj}),
+    headers:{'Content-Type':'application/json'}
+  })
+  .then(res=>res.json())
+  .then(resp=>{
+    if(resp.success){ showNotification(resp.message); fetchTrainees(); }
+    else showNotification(resp.message,'error');
+  })
+  .catch(err=>showNotification('خطأ في الاتصال: '+err,'error'));
+}
+
+// فتح نافذة التعديل
+function openEditModal(rowIndex){
+  currentEditRow=rowIndex;
+  const row = allData.find(r=>r.__row===rowIndex);
+  if(!row) return showNotification('المتدرب غير موجود','error');
+  const editFields=document.getElementById('editFields');
+  editFields.innerHTML='';
+  COLUMN_ORDER.forEach(h=>{
+    const div=document.createElement('div');
+    div.innerHTML=`<label>${h}:</label>`;
+    let input=document.createElement('input'); input.id='edit_'+h; input.value=row[h]||'';
+    div.appendChild(input);
+    editFields.appendChild(div);
+  });
+  document.getElementById('editModal').style.display='flex';
+}
+
+function closeModal(){ document.getElementById('editModal').style.display='none'; }
+
+function saveEdit(){
+  const data={};
+  COLUMN_ORDER.forEach(h=>{ data[h]=document.getElementById('edit_'+h).value; });
+  fetch(API_URL,{
+    method:'POST',
+    body:JSON.stringify({action:'update', rowIndex:currentEditRow, data}),
+    headers:{'Content-Type':'application/json'}
+  })
+  .then(res=>res.json())
+  .then(resp=>{
+    if(resp.success){ showNotification(resp.message); fetchTrainees(); closeModal(); }
+    else showNotification(resp.message,'error');
+  })
+  .catch(err=>showNotification('خطأ في الاتصال: '+err,'error'));
+}
+
+function deleteTrainee(rowIndex){
+  if(!confirm('هل أنت متأكد من حذف المتدرب؟')) return;
+  fetch(API_URL,{
+    method:'POST',
+    body:JSON.stringify({action:'delete', rowIndex}),
+    headers:{'Content-Type':'application/json'}
+  })
+  .then(res=>res.json())
+  .then(resp=>{
+    if(resp.success){ showNotification(resp.message); fetchTrainees(); }
+    else showNotification(resp.message,'error');
+  })
+  .catch(err=>showNotification('خطأ في الاتصال: '+err,'error'));
+}
+
+// تحميل البيانات أول مرة
+fetchTrainees();
+</script>
+
+</body>
+</html>

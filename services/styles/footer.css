@@ -1,0 +1,133 @@
+/*
+|--------------------------------------------------------------------------
+| FOOTER STYLES (styles/footer.css)
+|--------------------------------------------------------------------------
+| *النسخة النهائية والمُعدلة: فوتر مُختصر بترتيب أفقي (Flexbox) مع ضمان ظهور الأيقونات.*
+*/
+
+/* 1. الفوتر الأساسي */
+footer {
+    /* تم تغيير الخلفية لتكون اللون الأساسي فقط (#0d3b14) كما يظهر في الصورة */
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 20px 15px; 
+    margin-top: 40px;
+    border-radius: 10px 10px 0 0; 
+    box-shadow: 0 -3px 10px rgba(0,0,0,0.4);
+    position: relative;
+}
+
+/* 2. حاوية المحتوى (الترتيب الأفقي Flexbox) */
+.footer-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    /* تطبيق Flexbox للترتيب الأفقي */
+    display: flex; 
+    /* تباعد العناصر بالتساوي */
+    justify-content: space-between; 
+    align-items: center; 
+    /* السماح للعناصر بالانتقال إلى سطر جديد */
+    flex-wrap: wrap; 
+    gap: 15px;
+}
+
+/* 3. روابط الفوتر (.footer-links) */
+.footer-links {
+    /* تطبيق Flexbox لترتيب الروابط داخلياً بشكل أفقي */
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap; 
+}
+.footer-links a {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+.footer-links a:hover {
+    color: var(--secondary-color);
+}
+
+
+/* 4. الأيقونات الاجتماعية (.footer-social) */
+.footer-social {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+/* 4. الأيقونات الاجتماعية (.footer-social) */
+.footer-social {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.footer-social a {
+    /* ... خصائص أخرى ... */
+    /* ضمان أن لون الخلفية واضح */
+    background-color: rgba(255, 255, 255, 0.15) !important; 
+    /* ... خصائص أخرى ... */
+}
+
+/* **الحل الجذري: استهداف الأيقونة (<i>) مباشرة** */
+.footer-social a i {
+    /* ضمان أن الأيقونة مرئية باللون الثانوي */
+    color: var(--secondary-color) !important;
+    /* ضمان أن الأيقونة كبيرة بما يكفي */
+    font-size: 20px !important; 
+    /* إزالة أي خاصية قد تخفيها */
+    opacity: 1 !important; 
+    visibility: visible !important;
+}
+
+/* حالة التحويم (Hover State) */
+.footer-social a:hover {
+    /* تم إزالة خاصية color: var(--primary-color) من هنا */
+    background-color: var(--secondary-color);
+    /* تطبيق التكبير المطلوب */
+    transform: scale(1.5); 
+}
+/* **التعديل على حالة التحويم: ضمان أن لون الأيقونة أبيض** */
+.footer-social a:hover i {
+    /* التغيير لـ اللون الأبيض (#ffffff) مع !important للتأكيد */
+    color: #ffffff !important; 
+}
+
+
+
+
+
+/* 5. حقوق النشر (.footer-copy) */
+.footer-copy p {
+    font-size: 14px;
+    opacity: 1; 
+    transform: none;
+    margin: 0; 
+    padding: 0;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* 6. التجاوبية (عندما يضيق العرض) */
+@media (max-width: 768px) {
+    .footer-content {
+        /* الترتيب يصبح عمودياً في الشاشات الصغيرة */
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .footer-content > div {
+        margin-bottom: 15px; 
+    }
+    .footer-links, .footer-social {
+        justify-content: center;
+    }
+    .footer-copy {
+        margin-bottom: 0;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        width: 100%;
+    }
+}
+
+
+

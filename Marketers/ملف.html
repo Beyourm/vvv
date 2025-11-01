@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>صفحة اختبار الإرسال التجريبي</title>
+
+  <link rel="stylesheet" href="../assets/fonts/tajawal.css"> 
+
+  <style>
+    /* الألوان والخطوط الأساسية (مستنسخة من الكود الأصلي) */
+    :root {
+      --primary-color: #0d3b14;
+      --secondary-color: #e5a72d; 
+      --accent-color: #f7f3e9; 
+      --text-color-dark: #2d3748;
+      --muted-color: #4a5568;
+      --white-color: #ffffff;
+      --border-radius-lg: 20px;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    body{
+      font-family: "Tajawal", sans-serif;
+      background: linear-gradient(120deg, #f7f3e9, #eaf0f5);
+      margin:0; padding:24px;
+      display:flex; justify-content:center; align-items:center;
+      min-height:100vh; color: var(--text-color-dark);
+    }
+
+    .container{width:100%;max-width:760px}
+    .card{
+      background:var(--white-color);
+      border-radius:var(--border-radius-lg);
+      box-shadow:0 12px 40px rgba(0,0,0,0.12);
+      overflow:hidden;
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    header{
+      background: var(--secondary-color);
+      color:var(--primary-color);
+      padding:20px;
+      text-align:center;
+    }
+    header h1{margin:0; font-size:24px; font-weight:800}
+
+    .content{
+      padding:30px;
+    }
+
+    /* تنسيق النموذج */
+    .row{display:flex; gap:15px; margin-bottom:15px;}
+    .col{flex:1;}
+    label{display:block;font-size:14px;color:var(--muted-color);margin-bottom:6px;}
+    input,select{
+      width:100%; padding:14px; border-radius:15px;
+      border:1px solid #e6eef8; background:#fff; font-size:15px;
+      transition:border-color 0.3s, background-color 0.3s; 
+    }
+    input:focus, select:focus{
+      border-color:var(--primary-color); 
+      background-color: var(--accent-color); 
+      outline:none; 
+      box-shadow: none;
+    }
+
+    /* تنسيق الأزرار */
+    button {
+      cursor:pointer;
+      border:0;
+      font-weight:700;
+      transition: background 0.3s, transform 0.1s;
+      padding:12px 20px;
+      border-radius:15px; 
+    }
+    button:active { transform: translateY(1px); }
+
+    .btn-accept {
+      background:var(--primary-color);
+      color:var(--white-color);
+      box-shadow: 0 4px 12px rgba(13, 59, 20, 0.2);
+    }
+    .btn-accept:hover:not(:disabled) { background: #1a5c24; }
+    
+    .btn-accept:disabled {
+        background-color: #ccc !important;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
+
+    /* رسائل الحالة */
+    .success{
+      display:none; padding:18px; background:#d4edda; color:#155724;
+      border-radius:10px; margin-top:15px;
+      font-weight: bold;
+    }
+    .error{
+      display:none; padding:18px; background:#f8d7da; color:#721c24;
+      border-radius:10px; margin-top:15px;
+    }
+
+    @media (max-width:600px){.row{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <header>
+        <h1>اختبار محاكاة (Mock) تسجيل المُسوّق</h1>
+        <p style="margin-top:5px; font-size:14px;">(لن يتم إرسال أي بيانات حقيقية - هذا للاختبار فقط)</p>
+      </header>
+      <div class="content">
+        
+        <form id="signupForm">
+          <h3>أدخل بيانات وهمية للاختبار</h3>
+          <div class="row">
+            <div class="col">
+              <label for="fullname">الاسم الثلاثي</label>
+              <input id="fullname" name="fullname" placeholder="مثال: عبدالله علي محسن" required value="فحص اسمي"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="gender">الجنس</label>
+              <select id="gender" name="gender" required>
+                <option value="ذكر">ذكر</option>
+                <option value="إنثى">إنثى</option>
+              </select>
+            </div>
+            <div class="col">
+              <label for="country">البلد</label>
+              <select id="country" name="country" required>
+                <option value="اليمن">اليمن</option>
+                <option value="السعودية">السعودية</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="phone">رقم الهاتف (WhatsApp)</label>
+              <input id="phone" name="phone" type="tel" placeholder="+9677xxxxxxx" pattern="[+0-9\s-]{6,20}" required value="+967770000000"/>
+            </div>
+            <div class="col">
+              <label for="email">البريد الإلكتروني</label>
+              <input id="email" name="email" type="email" placeholder="name@example.com" required value="test@mock.com"/>
+            </div>
+          </div>
+          <div style="margin-top:20px">
+            <button type="submit" class="btn-accept" id="submitBtn">إرسال واختبار</button>
+          </div>
+          <div class="success" id="successBox">✅ تم محاكاة الإرسال بنجاح! تم استلام المعرّف التجريبي. *افحص نافذة الكونسول لرؤية رابط الواتساب.*</div>
+          <div class="error" id="errorBox"></div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const WHATSAPP_NUMBER = '967778185189'; 
+    const signupForm = document.getElementById('signupForm');
+    const submitBtn = document.getElementById('submitBtn'); 
+    const successBox = document.getElementById('successBox');
+    const errorBox = document.getElementById('errorBox');
+
+    // ************************************************
+    // ** مفتاح الاختبار: غيّر القيمة هنا للتبديل بين النجاح والفشل **
+    // ************************************************
+    const MOCK_SUCCESS = true; 
+    
+    // دالة إنشاء رسالة واتساب (ضرورية للاختبار)
+    function buildWhatsAppMessage(data) {
+        const affiliateLink = data.affiliate_link || 'لم يتم إنشاء الرابط بعد';
+        const marketerID = data.marketer_id || 'N/A';
+        const status = data.marketer_id ? 'N (بانتظار التفعيل)' : 'خطأ في المعرف';
+
+        let message = `*طلب تسجيل مُسوّق جديد - اختبار محاكاة*\n\n`;
+        message += `*المؤسسة:* كن أنت للتدريب والتأهيل\n`;
+        message += `*الاسم:* ${data.fullname}\n`;
+        message += `*الهاتف:* ${data.phone}\n`;
+        // ... (بقية البيانات)
+        message += `---------------------------------\n`;
+        message += `*معرّف المسوّق (تجريبي):* ${marketerID}\n`; 
+        message += `*رابط الإحالة (تجريبي):* ${affiliateLink}\n`; 
+        message += `*الحالة:* ${status}\n`; 
+        message += `---------------------------------\n`;
+        message += `*يرجى تجاهل هذا الطلب، فهو مخصص للاختبار فقط.*`;
+        return encodeURIComponent(message);
+    }
+
+    // معالج حدث إرسال النموذج التجريبي
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorBox.style.display = 'none';
+      successBox.style.display = 'none';
+      submitBtn.disabled = true; // تعطيل الزر مؤقتاً 
+
+      // البيانات التي سيتم إرسالها (للتجربة)
+      const dataToSend = {
+        fullname: document.getElementById('fullname').value.trim(),
+        gender: document.getElementById('gender').value,
+        country: document.getElementById('country').value,
+        phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim(),
+      };
+
+      try {
+        // محاكاة تأخير الإرسال (1.5 ثانية)
+        await new Promise(resolve => setTimeout(resolve, 1500)); 
+
+        let result;
+        
+        if (MOCK_SUCCESS) {
+             // محاكاة استجابة Apps Script الناجحة
+             result = {
+                status: 'success',
+                marketer_id: 'MA007MOCK', 
+                affiliate_link: 'https://mock.link/track?id=MA007MOCK' 
+             };
+        } else {
+             // محاكاة استجابة Apps Script الفاشلة
+             result = {
+                status: 'error',
+                message: 'فشل داخلي في السيرفر التجريبي (HTTP 500).'
+             };
+        }
+        
+        if (result.status !== 'success') {
+             throw new Error(result.message || 'فشل في محاكاة تسجيل البيانات.');
+        }
+
+        // نجاح المحاكاة
+        const fullData = {
+            ...dataToSend, 
+            marketer_id: result.marketer_id,       
+            affiliate_link: result.affiliate_link 
+        };
+
+        successBox.style.display = 'block';
+        signupForm.style.pointerEvents = 'none'; // تعطيل التفاعل
+
+        // توجيه المستخدم إلى واتساب (نقوم بفتحه هنا ولكن يمكنك التحقق من الرابط في الكونسول)
+        const whatsappMsg = buildWhatsAppMessage(fullData);
+        const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMsg}`;
+
+        // فتح نافذة جديدة بعد فترة قصيرة
+        setTimeout(() => {
+             console.log("Mock WhatsApp URL:", whatsappUrl);
+             window.open(whatsappUrl, '_blank'); 
+        }, 1000); 
+        
+      } 
+      catch (err) {
+        // فشل المحاكاة
+        submitBtn.disabled = false; 
+        errorBox.style.display = 'block';
+        errorBox.textContent = 'حدث خطأ أثناء الإرسال (محاكاة فشل): ' + err.message;
+        console.error("MOCK TEST FAILED:", err.message);
+      }
+    });
+
+  </script>
+</body>
+</html>

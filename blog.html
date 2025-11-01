@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مدونة كن أنت</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+    /* 1. تعريف متغيرات الألوان */
+    :root {
+        --primary-color: #007bff; /* أزرق أساسي */
+        --secondary-color: #1abc9c; /* أخضر / تكميلي */
+        --text-color: #333; /* لون النص الأساسي */
+        --light-gray: #f2f4f6;
+        --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+    
+    body { 
+        font-family: 'Tahoma', sans-serif; 
+        margin:0; 
+        padding:0; 
+        background:var(--light-gray); 
+        color:var(--text-color); 
+        direction: rtl; /* التأكد من الاتجاه */
+    }
+    a { text-decoration: none; }
+    .container { width:90%; max-width:1200px; margin:0 auto; padding-left: 15px; padding-right: 15px; }
+
+    /* تنسيقات قسم المدونة الرئيسي (Hero) */
+    .blog-hero-section {
+        position: relative;
+        height: 350px; /* أقل ارتفاعاً من الصفحة الرئيسية */
+        background-image: url('https://images.unsplash.com/photo-1507679799270-cd2cc1b7f00d?q=80&w=2970&auto=format&fit=crop'); 
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: #fff;
+        margin-bottom: 30px;
+    }
+
+    .blog-hero-section::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); /* طبقة تعتيم أقوى قليلاً */
+        z-index: 1;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 20px;
+    }
+    
+    .hero-content h1 {
+        font-size: 3.5rem;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    /* تنسيقات شريط البحث والفئات */
+    .blog-search-categories {
+        padding: 30px;
+        margin-top: -80px; /* سحب القسم للأعلى فوق الـ hero */
+        margin-bottom: 40px;
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        position: relative;
+        z-index: 5;
+    }
+
+    .search-bar {
+        display: flex;
+        max-width: 600px;
+        margin: 0 auto 20px auto;
+        border: 2px solid var(--secondary-color);
+        border-radius: 50px;
+        overflow: hidden;
+    }
+
+    .search-bar input {
+        flex-grow: 1;
+        padding: 12px 20px;
+        border: none;
+        font-size: 1rem;
+        outline: none;
+        color: var(--text-color);
+    }
+
+    .search-bar button {
+        background-color: var(--secondary-color);
+        color: #fff;
+        border: none;
+        padding: 12px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .search-bar button:hover {
+        background-color: var(--primary-color);
+    }
+
+    .categories {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .categories p { /* تنسيق رسالة التحميل */
+        color: #888;
+        font-size: 0.9rem;
+    }
+
+    .category-tag {
+        background-color: var(--light-gray);
+        color: var(--text-color);
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+        user-select: none;
+    }
+
+    .category-tag:hover, .category-tag.active {
+        background-color: var(--primary-color);
+        color: #fff;
+    }
+
+    /* تنسيقات شبكة المقالات (Posts Grid) */
+    .blog-posts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 50px;
+    }
+
+    .blog-posts-grid p {
+        /* لجعل رسالة التحميل في المنتصف */
+        grid-column: 1 / -1; 
+        text-align: center;
+    }
+    
+    .post-card {
+        background-color: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .post-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .post-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .post-content {
+        padding: 20px;
+    }
+
+    .post-category {
+        display: inline-block;
+        background-color: var(--secondary-color);
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .post-content h3 {
+        color: var(--primary-color);
+        margin-top: 0;
+        font-size: 1.5rem;
+        /* للحفاظ على سطر واحد فقط */
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    
+    .post-content p {
+        font-size: 0.95rem; 
+        color: #555; 
+        height: 40px; 
+        overflow: hidden; 
+        margin-bottom: 15px; 
+    }
+
+    .read-more {
+        display: inline-block;
+        color: var(--secondary-color);
+        text-decoration: none;
+        font-weight: 700;
+        margin-top: 15px;
+        transition: color 0.3s;
+    }
+
+    .read-more:hover {
+        color: var(--primary-color);
+    }
+
+    .post-meta {
+        font-size: 0.8rem;
+        color: #777;
+        margin-top: 15px;
+        border-top: 1px solid #eee;
+        padding-top: 10px;
+    }
+
+    .post-meta i {
+        margin-left: 5px;
+        color: var(--secondary-color);
+    }
+
+    /* تنسيق ترقيم الصفحات (Pagination) - يمكن إضافتها لاحقاً */
+    .pagination {
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 60px;
+    }
+
+    /* تنسيقات الـ Modal - تم تكييفها مع الألوان الجديدة */
+    .modal-overlay { 
+        display:none; 
+        position:fixed; top:0; left:0; width:100%; height:100%; 
+        background:rgba(0,0,0,0.8); 
+        justify-content:center; align-items:center; 
+        z-index:1000; 
+        overflow-y: auto; 
+    }
+    .modal-content { 
+        background:#fff; 
+        max-width:900px; 
+        width:95%; 
+        padding:30px; 
+        border-radius:12px; 
+        position:relative; 
+        max-height: 90vh; 
+        box-shadow: var(--shadow);
+    }
+    .close-button { 
+        position:absolute; top:15px; right:15px; 
+        font-size:2em; 
+        cursor:pointer; 
+        border:none; 
+        background:none; 
+        color:var(--text-color);
+    }
+    #post-image { width:100%; height:350px; object-fit:cover; margin-bottom:20px; border-radius: 8px; }
+    #post-category { display:inline-block; font-size:1em; color:var(--secondary-color); font-weight: bold; margin-bottom: 5px; }
+    #post-title { margin:10px 0 5px; font-size:2.5em; color: var(--primary-color); }
+    #post-date { font-size:0.9em; color:#888; margin-bottom: 20px; }
+    #post-body { margin-top:20px; line-height:1.8; font-size: 1.1em; color: var(--text-color); }
+    
+    /* Media Queries للمدونة */
+    @media (max-width: 600px) {
+        .blog-posts-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .blog-hero-section {
+            height: 250px;
+        }
+        
+        .hero-content h1 {
+            font-size: 2.5rem;
+        }
+        
+        .blog-search-categories {
+            margin-top: -50px;
+            padding: 20px;
+        }
+        
+        .search-bar {
+            flex-direction: column;
+            border-radius: 10px;
+        }
+        
+        .search-bar input, .search-bar button {
+            border-radius: 0;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .search-bar button {
+            margin-top: 10px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<section class="blog-hero-section">
+    <div class="hero-content">
+        <h1>مدونة كن أنت</h1>
+        <p>نقدم لك كل ما هو جديد ومفيد في عالم التنمية الذاتية، التقنية، والنجاح.</p>
+    </div>
+</section>
+
+<div class="container">
+
+  <section class="blog-search-categories">
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="ابحث في المدونة...">
+        <button id="search-button">بحث</button>
+    </div>
+    
+    <div class="categories">
+        <p>جارٍ تحميل الأقسام...</p>
+    </div>
+  </section>
+
+  <section class="blog-posts-grid">
+    <p style="text-align:center;color:#888;">جارٍ تحميل المقالات...</p>
+  </section>
+</div>
+
+<div id="post-modal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="close-button">&times;</button>
+    <img id="post-image" src="" alt="صورة المقال">
+    <span id="post-category"></span>
+    <h1 id="post-title"></h1>
+    <p id="post-date"></p>
+    <div id="post-body">
+    </div>
+  </div>
+</div>
+
+<script> 
+// ** رابط Web App API الذي يعمل حالياً **
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwT35WX1nFwzldgZoB9jgDJjF5WDXLyl_XzqaYrhSNPHffGDmgyrh1uJBvvNuLtDQ37Wg/exec';
+    
+// متغير لتخزين جميع المقالات المحملة
+let ALL_POSTS = [];
+let ACTIVE_CATEGORY = 'الكل';
+    
+// عناصر الشبكة والأقسام
+const categoriesContainer = document.querySelector('.categories');
+const postsGrid = document.querySelector('.blog-posts-grid');
+
+// عناصر الـ Modal 
+const postModal = document.getElementById('post-modal');
+
+const closeButton = postModal ? postModal.querySelector('.close-button') : null;
+const postImage = postModal ? document.getElementById('post-image') : null;
+const postCategory = postModal ? document.getElementById('post-category') : null;
+const postTitle = postModal ? document.getElementById('post-title') : null;
+const postDate = postModal ? document.getElementById('post-date') : null;
+const postBody = postModal ? document.getElementById('post-body') : null;
+
+// العناوين الأساسية التي نريد عرضها في البطاقات (لتجاهل الإعلانات، القصص، الخ...)
+const CORE_HEADERS = ['المعرف', 'العنوان', 'الملخص', 'القسم', 'صورة_الغلاف', 'التاريخ', 'المحتوى_الكامل'];
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // ----------------------------------------------------
+    // 1. وظيفة بناء بطاقة مقال
+    // ----------------------------------------------------
+    
+    function createPostCard(post, index) {
+        const card = document.createElement('div');
+        card.className = 'post-card'; 
+        card.setAttribute('data-post-id', post['المعرف']);
+        
+        let date = '---';
+        try {
+            if (post['التاريخ']) date = new Date(post['التاريخ']).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long', year: 'numeric' });
+        } catch (e) {}
+
+        card.innerHTML = `
+            <img src="${post['صورة_الغلاف'] || 'https://via.placeholder.com/400x250'}" alt="${post['العنوان']}">
+            <div class="post-content">
+                <span class="post-category">${post['القسم'] || 'غير مصنف'}</span>
+                <h3>${post['العنوان']}</h3>
+                <p>${post['الملخص']}</p>
+                <a href="#" class="read-more">اقرأ المزيد <i class="fas fa-chevron-left"></i></a>
+                <div class="post-meta">
+                    <span><i class="fas fa-calendar"></i> ${date}</span>
+                </div>
+            </div>
+        `;
+
+        const readMoreLink = card.querySelector('.read-more');
+        if (readMoreLink) {
+            readMoreLink.addEventListener('click', (event) => {
+                event.preventDefault();
+                showModal(post['المعرف']);
+            });
+        }
+        return card;
+    }
+    
+    // ----------------------------------------------------
+    // 2. وظيفة عرض المقالات بناءً على الفلتر الحالي
+    // ----------------------------------------------------
+    
+    function renderPosts(posts) {
+        postsGrid.innerHTML = '';
+        const filteredPosts = ACTIVE_CATEGORY === 'الكل'
+            ? posts
+            : posts.filter(post => post['القسم'] === ACTIVE_CATEGORY);
+            
+        if (filteredPosts.length === 0) {
+             postsGrid.innerHTML = `<p style="text-align:center;color:#888;">لا يوجد مقالات في قسم ${ACTIVE_CATEGORY} حالياً</p>`;
+             return;
+        }
+
+        filteredPosts.forEach((post, index) => {
+             // فلترة المقال للتركيز على الأعمدة الأساسية فقط
+            const filteredPost = CORE_HEADERS.reduce((obj, key) => {
+                if (post[key] !== undefined) obj[key] = post[key];
+                return obj;
+            }, {});
+            if (filteredPost['المعرف']) postsGrid.appendChild(createPostCard(filteredPost, index));
+        });
+    }
+
+    // ----------------------------------------------------
+    // 3. وظيفة جلب جميع البيانات من API باستخدام XHR
+    // ----------------------------------------------------
+    
+    function loadContent() {
+        postsGrid.innerHTML = '<p style="text-align:center;color:#888;">جارٍ تحميل المقالات...</p>';
+        categoriesContainer.innerHTML = '<p style="font-size: 0.9em; color:#888;">جارٍ تحميل الأقسام...</p>';
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', WEB_APP_URL); 
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                try {
+                    const data = JSON.parse(xhr.responseText);
+
+                    if (data.status === 'success' && data.posts) {
+                        ALL_POSTS = data.posts; // تخزين البيانات عالمياً
+                        
+                        // 3.1 عرض الأقسام
+                        categoriesContainer.innerHTML = '';
+                        const allTag = document.createElement('span');
+                        allTag.className = 'category-tag active';
+                        allTag.textContent = 'الكل';
+                        categoriesContainer.appendChild(allTag);
+
+                        // استخدام slice(7) للبدء من العنصر الثامن (الأقسام الفعلية)
+                        const realCategories = data.categories.slice(7);
+                        
+                        realCategories.forEach(cat => {
+                            const cleanCategory = cat.toString().trim();
+                            if (cleanCategory.length > 0 && !CORE_HEADERS.includes(cleanCategory)) { // التأكد من أنه ليس عمود أساسي
+                                const tag = document.createElement('span');
+                                tag.className = 'category-tag';
+                                tag.textContent = cleanCategory;
+                                categoriesContainer.appendChild(tag);
+                            }
+                        });
+                        
+                        // 3.2 عرض المقالات
+                        renderPosts(ALL_POSTS);
+
+                        // 3.3 ربط أحداث الأقسام
+                        categoriesContainer.querySelectorAll('.category-tag').forEach(tag => {
+                            tag.addEventListener('click', handleCategoryClick);
+                        });
+
+                    } else {
+                        postsGrid.innerHTML = `<p style="text-align:center;color:red;">خطأ في تحميل البيانات: ${data.message || 'غير معروف'}</p>`;
+                    }
+                    
+                } catch (err) {
+                    postsGrid.innerHTML = `<p style="text-align:center;color:red;">فشل في تحليل استجابة الخادم (JSON): ${err.message}</p>`;
+                }
+            } else {
+                postsGrid.innerHTML = `<p style="text-align:center;color:red;">فشل في الاتصال بـ API. الحالة: ${xhr.status}</p>`;
+            }
+        };
+
+        xhr.onerror = function() {
+            postsGrid.innerHTML = '<p style="text-align:center;color:red;">فشل الاتصال بالشبكة (Network Error).</p>';
+        };
+        
+        xhr.send();
+    }
+    
+    // ----------------------------------------------------
+    // 4. وظيفة جلب مقال واحد وملء الـ Modal (من البيانات المخزنة)
+    // ----------------------------------------------------
+    
+    function showModal(postId) {
+        if (!postModal) return;
+        
+        // البحث محلياً عن المقال
+        const post = ALL_POSTS.find(p => parseInt(p['المعرف']) === parseInt(postId));
+        
+        if (!postImage || !postTitle || !postBody) return console.error("عناصر الـ Modal غير موجودة!");
+
+        if (post) {
+            let date = post['التاريخ'] ? new Date(post['التاريخ']).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long', year: 'numeric' }) : '---';
+            
+            postImage.src = post['صورة_الغلاف'] || 'https://via.placeholder.com/900x400';
+            postCategory.textContent = post['القسم'] || 'غير مصنف';
+            postTitle.textContent = post['العنوان'];
+            postDate.innerHTML = `<i class="fas fa-calendar"></i> ${date}`;
+            
+            // **[تعديل التنسيق الحاسم]**
+            let postContent = post['المحتوى_الكامل'] || `<p>المحتوى غير متوفر.</p>`;
+            // إذا لم يكن المحتوى يبدو كـ HTML، نقوم بتحويل الأسطر الجديدة إلى وسم <br>
+            if (!postContent.trim().startsWith('<') && !postContent.trim().startsWith('<p')) {
+                postContent = postContent.replace(/\n/g, '<br>');
+            }
+            postBody.innerHTML = postContent;
+        } else {
+            postTitle.textContent = 'خطأ';
+            postBody.innerHTML = `<p>تعذر تحميل المقال رقم ${postId}.</p>`;
+        }
+        
+        postModal.style.display = 'flex'; 
+        document.body.style.overflow = 'hidden';
+        postModal.scrollTop = 0;
+    }
+    
+    // ----------------------------------------------------
+    // 5. وظيفة فلترة المقالات عند النقر على القسم
+    // ----------------------------------------------------
+    
+    function handleCategoryClick(e) {
+        const selectedCategory = e.target.textContent.trim();
+        
+        // تحديث حالة النشاط
+        categoriesContainer.querySelectorAll('.category-tag').forEach(tag => {
+            tag.classList.remove('active');
+        });
+        e.target.classList.add('active');
+        
+        ACTIVE_CATEGORY = selectedCategory === 'الكل' ? 'الكل' : selectedCategory;
+        renderPosts(ALL_POSTS);
+    }
+    
+    // ----------------------------------------------------
+    // 6. وظيفة البحث 
+    // ----------------------------------------------------
+
+    function searchPosts() {
+        const query = document.getElementById('search-input').value.toLowerCase();
+        
+        // إلغاء تفعيل الفلترة بالأقسام وتنشيط زر "الكل" مؤقتاً
+        categoriesContainer.querySelectorAll('.category-tag').forEach(tag => {
+            tag.classList.remove('active');
+        });
+        const allTag = document.querySelector('.categories .category-tag:first-child');
+        if(allTag) allTag.classList.add('active');
+        ACTIVE_CATEGORY = 'الكل';
+        
+        const searchResults = ALL_POSTS.filter(post => 
+            post['العنوان'].toLowerCase().includes(query) ||
+            post['الملخص'].toLowerCase().includes(query) ||
+            (post['المحتوى_الكامل'] && post['المحتوى_الكامل'].toLowerCase().includes(query))
+        );
+        
+        renderPosts(searchResults);
+        
+        if (query.length > 0 && searchResults.length === 0) {
+            postsGrid.innerHTML = `<p style="text-align:center;color:var(--primary-color);">لا يوجد نتائج بحث مطابقة لـ "${query}"</p>`;
+        }
+    }
+    
+    // ----------------------------------------------------
+    // 7. وظائف التحكم في الواجهة المنبثقة (Modal)
+    // ----------------------------------------------------
+
+    function hideModal() {
+        if (!postModal) return;
+        postModal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    // ----------------------------------------------------
+    // 8. ربط الأحداث والتحميل الأولي
+    // ----------------------------------------------------
+    
+    if (closeButton) closeButton.addEventListener('click', hideModal);
+    if (postModal) postModal.addEventListener('click', e => { if (e.target === postModal) hideModal(); });
+    
+    // ربط أحداث البحث
+    const searchInput = document.getElementById('search-input');
+    const searchButton = document.getElementById('search-button');
+
+    if (searchButton) searchButton.addEventListener('click', searchPosts);
+    if (searchInput) searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') searchPosts();
+    });
+
+    // تشغيل وظيفة التحميل
+    loadContent();
+});
+</script> 
+<script src="marketer_tracker.js"></script> 
+<script src="/tracker.js"></script>
+</body>
+</html>

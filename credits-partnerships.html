@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الاعتمادات والشراكات </title>
+<link rel="stylesheet" href="assets/fonts/tajawal.css">
+<style>
+/* ======================= ألوان وخطوط ======================= */
+:root {
+  --bg-light: #f0fdfa;
+  --primary-dark: #047857;
+  --accent-color: #14b8a6;
+  --text-color: #374151;
+  /* (اختياري) يمكنك إضافة متغير للخط لسهولة التعديل */
+  --main-font: 'Tajawal', sans-serif;
+}
+body {
+  /* تم التعديل من 'Cairo' إلى 'Tajawal' */
+  font-family: var(--main-font); 
+  padding:25px;
+  background: linear-gradient(to bottom, #f0fdfa, #d1fae5); 
+  color:var(--text-color);
+  line-height:1.6;
+  /* الوزن الأساسي للنص العادي (Regular) */
+  font-weight: 400; 
+}
+h1 { 
+  color:var(--primary-dark); 
+  /* تم ضبط الوزن ليتطابق مع الأوزان المتاحة في Tajawal (800 هو ExtraBold) */
+  font-weight: 800; 
+  margin-bottom:20px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1); 
+  font-family: var(--main-font);
+}
+h2 { 
+  border-bottom:2px solid var(--accent-color); 
+  padding-bottom:8px; 
+  margin-bottom:30px; 
+  color:var(--primary-dark); 
+  /* تم ضبط الوزن ليتطابق مع الأوزان المتاحة في Tajawal (700 هو Bold) */
+  font-weight: 700;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+  font-family: var(--main-font);
+}
+
+
+/* ======================= تنسيق زر "كن شريكاً" المثبت بالأسفل ======================= */
+.partner-btn {
+  position: fixed; 
+  bottom: 25px; 
+  left: 25px; 
+  top: auto; 
+  
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; 
+  background: var(--accent-color); 
+  color: #fff;
+  padding: 12px 20px; 
+  border-radius: 50px; 
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1em;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); 
+  transition: 0.3s;
+  z-index: 100; 
+}
+.partner-btn:hover {
+  background: var(--primary-dark);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  animation: bounce 0.3s; 
+  transform: translateY(-2px); 
+}
+@keyframes bounce {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+  100% { transform: translateY(-2px); }
+}
+.partner-btn .icon {
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+/* ======================= تحريك عند التحميل ومحاذاة القسم ======================= */
+.section {
+  margin-left: auto; 
+  margin-right: auto;
+  max-width: 700px; 
+  padding: 20px;
+  margin-bottom: 50px; 
+  background: #ffffff90; 
+  border-radius: 15px; 
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05); 
+  opacity:0;
+  transform:translateY(40px); 
+  transition:opacity 0.8s ease-out, transform 0.8s ease-out; 
+}
+.section.visible { opacity:1; transform:translateY(0); } 
+
+/* ======================= تصميم السلايدر ======================= */
+.slider-container {
+  margin: 0 auto; 
+  position:relative;
+  overflow:hidden;
+  background:#fff;
+  padding:0 20px;
+  border-radius:12px;
+  box-shadow:0 6px 15px rgba(0,0,0,0.1);
+  display:flex;
+  flex-direction: column; 
+  align-items:center;
+  justify-content:center;
+  min-height:280px; 
+}
+.slide {
+  position:absolute; 
+  inset: 0; 
+  margin: auto; 
+  max-width: 90%; 
+  padding: 40px 0; 
+  
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
+  text-align: center; 
+  
+  opacity:0;
+  transform: translateX(100%); 
+  z-index:1;
+  min-height: inherit; 
+
+  /* 🛑 التعديل: زيادة زمن الحركة ونوع الحركة الجذاب */
+  transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.slide.active { 
+  opacity:1; 
+  transform: translateX(0); 
+  z-index:2; 
+}
+
+/* تنسيق العناصر الداخلية */
+.slide strong, 
+.slide p {
+    display: block; 
+    width: auto; 
+    text-align: center; 
+    margin: 5px 0; 
+}
+
+.slide img {
+  max-height:120px; 
+  width:auto; 
+  display:block;
+  margin: 0 auto 15px; 
+  object-fit:contain;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,0.15)); 
+}
+.slide strong {
+  font-size:1.25em; 
+  color:var(--primary-dark);
+  margin-bottom:8px;
+  font-weight:800;
+}
+.link-btn {
+  display:inline-block;
+  background:var(--primary-dark);
+  color:#fff;
+  padding:10px 25px; 
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:700;
+  margin-top:15px;
+  transition:0.3s;
+}
+.link-btn:hover { 
+  background:var(--accent-color); 
+  transform:translateY(-3px) scale(1.03); 
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+.buttons {
+  position:absolute;
+  top:50%;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  transform:translateY(-50%);
+  pointer-events:none; 
+  z-index: 15; 
+}
+.btn {
+  pointer-events:auto; 
+  background:var(--primary-dark); 
+  color:#fff;
+  border:none;
+  padding: 8px 12px; 
+  border-radius:50%;
+  cursor:pointer;
+  font-size: 1.5rem; 
+  z-index:10; 
+  transition:0.3s;
+  margin:0 10px; 
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+} 
+.btn:hover { 
+  background:var(--accent-color); 
+  color:#fff; 
+  transform: scale(1.1); 
+}
+
+/* 1. نقل النقاط (Dots) إلى خارج حاوية السلايدر */
+.dots-container-wrapper { 
+    position: static; 
+    margin-top: 20px; 
+    margin-bottom: 0;
+    display: flex;
+    justify-content: center; 
+    width: 100%;
+    z-index: 5; 
+}
+.dots-viewport {
+  max-width:350px; 
+  overflow:hidden;
+  margin:0 auto; 
+}
+.dots-container {
+  display:flex;
+  justify-content:center;
+  transition:transform 0.3s ease;
+  padding: 10px 0; 
+}
+.dot {
+  height:15px; 
+  width:15px;
+  margin:0 8px;
+  background:#fff;
+  border:3px solid var(--primary-dark);
+  border-radius:50%;
+  cursor:pointer;
+  transition:0.3s;
+}
+.dot.active { 
+  background:var(--primary-dark); 
+  transform:scale(1.1); 
+  border-color: var(--accent-color); 
+}
+@media (max-width:600px) {
+  body { padding:15px; }
+  .dots-viewport { max-width:250px; }
+  .partner-btn {
+    bottom: 15px;
+    left: 15px;
+    padding: 10px 15px;
+    font-size: 0.9em;
+  }
+}
+</style>
+</head>
+<body>
+
+<a href="partner-application.html" class="partner-btn" aria-label="قدم لتصبح شريكاً">
+    <span class="icon">🤝</span> كن شريكاً
+</a>
+
+<h1>الاعتمادات والشراكات</h1>
+<div id="content"></div>
+
+<script>
+/* ===================================== رابط جلب البيانات من Google Sheet ===================================== */
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbydb3HoWyuTJbYjJGbPjr_YsQqB9mPMBM-Em8WkPVSHuIq0oDcoZFwYeAgi68qPAS4d/exec";
+let timers = {};
+const MAX_DOTS = 5; 
+const SLIDE_INTERVAL = 5000; // 🛑 التعديل: 5 ثواني بين الشرائح
+
+/* وظيفة إظهار شاشة التحميل */
+function showLoading(contentDiv) {
+    contentDiv.innerHTML = `
+        <div style="text-align:center; padding:50px; color:var(--primary-dark);">
+            <div style="border: 4px solid #f3f3f3; border-top: 4px solid var(--accent-color); border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 0 auto 15px;"></div>
+            <strong>جاري تحميل بيانات الشراكات والاعتمادات...</strong>
+            <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+        </div>
+    `;
+}
+
+/* ===================================== تحميل البيانات وعرض السلايدر ===================================== */
+async function loadData() {
+  const contentDiv = document.getElementById('content');
+  showLoading(contentDiv);
+
+  try {
+    const resp = await fetch(WEB_APP_URL);
+    if (!resp.ok) throw new Error('Failed to fetch data.');
+    const data = await resp.json();
+
+    let html = '';
+    let sectionCount = 0; 
+    
+    for(const section in data){
+      html += `<div class="section" data-section="${section}" style="transition-delay: ${sectionCount * 0.1}s;"><h2>${section}</h2>`; 
+      
+      sectionCount++;
+      
+      if(data[section].length===0){ 
+        html += `<p>لا توجد بيانات بعد.</p>`; 
+      } else {
+        html += `<div class="slider-container" id="slider-${section}">`;
+        
+        // 1. إضافة الشرائح (Slides)
+        data[section].forEach((item,index)=>{
+          const altText = `شعار ${item.Title || section}`; 
+          const imgHtml = item.ImageURL ? `<img src="${item.ImageURL}" alt="${altText}" loading="lazy">` : ''; 
+          
+          html += `<div class="slide${index===0?' active':''}" data-index="${index}">
+            ${imgHtml}
+            <strong>${item.Title||''}</strong>
+            <p>${item.Description||''}</p>
+            ${item.LinkURL?`<a href="${item.LinkURL}" target="_blank" class="link-btn" aria-label="زيارة رابط ${item.Title||section}">زيارة الرابط</a>`:''}
+          </div>`;
+        });
+        
+        // 2. أزرار Prev/Next
+        html += `<div class="buttons">
+                  <button class="btn prev" aria-label="الشريحة السابقة">‹</button>
+                  <button class="btn next" aria-label="الشريحة التالية">›</button>
+                 </div>`;
+                 
+        html += `</div>`; // نهاية حاوية السلايدر
+                 
+        // 1. حاوية مؤشرات الشرائح (خارج السلايدر)
+        html += `<div class="dots-container-wrapper" id="dots-${section}">
+                    <div class="dots-viewport">
+                        <div class="dots-container"></div>
+                    </div>
+                 </div>`;
+      }
+      html += `</div>`; // نهاية القسم
+    }
+
+    contentDiv.innerHTML = html;
+
+    /* تفعيل السلايدر */
+    initSliders();
+
+    /* تفعيل الحركة عند التمرير */
+    initScrollAnimation();
+  } catch(err){
+    contentDiv.innerHTML = `<p style="color:red; text-align:center; padding:40px;">عذراً، حدث خطأ أثناء جلب البيانات أو تحليلها. يرجى المحاولة لاحقاً.</p>`;
+    console.error(err);
+  }
+}
+
+/* ===================================== تهيئة السلايدر ===================================== */
+function initSliders(){
+  document.querySelectorAll('.slider-container').forEach((container, sectionIndex)=>{
+    const slides = container.querySelectorAll('.slide');
+    const slideCount = slides.length;
+    
+    const sectionId = container.id.replace('slider-', '');
+    const dotsWrapper = document.getElementById(`dots-${sectionId}`);
+    const dotsContainer = dotsWrapper ? dotsWrapper.querySelector('.dots-container') : null; 
+    
+    let index = 0;
+
+    /* إنشاء نقاط المؤشرات */
+    if(dotsContainer){ 
+        const dotsToShow = Math.min(slideCount, MAX_DOTS); 
+        
+        dotsContainer.innerHTML = ''; 
+        
+        for(let i=0; i<dotsToShow; i++){
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            if(i===0) dot.classList.add('active');
+            dot.dataset.slideIndex = i; 
+            
+            dot.addEventListener('click', ()=>{
+                goToSlide(i); 
+                stopAutoSlide(); startAutoSlide(container.classList.contains('in-view'));
+            });
+            dotsContainer.appendChild(dot);
+        }
+    }
+
+    /* دالة تحديث الشريحة */
+    const updateSlide = (newIndex)=>{
+      slides.forEach((s,i)=> s.classList.toggle('active', i===newIndex));
+      
+      if(dotsContainer){
+        const activeDotIndex = newIndex % MAX_DOTS; 
+        
+        Array.from(dotsContainer.children).forEach((d,i)=> {
+            d.classList.toggle('active', i === activeDotIndex); 
+        });
+        
+        const offset = Math.max(0, activeDotIndex - 2); 
+        dotsContainer.style.transform = `translateX(-${offset * 26}px)`; 
+      }
+      
+      index = newIndex;
+    };
+
+    /* الانتقال إلى شريحة محددة */
+    const goToSlide = (newIndex)=>{ updateSlide((newIndex+slideCount)%slideCount); };
+
+    /* الشريحة التالية والسابقة */
+    const nextSlide = ()=> goToSlide(index+1);
+    const prevSlide = ()=> goToSlide(index-1);
+
+    /* ربط الأزرار. */
+    container.querySelector('.next').addEventListener('click', nextSlide);
+    container.querySelector('.prev').addEventListener('click', prevSlide);
+
+    /* التحكم في التغيير التلقائي */
+    const startAutoSlide = (isInView = true)=>{ 
+        if(!isInView) return; 
+        timers[sectionIndex]=setInterval(nextSlide, SLIDE_INTERVAL); 
+    };
+    const stopAutoSlide = ()=>{ clearInterval(timers[sectionIndex]); };
+    
+    container.addEventListener('mouseenter', stopAutoSlide);
+    container.addEventListener('mouseleave', ()=> startAutoSlide(container.classList.contains('in-view')));
+    
+    updateSlide(index); 
+    container.dataset.initialized = 'true'; 
+  });
+}
+
+
+/* ===================================== تأثير Fade-in عند التمرير ===================================== */
+function initScrollAnimation(){
+  const observer = new IntersectionObserver((entries,observer)=>{
+    entries.forEach(entry=>{
+      const section = entry.target;
+      const sliderContainer = section.querySelector('.slider-container');
+      
+      if(entry.isIntersecting){
+        section.classList.add('visible');
+        
+        if(sliderContainer){
+            sliderContainer.classList.add('in-view');
+            const sectionIndex = Array.from(document.querySelectorAll('.section')).indexOf(section);
+            clearInterval(timers[sectionIndex]); 
+            if(sliderContainer.dataset.initialized === 'true'){
+                const nextBtn = sliderContainer.querySelector('.next');
+                if(nextBtn) timers[sectionIndex]=setInterval(() => nextBtn.click(), SLIDE_INTERVAL);
+            }
+        }
+        
+        observer.unobserve(section); 
+      } 
+    });
+  }, { threshold:0.1 }); 
+  
+  document.querySelectorAll('.section').forEach(s=>observer.observe(s));
+}
+
+/* ===================================== بدء التحميل ===================================== */
+loadData();
+</script>
+<script src="marketer_tracker.js"></script> 
+<script src="/tracker.js"></script>
+</body>
+</html>

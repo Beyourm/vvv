@@ -1,0 +1,310 @@
+/*
+ * File: styles.css
+ * Description: Complete Tailwind CSS customizations & enhancements for Marketer Guide page.
+ */
+
+/* -------------------- Global Styles -------------------- */
+body {
+    font-family: 'Tajawal', sans-serif; 
+    line-height: 1.8; 
+    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden !important; 
+    min-height: 100vh;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+html {
+    overflow-x: hidden !important; 
+}
+
+/* -------------------- Gradient Text -------------------- */
+.gradient-text {
+    background: linear-gradient(90deg, #34d399, #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    background-size: 200% 100%;
+    animation: gradient-slide 4s linear infinite;
+}
+@keyframes gradient-slide {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 0%; }
+    100% { background-position: 0% 0%; }
+}
+
+/* -------------------- Light Mode Colors -------------------- */
+.content-area { background-color: #ffffff; color: #1f2937; }
+.text-primary { color: #047857; }
+.text-accent { color: #f59e0b; }
+.bg-light-section { background-color: #f9fafb; } 
+.code-block { background-color: #e5e7eb; }
+.faq-answer { border-right: 4px solid #f59e0b; padding-right: 1rem; transition: max-height 0.4s ease-out, opacity 0.4s ease-out; overflow: hidden; }
+
+/* -------------------- Dark Mode Overrides -------------------- */
+html.dark { 
+    background-color: #111827;
+    color: #ffffff !important;
+}
+html.dark body { 
+    color: #ffffff !important; 
+    font-weight: 500; 
+}
+html.dark p, 
+html.dark li, 
+html.dark span:not(.gradient-text):not(.text-accent):not(.text-primary):not(.text-red-400):not(.text-blue-400):not(.text-green-400):not(.text-red-600) {
+    color: #ffffff !important;
+}
+html.dark .content-area { 
+    background: linear-gradient(180deg, #1f2937 0%, #111827 100%); 
+    color: #ffffff !important; 
+}
+html.dark .text-primary { color: #34d399 !important; }
+html.dark .text-accent { color: #fbbf24 !important; }
+html.dark .bg-light-section { 
+    background-color: #1f2937 !important; 
+    color: #ffffff !important;
+}
+html.dark .code-block { 
+    background-color: #111827 !important; 
+    color: #d1d5db !important; 
+    border: 1px solid #374151 !important; 
+}
+html.dark .faq-answer { border-right-color: #fbbf24 !important; }
+html.dark .bg-red-900 { background-color: #7f1d1d !important; }
+
+/* -------------------- Code Block Improvements -------------------- */
+.code-block span {
+    word-break: break-all;
+    white-space: normal;
+}
+.code-block { overflow-x: auto; max-width: 100%; }
+.code-block:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+
+/* -------------------- Fade-in Animations -------------------- */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.fade-in-up.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* -------------------- Buttons -------------------- */
+.btn-glow-pulse {
+    background: linear-gradient(135deg, #34d399, #fbbf24);
+    color: #111827;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 15px rgba(52,211,153,0.3);
+    animation: pulse-glow 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+.btn-glow-pulse:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(52,211,153,0.7), 0 0 20px rgba(251,191,36,0.5);
+}
+html.dark .btn-glow-pulse {
+    color: #ffffff;
+}
+html.dark .btn-glow-pulse:hover {
+    box-shadow: 0 0 35px rgba(52,211,153,0.8), 0 0 25px rgba(251,191,36,0.6);
+}
+@keyframes pulse-glow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; box-shadow: 0 0 10px rgba(4,120,87,0.3); }
+}
+
+/* -------------------- Progress Bar -------------------- */
+#progress-bar { height: 5px; background-color: #f59e0b; transition: width 0.2s linear; }
+html.dark #progress-bar { background-color: #fbbf24; }
+
+/* -------------------- Confetti -------------------- */
+.confetti { position: fixed; width: 10px; height: 10px; opacity: 0; border-radius: 50%; pointer-events: none; z-index: 1000; animation: fall 2s ease-out forwards; }
+@keyframes fall { 0% { opacity: 1; transform: translateY(0) rotate(0deg); } 100% { opacity: 0; transform: translateY(100vh) rotate(720deg); } }
+
+/* -------------------- Anchor Offset -------------------- */
+.anchor-offset { padding-top: 100px; margin-top: -100px; pointer-events: none; }
+
+/* -------------------- Shadows for Titles -------------------- */
+h1, h2, h3 { text-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: text-shadow 0.3s ease-in-out, color 0.3s ease-in-out; }
+h1:hover, h2:hover, h3:hover { text-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+/* -------------------- Links Enhancements -------------------- */
+a {
+    position: relative;
+    color: #047857;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+a:hover { color: #34d399; transform: translateY(-2px); }
+a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #f59e0b;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: right;
+}
+a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+/* Tooltip for Links */
+a[data-tooltip]:hover::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #111827;
+    color: #ffffff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    white-space: nowrap;
+    font-size: 0.75rem;
+    opacity: 1;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 50;
+}
+html.dark a[data-tooltip]:hover::before { background-color: #fbbf24; color: #111827; }
+
+/* -------------------- Section Gradient -------------------- */
+.section-gradient-light { background: linear-gradient(120deg, #fef3c7 0%, #fef9c3 100%); padding: 2rem; border-radius: 1rem; transition: all 0.3s ease-in-out; }
+html.dark .section-gradient-light { background: linear-gradient(120deg, #1e293b 0%, #111827 100%); }
+
+/* -------------------- Paragraph Hover -------------------- */
+p, li { transition: transform 0.2s ease, color 0.3s ease; }
+p:hover, li:hover { transform: translateX(2px); }
+
+/* -------------------- Cards -------------------- */
+.card { background-color: #ffffff; border-radius: 1rem; padding: 2rem; box-shadow: 0 6px 20px rgba(0,0,0,0.08); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.15); }
+html.dark .card { background-color: #1f2937; box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
+
+/* -------------------- Horizontal Rules -------------------- */
+hr { border-color: #e5e7eb; transition: border-color 0.3s ease; }
+html.dark hr { border-color: #374151; }
+
+
+
+
+
+
+
+
+/* --- تحسين مظهر البطاقات الرمادية --- */
+.card {
+    background-color: #f3f4f6; /* رمادي فاتح Light Mode */
+    border-right: 4px solid #d1d5db; /* رمادي متوسط للحدود */
+    border-radius: 0.75rem; /* نفس rounded-lg */
+    padding: 1rem; /* p-4 */
+    margin-bottom: 1.5rem; /* mb-6 */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+/* --- الوضع الداكن --- */
+html.dark .card {
+    background-color: #1f2937; /* رمادي غامق Dark Mode */
+    border-color: #374151;
+    color: #f9fafb; /* نص أبيض خفيف */
+}
+
+/* --- العناوين داخل البطاقات --- */
+.card h3 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #1f2937; /* Gray-800 */
+}
+
+html.dark .card h3 {
+    color: #f3f4f6; /* Gray-200 في الوضع الداكن */
+}
+
+/* --- نص الرابط داخل البلوك كوت --- */
+.card span {
+    font-weight: bold;
+    word-break: break-all;
+    color: #374151; /* Gray-700 */
+}
+
+html.dark .card span {
+    color: #d1d5db; /* Gray-300 في الوضع الداكن */
+}
+
+/* --- البلوك كوت للفقرة --- */
+.card blockquote {
+    border-right: 2px solid #d1d5db;
+    padding-right: 1rem;
+    padding-left: 0.25rem;
+    font-style: italic;
+    transition: all 0.3s ease;
+}
+
+html.dark .card blockquote {
+    border-right-color: #9ca3af; /* Gray-400 في الوضع الداكن */
+}
+
+
+p span {
+    word-break: break-all; /* يكسر أي نص طويل بما فيه الروابط */
+}
+
+/* --- أزرار المشاركة --- */
+.card .share-btn {
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    background-color: #34d399; /* Emerald-400 - اللون الأخضر */
+    color: #ffffff; /* نص أبيض */
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s ease;
+}
+
+.card .share-btn:hover {
+    transform: scale(1.05);
+    background-color: #059669; /* Emerald-600 - أخضر أغمق عند hover */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* الوضع الداكن - يمكن تركه كما هو، لأن اللون الأخضر سيظهر جيدًا */
+html.dark .card .share-btn {
+    background-color: #10b981; /* Emerald-500 */
+    color: #ffffff;
+}
+
+html.dark .card .share-btn:hover {
+    background-color: #059669; /* أخضر أغمق عند hover */
+}
+
+
+
+
+
+
+.card .share-btn:hover {
+    transform: scale(1.05);
+}
+
+/* --- اللون للروابط في النصوص --- */
+.card a {
+    color: #047857; /* Emerald-700 */
+    text-decoration: underline;
+}
+
+html.dark .card a {
+    color: #34d399; /* Emerald-400 */
+}
