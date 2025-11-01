@@ -135,11 +135,9 @@
     <i class="fab fa-whatsapp"></i>
 </a>
 
-
-//ربط url
-
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="url.js"></script> 
     
-
 <script>
     AOS.init();
 
@@ -168,9 +166,19 @@
         const listElement = document.getElementById(elementId);
         
         if (!data || !Array.isArray(data) || data.length === 0) {
-            const parent = listElement.closest('.container').querySelector(`h2:has(ul#${elementId})`);
-            if (parent) parent.style.display = 'none'; 
-            listElement.style.display = 'none';
+            // استخدام findElement لتجنب خطأ عند عدم العثور على العنصر
+            const container = listElement.closest('.container');
+            if (container) {
+                // البحث عن أقرب H2 يحتوي على UL بقائمة محددة
+                let parentH2 = container.querySelector(`h2:has(ul#${elementId})`);
+                if (!parentH2) {
+                    // في حالة عدم العثور، محاولة إخفاء القائمة فقط
+                    listElement.style.display = 'none';
+                    return;
+                }
+                parentH2.style.display = 'none'; 
+                listElement.style.display = 'none';
+            }
             return;
         }
         
@@ -456,4 +464,3 @@ const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbz8a_AvFDj2M6Jgcmq
 
 </body>
 </html>
-
