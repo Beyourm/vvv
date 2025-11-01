@@ -203,98 +203,85 @@
     // ✅ دالة واحدة فقط لتحميل بيانات الدورة
 
 
-// ✅ دالة واحدة فقط لتحميل بيانات الدورة
-async function loadCourseData() {
-    statusIndicator.innerHTML = '🟡';
-    
-    if (!courseId) {
-        statusIndicator.innerHTML = '🔴';
-        document.getElementById('hero-title').innerText = "⚠️ يرجى تحديد الدورة";
-        document.getElementById('hero-description').innerText = "تم الوصول إلى الصفحة بدون معرف الدورة.";
-        document.querySelector('.marquee').style.display = 'none';
-        return;
-    }
-
-    try {
-        const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbz8a_AvFDj2M6JgcmqmpU2ZKY4-J-E4kCDm9qSwo5HsG9D9EcxMh-fGQkKtfuRKnNRI/exec';
-        const apiUrl = `${API_BASE_URL}?action=courses`; 
-        const response = await fetch(apiUrl);
-        const allCourses = await response.json();
+    // ✅ دالة واحدة فقط لتحميل بيانات الدورة
+    async function loadCourseData() {
+        statusIndicator.innerHTML = '🟡';
         
-        if (allCourses.status === "error" || !Array.isArray(allCourses)) {
-             throw new Error("فشل في جلب قائمة الدورات من API.");
-        }
-        
-        const course = allCourses.find(c => c.id == courseId); 
-        window.course = course;
-
-        if (!window.course || !window.course.title) {
+        if (!courseId) {
             statusIndicator.innerHTML = '🔴';
-            document.getElementById('hero-title').innerText = "⚠️ لم يتم العثور على الدورة المطلوبة";
-            document.getElementById('hero-description').innerText = "يرجى التأكد من الرابط أو العودة إلى صفحة الدورات واختيار دورة صحيحة.";
+            document.getElementById('hero-title').innerText = "⚠️ يرجى تحديد الدورة";
+            document.getElementById('hero-description').innerText = "تم الوصول إلى الصفحة بدون معرف الدورة.";
             document.querySelector('.marquee').style.display = 'none';
             return;
         }
 
-        // ----------------- تحويل النصوص المفصولة إلى مصفوفات -----------------
-        if(window.course.objectives) window.course.objectives = window.course.objectives.split('|');
-        if(window.course.axes) window.course.axes = window.course.axes.split('|');
-        if(window.course.achievementsText) window.course.achievementsText = window.course.achievementsText.split('|');
-        if(window.course.instructors) window.course.instructors = window.course.instructors.split('|');
-        if(window.course.testimonials) window.course.testimonials = window.course.testimonials.split('|');
+        try {
+const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbz8a_AvFDj2M6JgcmqmpU2ZKY4-J-E4kCDm9qSwo5HsG9D9EcxMh-fGQkKtfuRKnNRI/exec';
+            // جلب جميع الدورات من الـ API
+            const apiUrl = `${API_BASE_URL}?action=courses`; 
+            const response = await fetch(apiUrl);
+            const allCourses = await response.json();
+            
+            if (allCourses.status === "error" || !Array.isArray(allCourses)) {
+                 throw new Error("فشل في جلب قائمة الدورات من API.");
+            }
+            
+            const course = allCourses.find(c => c.id == courseId); 
+            window.course = course;
 
-        // تحويل FAQ إلى مصفوفة كائنات
-        if(window.course.faqs) {
-            const faqParts = window.course.faqs.split(':');
-            window.course.faqs = [{ question: faqParts[0], answer: faqParts[1] }];
+            if (!window.course || !window.course.title) {
+                statusIndicator.innerHTML = '🔴';
+                document.getElementById('hero-title').innerText = "⚠️ لم يتم العثور على الدورة المطلوبة";
+                document.getElementById('hero-description').innerText = "يرجى التأكد من الرابط أو العودة إلى صفحة الدورات واختيار دورة صحيحة.";
+                document.querySelector('.marquee').style.display = 'none';
+                return;
+            }
+
+            // -----------------  تحديث محتوى الصفحة  -----------------
+            document.getElementById('hero-title').innerText = window.course.title || "دورة تدريبية متخصصة";
+            document.getElementById('hero-description').innerText = window.course.heroDescription || "";
+            document.getElementById('marquee-text').innerText = window.course.marqueeText || "سجل الآن وابدأ رحلتك!";
+            document.getElementById('page-title').innerText = `مؤسسة كن أنت - ${window.course.title || "تفاصيل الدورة"}`;
+            document.getElementById('course-about').innerText = window.course.courseAbout || "لا توجد نبذة متوفرة حالياً.";
+
+            const videoEmbed = document.getElementById('video-embed');
+            if (window.course.videoUrl && window.course.videoUrl.includes('youtube.com')) {
+                const embedUrl = window.course.videoUrl.replace('watch?v=', 'embed/').split('&')[0];
+                videoEmbed.innerHTML = `<iframe width="100%" height="250" src="${embedUrl}" frameborder="0" allowfullscreen style="border-radius:8px;"></iframe>`;
+            } else {
+                 videoEmbed.style.display = 'none';
+            }
+            
+            // استدعاء الدوال المساعدة
+            window.parseList('objectives-list', window.course.objectives, 'fa fa-check-circle');
+            window.parseList('axes-list', window.course.axes, 'fa fa-arrow-alt-circle-left');
+            window.parseList('achievements-list', window.course.achievementsText, 'fa fa-star');
+            
+            window.setupSlider('instructors-slider-container', 'instructor-dots', 'instructors');
+            window.setupSlider('testimonials-slider-container', 'testimonial-dots', 'testimonials');
+            setupFaq(window.course.faqs);
+
+            // ✅ تحديث رابط التسجيل مع اسم الدورة
+            document.getElementById('register-link').href = `form.html?course=${encodeURIComponent(window.course.title)}`;
+
+            // تشغيل السلايدرات
+            window.startSliders(); 
+            statusIndicator.innerHTML = '🟢';
+            
+            // ✅ التعديل الثاني: تحديث مكتبة التحريك AOS لمنع قفز التنسيق
+            AOS.refresh();
+
+        } catch (err) {
+            console.error('Error fetching course data:', err);
+            statusIndicator.innerHTML = '🔴';
+            document.getElementById('hero-title').innerText = "⚠️ حدث خطأ أثناء تحميل البيانات";
+            document.getElementById('hero-description').innerHTML = "تأكد من اتصالك بالإنترنت ومن أن Apps Script يعمل بشكل صحيح. <br><br> <a href='#' class='btn btn-register' onclick='loadCourseData(); return false;'>إعادة المحاولة</a>";
         }
-
-        // -----------------  تحديث محتوى الصفحة  -----------------
-        document.getElementById('hero-title').innerText = window.course.title || "دورة تدريبية متخصصة";
-        document.getElementById('hero-description').innerText = window.course.heroDescription || "";
-        document.getElementById('marquee-text').innerText = window.course.marqueeText || "سجل الآن وابدأ رحلتك!";
-        document.getElementById('page-title').innerText = `مؤسسة كن أنت - ${window.course.title || "تفاصيل الدورة"}`;
-        document.getElementById('course-about').innerText = window.course.courseAbout || "لا توجد نبذة متوفرة حالياً.";
-
-        const videoEmbed = document.getElementById('video-embed');
-        if (window.course.videoUrl && window.course.videoUrl.includes('youtube.com')) {
-            const embedUrl = window.course.videoUrl.replace('watch?v=', 'embed/').split('&')[0];
-            videoEmbed.innerHTML = `<iframe width="100%" height="250" src="${embedUrl}" frameborder="0" allowfullscreen style="border-radius:8px;"></iframe>`;
-        } else {
-             videoEmbed.style.display = 'none';
-        }
-        
-        // استدعاء الدوال المساعدة بعد التحويل
-        window.parseList('objectives-list', window.course.objectives, 'fa fa-check-circle');
-        window.parseList('axes-list', window.course.axes, 'fa fa-arrow-alt-circle-left');
-        window.parseList('achievements-list', window.course.achievementsText, 'fa fa-star');
-        
-        window.setupSlider('instructors-slider-container', 'instructor-dots', 'instructors');
-        window.setupSlider('testimonials-slider-container', 'testimonial-dots', 'testimonials');
-        setupFaq(window.course.faqs);
-
-        // ✅ تحديث رابط التسجيل مع اسم الدورة
-        document.getElementById('register-link').href = `form.html?course=${encodeURIComponent(window.course.title)}`;
-
-        // تشغيل السلايدرات
-        window.startSliders(); 
-        statusIndicator.innerHTML = '🟢';
-        
-        // ✅ التعديل الثاني: تحديث مكتبة التحريك AOS لمنع قفز التنسيق
-        AOS.refresh();
-
-    } catch (err) {
-        console.error('Error fetching course data:', err);
-        statusIndicator.innerHTML = '🔴';
-        document.getElementById('hero-title').innerText = "⚠️ حدث خطأ أثناء تحميل البيانات";
-        document.getElementById('hero-description').innerHTML = "تأكد من اتصالك بالإنترنت ومن أن Apps Script يعمل بشكل صحيح. <br><br> <a href='#' class='btn btn-register' onclick='loadCourseData(); return false;'>إعادة المحاولة</a>";
     }
-}
 
-document.addEventListener('DOMContentLoaded', loadCourseData);
+    document.addEventListener('DOMContentLoaded', loadCourseData);
 
-
-
+    
     
 </script>
 <script src="marketer_tracker.js"></script> 
@@ -302,5 +289,6 @@ document.addEventListener('DOMContentLoaded', loadCourseData);
 <script src="/tracker.js"></script>
 </body>
 </html>
+
 
 
