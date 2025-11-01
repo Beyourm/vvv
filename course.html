@@ -23,7 +23,6 @@
         gtag('js', new Date());
         gtag('config', 'AW-17515401485');
     </script>
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="assets/fonts/tajawal.css">
     <link rel="stylesheet" href="css/course.css"> 
@@ -50,7 +49,7 @@
     <span id="status-indicator"></span>
 </header>
 
-<div class="hero" data-aos="fade-up">
+<div class="hero">
     <div class="hero-text">
         <h2 id="hero-title">جاري تحميل تفاصيل الدورة...</h2>
         <p id="hero-description"></p>
@@ -60,7 +59,7 @@
 <div class="marquee"><span id="marquee-text"></span></div>
 
 
-<div class="container" data-aos="fade-up">
+<div class="container">
     <div class="video-section" style="margin-top:15px;">
         <div id="video-embed" style="width:100%; height:250px; background-color: #f0f0f0; border-radius:8px; display:flex; justify-content:center; align-items:center;">
              <i class="fa fa-video" style="font-size: 50px; color: #ccc;"></i>
@@ -71,34 +70,34 @@
     <p id="course-about"></p>
 
     <h2>🎯 أهداف الدورة</h2>
-    <ul id="objectives-list" data-aos="fade-right"></ul>
+    <ul id="objectives-list"></ul>
 
     <h2>📌 المحاور الأساسية</h2>
-    <ul id="axes-list" data-aos="fade-right"></ul>
+    <ul id="axes-list"></ul>
   
     <h2>🎓 فريق المدربين</h2>
-    <div id="instructors-slider-container" class="slider-container" data-aos="fade-up">
+    <div id="instructors-slider-container" class="slider-container">
         <div id="instructors-slider" class="instructors-slider"></div>
         <div class="slider-dots instructor-dots"></div>
     </div>
 
     <h2>💬 آراء المتدربين</h2>
-    <div id="testimonials-slider-container" class="slider-container" data-aos="fade-up">
+    <div id="testimonials-slider-container" class="slider-container">
         <div id="testimonials-slider" class="testimonials-slider"></div>
         <div class="slider-dots testimonial-dots"></div>
     </div>
 
     <h2>❓ الأسئلة الشائعة</h2>
-    <div id="faq-container" class="faq-container" data-aos="fade-up">
+    <div id="faq-container" class="faq-container">
     </div>
 
     <h2>🏆 إنجازك بعد الدورة</h2>
-    <div class="certificate-section" data-aos="zoom-in">
+    <div class="certificate-section">
         <img src="https://i.ibb.co/v4v82S5/certificate-mockup.png" alt="نموذج شهادة الدورة" loading="lazy">
         <ul id="achievements-list" style="margin-top:20px; font-weight:bold; color:var(--primary-color); list-style:none; padding-right:0;"></ul>
     </div>
 
-    <div id="register-now-section" data-aos="fade-up" style="text-align: center; margin-top: 30px;">
+    <div id="register-now-section" style="text-align: center; margin-top: 30px;">
         <h2>💡 لتبدأ رحلة النجاح، انقر هنا للتسجيل!</h2>
         <p>انضم إلينا الآن وانطلق نحو تحقيق أهدافك.</p>
         <a href="form.html" id="register-link" class="btn btn-register" style="margin-top: 20px;">
@@ -135,10 +134,9 @@
     <i class="fab fa-whatsapp"></i>
 </a>
 
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    AOS.init();
-
+    // 🚫 تم إزالة استدعاء AOS.init();
+    
     // ====================================================================
     //                 *** الكود المدمج من course-slider.js ***
     // ====================================================================
@@ -319,7 +317,6 @@
     // ====================================================================
 
     const statusIndicator = document.getElementById('status-indicator');
-    // ✅ الآن نعتمد فقط على الدالة القياسية URLSearchParams لجلب المعرف
     const urlParams = new URLSearchParams(window.location.search);
     const courseId = urlParams.get('id'); 
 
@@ -435,7 +432,7 @@ const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbz8a_AvFDj2M6Jgcmq
                 // تشغيل السلايدرات
                 window.startSliders(); 
                 
-                AOS.refresh();
+                // 🚫 تم إزالة استدعاء AOS.refresh();
                 
                 statusIndicator.innerHTML = '🟢';
                 
