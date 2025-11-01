@@ -364,78 +364,94 @@
     }
 
     // ✅ دالة واحدة فقط لتحميل بيانات الدورة (مع إزالة الشرط القاتل)
-    async function loadCourseData() {
-        statusIndicator.innerHTML = '🟡';
+    
+// ✅ دالة واحدة فقط لتحميل بيانات الدورة (مع حماية إضافية للعرض)
+async function loadCourseData() {
+    statusIndicator.innerHTML = '🟡';
+    
+    if (!courseId) {
+        statusIndicator.innerHTML = '🔴';
+        document.getElementById('hero-title').innerText = "⚠️ يرجى تحديد الدورة";
+        document.getElementById('hero-description').innerText = "تم الوصول إلى الصفحة بدون معرف الدورة.";
+        document.querySelector('.marquee').style.display = 'none';
+        return;
+    }
+
+    try {
+        const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbz8a_AvFDj2M6JgcmqmpU2ZKY4-J-E4kCDm9qSwo5HsG9D9EcxMh-fGQkKtfuRKnNRI/exec';
+        // 1. جلب البيانات
+        const apiUrl = `${API_BASE_URL}?action=courses`; 
+        const response = await fetch(apiUrl);
+        const allCourses = await response.json();
         
-        if (!courseId) {
+        // 2. البحث عن الدورة
+        const course = allCourses.find(c => c.id == courseId); 
+        window.course = course;
+
+        if (!window.course || !window.course.title) {
             statusIndicator.innerHTML = '🔴';
-            document.getElementById('hero-title').innerText = "⚠️ يرجى تحديد الدورة";
-            document.getElementById('hero-description').innerText = "تم الوصول إلى الصفحة بدون معرف الدورة.";
+            document.getElementById('hero-title').innerText = "⚠️ لم يتم العثور على الدورة المطلوبة";
+            document.getElementById('hero-description').innerText = "يرجى التأكد من الرابط أو العودة إلى صفحة الدورات واختيار دورة صحيحة.";
             document.querySelector('.marquee').style.display = 'none';
             return;
         }
 
+        // 3. تحديث الجزء الآمن (العنوان، النبذة، الشريط المتحرك)
+        document.getElementById('hero-title').innerText = window.course.title || "دورة تدريبية متخصصة";
+        document.getElementById('hero-description').innerText = window.course.heroDescription || "";
+        document.getElementById('marquee-text').innerText = window.course.marqueeText || "سجل الآن وابدأ رحلتك!";
+        document.getElementById('course-about').innerText = window.course.courseAbout || "لا توجد نبذة متوفرة حالياً.";
+
+        // 4. تحديث رابط الفيديو (آمن نسبياً)
+        const videoEmbed = document.getElementById('video-embed');
+        if (window.course.videoUrl && window.course.videoUrl.includes('youtube.com')) {
+            const embedUrl = window.course.videoUrl.replace('watch?v=', 'embed/').split('&')[0];
+            videoEmbed.innerHTML = `<iframe width="100%" height="250" src="${embedUrl}" frameborder="0" allowfullscreen style="border-radius:8px;"></iframe>`;
+        } else {
+             videoEmbed.style.display = 'none';
+        }
+
+        // --------------------------------------------------------
+        // 5. 🛑 كتلة الحماية: لتجنب الخطأ القاتل أثناء عرض الأقسام
         try {
-const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbz8a_AvFDj2M6JgcmqmpU2ZKY4-J-E4kCDm9qSwo5HsG9D9EcxMh-fGQkKtfuRKnNRI/exec';
-            // جلب جميع الدورات من الـ API
-            const apiUrl = `${API_BASE_URL}?action=courses`; 
-            const response = await fetch(apiUrl);
-            const allCourses = await response.json();
-            
-            // 🛑 تم إزالة الشرط القاتل. نعتمد على البحث عن الدورة لتحديد ما إذا كانت البيانات صالحة.
-            
-            const course = allCourses.find(c => c.id == courseId); 
-            window.course = course;
-
-            if (!window.course || !window.course.title) {
-                statusIndicator.innerHTML = '🔴';
-                document.getElementById('hero-title').innerText = "⚠️ لم يتم العثور على الدورة المطلوبة";
-                document.getElementById('hero-description').innerText = "يرجى التأكد من الرابط أو العودة إلى صفحة الدورات واختيار دورة صحيحة.";
-                document.querySelector('.marquee').style.display = 'none';
-                return;
-            }
-
-            // -----------------  تحديث محتوى الصفحة  -----------------
-            document.getElementById('hero-title').innerText = window.course.title || "دورة تدريبية متخصصة";
-            document.getElementById('hero-description').innerText = window.course.heroDescription || "";
-            document.getElementById('marquee-text').innerText = window.course.marqueeText || "سجل الآن وابدأ رحلتك!";
-            document.getElementById('course-about').innerText = window.course.courseAbout || "لا توجد نبذة متوفرة حالياً.";
-
-            const videoEmbed = document.getElementById('video-embed');
-            if (window.course.videoUrl && window.course.videoUrl.includes('youtube.com')) {
-                const embedUrl = window.course.videoUrl.replace('watch?v=', 'embed/').split('&')[0];
-                videoEmbed.innerHTML = `<iframe width="100%" height="250" src="${embedUrl}" frameborder="0" allowfullscreen style="border-radius:8px;"></iframe>`;
-            } else {
-                 videoEmbed.style.display = 'none';
-            }
-            
             // استدعاء الدوال المساعدة (parseList تستقبل المصفوفات الآن)
             window.parseList('objectives-list', window.course.objectives, 'fa fa-check-circle');
             window.parseList('axes-list', window.course.axes, 'fa fa-arrow-alt-circle-left');
             window.parseList('achievements-list', window.course.achievementsText, 'fa fa-star');
             
-            window.setupSlider('instructors-slider-container', 'instructor-dots', 'instructors'); // الآن يستخدم instructorTemplate المُعدَّل
+            // استدعاء السلايدرات (يفترض أن instructorTemplate تم إصلاحه)
+            window.setupSlider('instructors-slider-container', 'instructor-dots', 'instructors');
             window.setupSlider('testimonials-slider-container', 'testimonial-dots', 'testimonials');
             setupFaq(window.course.faqs);
 
-            // تحديث رابط التسجيل مع اسم الدورة
+            // تحديث رابط التسجيل
             document.getElementById('register-link').href = `form.html?course=${encodeURIComponent(window.course.title)}`;
 
             // تشغيل السلايدرات
             window.startSliders(); 
+            
+            // تحديث مكتبة التحريك
+            AOS.refresh();
+            
             statusIndicator.innerHTML = '🟢';
             
-            AOS.refresh();
-
-        } catch (err) {
-            console.error('Error fetching course data:', err);
-            statusIndicator.innerHTML = '🔴';
-            document.getElementById('hero-title').innerText = "⚠️ حدث خطأ أثناء تحميل البيانات";
-            document.getElementById('hero-description').innerHTML = "تعذر تحميل تفاصيل الدورة. الرجاء التأكد من اتصالك بالإنترنت. <br><br> <a href='#' class='btn btn-register' onclick='loadCourseData(); return false;'>إعادة المحاولة</a>";
+        } catch (renderingError) {
+             // إذا فشل أي جزء من العرض، نعرض رسالة خطأ بسيطة في المؤشر
+             console.error('Internal content rendering error:', renderingError);
+             statusIndicator.innerHTML = '⚠️';
+             // ونترك العناصر التي نجحت في التحميل مرئية (العنوان والشريط المتحرك)
         }
-    }
+        // --------------------------------------------------------
 
-    document.addEventListener('DOMContentLoaded', loadCourseData);
+    } catch (err) {
+        // يتم تنفيذ هذا الجزء فقط إذا فشل الجلب (fetch) نفسه
+        console.error('Fatal fetch error:', err);
+        statusIndicator.innerHTML = '🔴';
+        document.getElementById('hero-title').innerText = "⚠️ فشل الاتصال بخادم البيانات";
+        document.getElementById('hero-description').innerHTML = "الرجاء التأكد من أن رابط الـ API (Apps Script) يعمل بشكل صحيح أو إعادة المحاولة.";
+    }
+}
+document.addEventListener('DOMContentLoaded', loadCourseData);
     
 </script>
 <script src="marketer_tracker.js"></script> 
@@ -443,3 +459,4 @@ const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbz8a_AvFDj2M6Jgcmq
 <script src="/tracker.js"></script>
 </body>
 </html>
+
