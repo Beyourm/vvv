@@ -216,7 +216,7 @@ async function loadCourseData() {
     }
 
     try {
-        const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbw--BrncLUSp1qJRf7QOrqwKs33wivZppt9naOQBipbTM5KHwn0SyAqh_4dswTt47QVDw/exec';
+        const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbz8a_AvFDj2M6JgcmqmpU2ZKY4-J-E4kCDm9qSwo5HsG9D9EcxMh-fGQkKtfuRKnNRI/exec';
         const apiUrl = `${API_BASE_URL}?action=courses`; 
         const response = await fetch(apiUrl);
         const allCourses = await response.json();
@@ -302,4 +302,5 @@ document.addEventListener('DOMContentLoaded', loadCourseData);
 <script src="/tracker.js"></script>
 </body>
 </html>
+
 
