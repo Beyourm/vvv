@@ -25,23 +25,33 @@ const testimonialTemplate = (t) => `
  * @description تقوم بتحويل حقل النص المفصول بـ | (Objectives/Axes/Achievements) إلى قائمة HTML.
  * يتم ربطها بـ window لكي تكون متاحة للاستدعاء من courses.html.
  */
+/**
+ * @function parseList
+ * @description تقوم بتحويل حقل البيانات (المصفوفة) إلى قائمة HTML.
+ * تم تعديلها لتتعامل مع المصفوفات (Array) مباشرة كما هو الحال في بيانات JSON.
+ */
 window.parseList = function (elementId, data, iconClass) {
     const listElement = document.getElementById(elementId);
-    if (!data || data.length === 0) {
-        listElement.parentElement.style.display = 'none';
+    
+    // 1. تحقق من البيانات وتأكد من أنها مصفوفة
+    if (!data || !Array.isArray(data) || data.length === 0) {
+        // إخفاء العنوان والقائمة إذا كانت البيانات فارغة أو ليست مصفوفة
+        const parent = listElement.closest('.container').querySelector(`h2:has(ul#${elementId})`);
+        if (parent) parent.style.display = 'none'; 
+        listElement.style.display = 'none';
         return;
     }
+    
     listElement.innerHTML = '';
-    try {
-        data.split('|').forEach(text => {
-            const li = document.createElement('li');
-            li.innerHTML = `<i class="${iconClass}"></i> ${text.trim()}`;
-            listElement.appendChild(li);
-        });
-    } catch(e) {
-        listElement.parentElement.style.display = 'none';
-    }
+    
+    // 2. التكرار على عناصر المصفوفة مباشرة وعرضها
+    data.forEach(text => {
+        const li = document.createElement('li');
+        li.innerHTML = `<i class="${iconClass}" style="margin-left: 10px;"></i> ${text.trim()}`;
+        listElement.appendChild(li);
+    });
 };
+
 
 /**
  * @function setupSlider
