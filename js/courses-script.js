@@ -19,7 +19,7 @@ function createCourseButton(course) {
     // الحل النهائي: تأكد أن course.name موجود قبل استخدامه
     const courseTitle = (course.name ? String(course.name).trim() : 'دورة غير معرفة'); 
     
-    courseButton.href = `course.html?id=${course.id}`;
+    courseButton.href = `cs.html?id=${course.id}`;
     courseButton.className = 'course-button';
     courseButton.setAttribute('aria-label', `دورة ${courseTitle}`);
     
